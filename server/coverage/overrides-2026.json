@@ -1,0 +1,9 @@
+{
+  "note": "Editorial regional-coverage overrides, keyed week -> market -> network -> window -> gameId. Use this when a published coverage map (e.g. 506 Sports, posted Wednesdays) shows a market receiving a game the rule engine would not pick. Entries here are reported to users as 'confirmed'.",
+  "overrides": {
+    "1": {
+      "milwaukee":   { "CBS": { "SUN_LATE": "2026-W01-GB-MIN" } },
+      "harrisburg":  { "FOX": { "SUN_LATE": "2026-W01-WAS-PHI" } }
+    }
+  }
+}

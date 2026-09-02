@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NFL Game Reminder</title>
+  <meta name="description" content="When coverage starts, when kickoff is, what network, and what channel that is in your market. For every NFL game you follow. No ads, no login.">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="top">
+      <h1>🏈 NFL Game Reminder <small>coverage · kickoff · network · your channel</small></h1>
+      <nav class="nav" id="nav" hidden>
+        <button data-view="week" class="active">This week</button>
+        <button data-view="alerts">Alerts</button>
+        <button data-view="settings">Settings</button>
+      </nav>
+    </header>
+    <main id="main"><div class="empty">Loading…</div></main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
