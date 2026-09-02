@@ -1,0 +1,35 @@
+NFL GAME REMINDER - how to run it on your machine
+=================================================
+
+You need Node.js (free). If you don't have it: https://nodejs.org  -> download the LTS version and install it.
+
+1. Unzip this folder anywhere (Desktop is fine).
+2. Start the app:
+     Windows:  double-click  "Run App.bat"
+     Mac:      double-click  "Run App.command"   (first time: right-click > Open if macOS blocks it)
+     Linux:    ./run.sh
+   A black window opens and stays open while the app runs. Your browser opens to http://localhost:3000
+   If the browser does not open, go there yourself.
+3. Set up in the browser: ZIP code, TV provider, streaming services, teams. Click "Show my games".
+4. Click "Enable push on this device" in Settings to get real notifications (allow when the browser asks).
+   Push works on localhost without HTTPS. On iPhone, push needs the app added to the Home Screen and HTTPS.
+5. To stop: close the black window (or press Ctrl+C in it).
+
+WHAT TO TRY
+- Week view: coverage-begins and kickoff times in your zone with ET, the station and channel number for your provider.
+- "All games" to see games your local station will NOT show and what it shows instead.
+- Alerts tab: the complete list of every alert that will fire.
+- Settings > "Send test alert" to confirm delivery.
+- Settings > "Calendar feed (.ics)" to subscribe in Google/Apple/Outlook calendar.
+- Simulate a flex (moved game) while it is running, from a second terminal:
+     curl -X POST localhost:3000/api/admin/simulate-change -H "content-type: application/json" -d "{\"gameId\":\"2026-W01-ATL-PIT\",\"kickoff\":\"2026-09-14T00:20:00Z\",\"networks\":[\"NBC\"],\"streams\":[\"Peacock\"],\"window\":\"SNF\"}"
+  Anyone following Falcons at Steelers gets a "Schedule change" alert and the reminders re-arm.
+
+NOTES
+- First run creates a .env file with push keys and a data/ folder with your settings. Delete both to reset.
+- The app pulls the live schedule from ESPN's public feed when it can reach the internet; otherwise it shows the
+  built-in seed of confirmed 2026 games and says so at the top of the week view.
+- Free phone alerts without push: install the ntfy app, pick a topic, and paste https://ntfy.sh/<your-topic> as the
+  webhook URL in Settings.
+- Run the tests:  npm test
+- Full docs: README.md and the docs/ folder (review research, complaint analysis, pain gaps, product decisions).

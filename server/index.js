@@ -156,19 +156,24 @@ export function createApp({ db = new DB(), schedule, scheduler, env = process.en
   return { app, db, schedule, scheduler, inbox };
 }
 
-const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
-if (isMain) {
+export function startServer({ onListen } = {}) {
   const { app, db, schedule, scheduler } = createApp();
   const intervalMin = Number(process.env.SYNC_INTERVAL_MIN || 15);
   schedule.sync().then(() => db.flush());
   const syncTimer = setInterval(() => schedule.sync().catch(() => {}), intervalMin * 60000);
   syncTimer.unref?.();
   scheduler.start(30000);
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`NFL Game Reminder listening on ${BASE_URL}`);
     console.log(`schedule: ${schedule.all().length} games from ${schedule.meta.source}; live sync every ${intervalMin} min (${process.env.SCHEDULE_SOURCE || 'espn'})`);
     console.log(`push: ${process.env.VAPID_PUBLIC_KEY ? 'configured' : 'not configured — run `npm run vapid` and put the keys in .env'}`);
+    onListen?.(BASE_URL);
   });
-  process.on('SIGINT', () => { db.flush(); process.exit(0); });
-  process.on('SIGTERM', () => { db.flush(); process.exit(0); });
+  const stop = () => { db.flush(); process.exit(0); };
+  process.on('SIGINT', stop);
+  process.on('SIGTERM', stop);
+  return { server, app, db, schedule, scheduler, url: BASE_URL };
 }
+
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isMain) startServer();

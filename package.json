@@ -6,6 +6,7 @@
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
+    "launch": "node launch.js",
     "dev": "node --watch server/index.js",
     "test": "node --test",
     "sync": "node server/schedule/sync-cli.js",
