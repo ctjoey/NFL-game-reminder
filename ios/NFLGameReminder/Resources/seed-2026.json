@@ -1,0 +1,44 @@
+{
+  "season": 2026,
+  "source": "seed",
+  "note": "Offline seed compiled 2026-09-02 from published 2026 schedule announcements (NFL.com, NBC, Prime Video, Netflix, ESPN press). Only games whose date, time and carrier were confirmed are included; the app fills the rest from the live schedule source when it can reach it. Fields: kickoff is an ISO instant; networks are the linear carriers, streams the streaming carriers; exclusive marks a game only available on that service; national marks a game the network shows in most of the country for that window.",
+  "verifiedThrough": "week 3 primetime, weeks 1-3 partial regional",
+  "games": [
+    { "id": "2026-W01-NE-SEA", "week": 1, "kickoff": "2026-09-10T00:20:00Z", "away": "NE", "home": "SEA", "networks": ["NBC"], "streams": ["Peacock"], "window": "KICKOFF", "national": true, "label": "NFL Kickoff Game", "verified": true },
+    { "id": "2026-W01-SF-LAR", "week": 1, "kickoff": "2026-09-11T00:35:00Z", "away": "SF", "home": "LAR", "networks": [], "streams": ["Netflix"], "exclusive": "Netflix", "window": "TNF", "national": true, "venue": "Melbourne Cricket Ground, Melbourne, Australia", "label": "Melbourne Game (Netflix exclusive)", "verified": true, "notes": "Kickoff 8:35 pm ET Thursday = 10:35 am Friday in Melbourne." },
+    { "id": "2026-W01-CHI-CAR", "week": 1, "kickoff": "2026-09-13T17:00:00Z", "away": "CHI", "home": "CAR", "networks": ["FOX"], "streams": ["FOX One"], "window": "SUN_EARLY", "national": false, "verified": true },
+    { "id": "2026-W01-TB-CIN", "week": 1, "kickoff": "2026-09-13T17:00:00Z", "away": "TB", "home": "CIN", "networks": ["FOX"], "streams": ["FOX One"], "window": "SUN_EARLY", "national": false, "verified": true },
+    { "id": "2026-W01-NO-DET", "week": 1, "kickoff": "2026-09-13T17:00:00Z", "away": "NO", "home": "DET", "networks": ["FOX"], "streams": ["FOX One"], "window": "SUN_EARLY", "national": false, "verified": true },
+    { "id": "2026-W01-ATL-PIT", "week": 1, "kickoff": "2026-09-13T17:00:00Z", "away": "ATL", "home": "PIT", "networks": ["FOX"], "streams": ["FOX One"], "window": "SUN_EARLY", "national": false, "verified": true },
+    { "id": "2026-W01-BAL-IND", "week": 1, "kickoff": "2026-09-13T17:00:00Z", "away": "BAL", "home": "IND", "networks": ["CBS"], "streams": ["Paramount+"], "window": "SUN_EARLY", "national": true, "verified": true },
+    { "id": "2026-W01-BUF-HOU", "week": 1, "kickoff": "2026-09-13T17:00:00Z", "away": "BUF", "home": "HOU", "networks": ["CBS"], "streams": ["Paramount+"], "window": "SUN_EARLY", "national": false, "verified": false, "notes": "Bills and Texans confirmed in the early window; home team and network not yet confirmed in the seed. Live sync will correct." },
+    { "id": "2026-W01-WAS-PHI", "week": 1, "kickoff": "2026-09-13T20:25:00Z", "away": "WAS", "home": "PHI", "networks": ["FOX"], "streams": ["FOX One"], "window": "SUN_LATE", "national": true, "label": "America's Game of the Week", "verified": true },
+    { "id": "2026-W01-GB-MIN", "week": 1, "kickoff": "2026-09-13T20:25:00Z", "away": "GB", "home": "MIN", "networks": ["CBS"], "streams": ["Paramount+"], "window": "SUN_LATE", "national": true, "verified": true },
+    { "id": "2026-W01-DAL-NYG", "week": 1, "kickoff": "2026-09-14T00:20:00Z", "away": "DAL", "home": "NYG", "networks": ["NBC"], "streams": ["Peacock"], "window": "SNF", "national": true, "verified": true },
+    { "id": "2026-W01-DEN-KC", "week": 1, "kickoff": "2026-09-15T00:15:00Z", "away": "DEN", "home": "KC", "networks": ["ESPN", "ABC"], "streams": ["ESPN+", "Disney+"], "window": "MNF", "national": true, "verified": true },
+
+    { "id": "2026-W02-DET-BUF", "week": 2, "kickoff": "2026-09-18T00:15:00Z", "away": "DET", "home": "BUF", "networks": [], "streams": ["Prime"], "exclusive": "Prime", "window": "TNF", "national": true, "verified": true },
+    { "id": "2026-W02-NO-BAL", "week": 2, "kickoff": "2026-09-20T17:00:00Z", "away": "NO", "home": "BAL", "networks": ["CBS"], "streams": ["Paramount+"], "window": "SUN_EARLY", "national": false, "verified": false, "notes": "Network confirmed (CBS); kickoff window assumed 1:00 pm ET pending live sync." },
+    { "id": "2026-W02-WAS-DAL", "week": 2, "kickoff": "2026-09-20T17:00:00Z", "away": "WAS", "home": "DAL", "networks": ["FOX"], "streams": ["FOX One"], "window": "SUN_EARLY", "national": false, "verified": false, "notes": "Network confirmed (FOX); kickoff window assumed pending live sync." },
+    { "id": "2026-W02-LV-LAC", "week": 2, "kickoff": "2026-09-20T20:05:00Z", "away": "LV", "home": "LAC", "networks": ["CBS"], "streams": ["Paramount+"], "window": "SUN_LATE", "national": false, "verified": false, "notes": "Network confirmed (CBS); late-window time assumed for a Pacific-time home game pending live sync." },
+    { "id": "2026-W02-SEA-ARI", "week": 2, "kickoff": "2026-09-20T20:05:00Z", "away": "SEA", "home": "ARI", "networks": ["FOX"], "streams": ["FOX One"], "window": "SUN_LATE", "national": false, "verified": false, "notes": "Network confirmed (FOX); late-window time assumed for a Mountain-time home game pending live sync." },
+    { "id": "2026-W02-IND-KC", "week": 2, "kickoff": "2026-09-21T00:20:00Z", "away": "IND", "home": "KC", "networks": ["NBC"], "streams": ["Peacock"], "window": "SNF", "national": true, "verified": true },
+    { "id": "2026-W02-NYG-LAR", "week": 2, "kickoff": "2026-09-22T00:15:00Z", "away": "NYG", "home": "LAR", "networks": ["ESPN"], "streams": ["ESPN+"], "window": "MNF", "national": true, "verified": true },
+
+    { "id": "2026-W03-ATL-GB", "week": 3, "kickoff": "2026-09-25T00:15:00Z", "away": "ATL", "home": "GB", "networks": [], "streams": ["Prime"], "exclusive": "Prime", "window": "TNF", "national": true, "verified": true },
+    { "id": "2026-W03-KC-MIA", "week": 3, "kickoff": "2026-09-27T17:00:00Z", "away": "KC", "home": "MIA", "networks": ["CBS"], "streams": ["Paramount+"], "window": "SUN_EARLY", "national": true, "verified": true },
+    { "id": "2026-W03-HOU-IND", "week": 3, "kickoff": "2026-09-27T17:00:00Z", "away": "HOU", "home": "IND", "networks": ["CBS"], "streams": ["Paramount+"], "window": "SUN_EARLY", "national": false, "verified": true },
+    { "id": "2026-W03-TEN-NYG", "week": 3, "kickoff": "2026-09-27T17:00:00Z", "away": "TEN", "home": "NYG", "networks": ["CBS"], "streams": ["Paramount+"], "window": "SUN_EARLY", "national": false, "verified": true },
+    { "id": "2026-W03-NE-JAX", "week": 3, "kickoff": "2026-09-27T17:00:00Z", "away": "NE", "home": "JAX", "networks": ["CBS"], "streams": ["Paramount+"], "window": "SUN_EARLY", "national": false, "verified": true },
+    { "id": "2026-W03-LAR-DEN", "week": 3, "kickoff": "2026-09-28T00:20:00Z", "away": "LAR", "home": "DEN", "networks": ["NBC"], "streams": ["Peacock"], "window": "SNF", "national": true, "verified": true },
+    { "id": "2026-W03-PHI-CHI", "week": 3, "kickoff": "2026-09-29T00:15:00Z", "away": "PHI", "home": "CHI", "networks": ["ESPN"], "streams": ["ESPN+"], "window": "MNF", "national": true, "verified": true },
+
+    { "id": "2026-W04-PIT-CLE", "week": 4, "kickoff": "2026-10-02T00:15:00Z", "away": "PIT", "home": "CLE", "networks": [], "streams": ["Prime"], "exclusive": "Prime", "window": "TNF", "national": true, "verified": true },
+    { "id": "2026-W04-DET-CAR", "week": 4, "kickoff": "2026-10-05T00:20:00Z", "away": "DET", "home": "CAR", "networks": ["NBC"], "streams": ["Peacock"], "window": "SNF", "national": true, "verified": true },
+    { "id": "2026-W05-TB-DAL", "week": 5, "kickoff": "2026-10-09T00:15:00Z", "away": "TB", "home": "DAL", "networks": [], "streams": ["Prime"], "exclusive": "Prime", "window": "TNF", "national": true, "verified": true },
+    { "id": "2026-W06-SEA-DEN", "week": 6, "kickoff": "2026-10-16T00:15:00Z", "away": "SEA", "home": "DEN", "networks": [], "streams": ["Prime"], "exclusive": "Prime", "window": "TNF", "national": true, "verified": true },
+
+    { "id": "2026-W12-GB-LAR", "week": 12, "kickoff": "2026-11-26T01:15:00Z", "away": "GB", "home": "LAR", "networks": [], "streams": ["Netflix"], "exclusive": "Netflix", "window": "HOLIDAY", "national": true, "label": "Thanksgiving Eve (Netflix exclusive)", "verified": false, "notes": "Packers vs Rams on Netflix, Wed Nov 25 confirmed; home team and exact kickoff time pending." },
+    { "id": "2026-W12-KC-BUF", "week": 12, "kickoff": "2026-11-27T01:20:00Z", "away": "KC", "home": "BUF", "networks": ["NBC"], "streams": ["Peacock"], "window": "HOLIDAY", "national": true, "label": "Thanksgiving night (SNF-branded)", "verified": true }
+  ]
+}

@@ -12,6 +12,7 @@ It was built from a review study of the top sports apps and sites. The research 
 | 2. Recurring complaints | [docs/02-complaint-analysis.md](docs/02-complaint-analysis.md) |
 | 3. Pain gaps nobody solves | [docs/03-pain-gaps.md](docs/03-pain-gaps.md) |
 | 4. How this app answers them | [docs/04-product-decisions.md](docs/04-product-decisions.md) |
+| iOS build plan by tier | [docs/05-ios-tiers.md](docs/05-ios-tiers.md) |
 
 ## What it does
 
@@ -71,6 +72,12 @@ npm test
 Covers the coverage engine, channel resolution, access checks, ESPN normalization, schedule
 diffing and fallback, the scheduler (dedupe, re-arm after a flex, quiet hours, daily cap, late
 skips), the ICS feed, and the HTTP API.
+
+## iOS app
+
+A native SwiftUI port lives in [`ios/`](ios/README.md) (XcodeGen project, engine port, local
+notifications, background refresh, EventKit, widget, XCTests). See `docs/05-ios-tiers.md` for the
+tiered plan to App Store release.
 
 ## Layout
 
