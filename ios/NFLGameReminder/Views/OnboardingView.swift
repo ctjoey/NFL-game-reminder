@@ -99,7 +99,7 @@ struct AlertsSection: View {
             Text("Only these, only for games you follow, never anything else.").font(.caption).foregroundStyle(.secondary)
             Toggle("When network coverage begins (pregame show)", isOn: $draft.alerts.coverage)
             HStack { Text("Before kickoff").foregroundStyle(.secondary)
-                ChipGrid(items: leads.map { ($0 == 1440 ? "1 day" : $0 >= 60 ? "\($0 / 60) h" : "\($0) min").pair(String($0)) }, selected: Set(draft.alerts.kickoffLeads.map(String.init))) { id in
+                ChipGrid(items: leads.map { ($0 == 1440 ? "1 day" : $0 >= 60 ? "\($0 / 60) h" : "\($0) min").pair(String($0)) }, selected: Set(draft.alerts.kickoffLeads.map { String($0) })) { id in
                     let m = Int(id)!; if let i = draft.alerts.kickoffLeads.firstIndex(of: m) { draft.alerts.kickoffLeads.remove(at: i) } else { draft.alerts.kickoffLeads.append(m) }
                 } }
             Toggle("At kickoff", isOn: $draft.alerts.kickoffNow)

@@ -99,8 +99,8 @@ final class Catalog {
             }
         }
         for s in game.streams {
-            let svc = services[s] ?? services.values.first { $0.carries.contains(s) }
-            let have = owned.contains(s) || owned.contains { services[$0]?.carries.contains(s) == true }
+            let svc = services[s] ?? services.values.first(where: { $0.carries.contains(s) })
+            let have = owned.contains(s) || owned.contains(where: { services[$0]?.carries.contains(s) == true })
             if have { ways.append(.init(kind: "stream", network: s, label: label(s), channel: nil)) }
             else { missing.append(.init(network: s, label: label(s), cost: svc?.cost, hint: svc?.note)) }
         }
