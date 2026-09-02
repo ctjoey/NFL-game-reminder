@@ -1,0 +1,155 @@
+# Builds and tests the iOS app on GitHub's hosted macOS runners (no Mac needed), and can ship
+# a signed build to TestFlight when the App Store Connect secrets are present.
+#
+# Secrets/variables to add in GitHub → Settings → Secrets and variables → Actions:
+#   Variables:  BUNDLE_ID_PREFIX   e.g. com.capozza            (defaults to com.yourcompany)
+#   Secrets:    APPLE_TEAM_ID      10-char Team ID from developer.apple.com/account
+#               ASC_KEY_ID         App Store Connect API key ID
+#               ASC_ISSUER_ID      App Store Connect API issuer ID
+#               ASC_KEY_P8         contents of the AuthKey_XXXX.p8 file
+name: iOS
+
+on:
+  push:
+    paths: ['ios/**', '.github/workflows/ios.yml']
+  workflow_dispatch:
+    inputs:
+      testflight:
+        description: 'Archive, sign and upload to TestFlight'
+        type: boolean
+        default: false
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build + test (Simulator)
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app || sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app | tail -1)"; xcodebuild -version
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate project
+        working-directory: ios
+        run: |
+          sed -i '' "s/com.yourcompany/${{ vars.BUNDLE_ID_PREFIX || 'com.yourcompany' }}/g" project.yml NFLGameReminder/App/BackgroundRefresh.swift
+          xcodegen generate
+      - name: Pick a simulator
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys;d=json.load(sys.stdin)['devices'];c=[x for k,v in d.items() if 'iOS' in k for x in v if x['name'].startswith('iPhone 16')] or [x for k,v in d.items() if 'iOS' in k for x in v if x['name'].startswith('iPhone')];print(c[-1]['udid'])")
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+          xcrun simctl boot "$UDID" || true
+      - name: Build
+        working-directory: ios
+        run: |
+          set -o pipefail
+          xcodebuild build -project NFLGameReminder.xcodeproj -scheme NFLGameReminder \
+            -destination "id=${{ steps.sim.outputs.udid }}" -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES \
+            | tee build.log | grep -E "error:|warning: unre|BUILD (SUCCEEDED|FAILED)" || true
+          grep -q "BUILD SUCCEEDED" build.log
+      - name: Test
+        working-directory: ios
+        run: |
+          set -o pipefail
+          xcodebuild test -project NFLGameReminder.xcodeproj -scheme NFLGameReminder \
+            -destination "id=${{ steps.sim.outputs.udid }}" -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            | tee test.log | grep -E "error:|Test Case.*(passed|failed)|Executed|TEST (SUCCEEDED|FAILED)" || true
+          grep -q "TEST SUCCEEDED" test.log
+      - name: Simulator screenshots (for the App Store listing)
+        if: always()
+        working-directory: ios
+        run: |
+          APP=$(find build/Build/Products -name "NFLGameReminder.app" -path "*iphonesimulator*" | head -1)
+          [ -n "$APP" ] || exit 0
+          UDID=${{ steps.sim.outputs.udid }}
+          xcrun simctl install "$UDID" "$APP"
+          BID=$(defaults read "$PWD/$APP/Info" CFBundleIdentifier)
+          xcrun simctl launch "$UDID" "$BID" && sleep 6
+          mkdir -p screenshots && xcrun simctl io "$UDID" screenshot screenshots/01-onboarding.png || true
+      - name: Upload logs, app and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-${{ github.run_number }}
+          path: |
+            ios/build.log
+            ios/test.log
+            ios/screenshots
+            ios/build/Build/Products/*/NFLGameReminder.app
+          if-no-files-found: ignore
+
+  testflight:
+    name: Archive + upload to TestFlight
+    if: github.event_name == 'workflow_dispatch' && inputs.testflight
+    needs: build-and-test
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app || sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app | tail -1)"
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate project (with team + bundle id)
+        working-directory: ios
+        env:
+          TEAM: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          sed -i '' "s/com.yourcompany/${{ vars.BUNDLE_ID_PREFIX || 'com.yourcompany' }}/g" project.yml NFLGameReminder/App/BackgroundRefresh.swift
+          sed -i '' "s/DEVELOPMENT_TEAM: \"\"/DEVELOPMENT_TEAM: \"$TEAM\"/" project.yml
+          sed -i '' "s/CURRENT_PROJECT_VERSION: \"1\"/CURRENT_PROJECT_VERSION: \"${{ github.run_number }}\"/" project.yml
+          xcodegen generate
+      - name: App Store Connect API key
+        run: |
+          mkdir -p ~/private_keys
+          echo "${{ secrets.ASC_KEY_P8 }}" > ~/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8
+      - name: Archive (cloud-managed signing)
+        working-directory: ios
+        run: |
+          set -o pipefail
+          xcodebuild archive -project NFLGameReminder.xcodeproj -scheme NFLGameReminder \
+            -destination "generic/platform=iOS" -archivePath build/App.xcarchive \
+            -allowProvisioningUpdates -allowProvisioningDeviceRegistration \
+            -authenticationKeyPath ~/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8 \
+            -authenticationKeyID ${{ secrets.ASC_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.ASC_ISSUER_ID }} \
+            CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM=${{ secrets.APPLE_TEAM_ID }} \
+            | tee archive.log | grep -E "error:|ARCHIVE (SUCCEEDED|FAILED)" || true
+          grep -q "ARCHIVE SUCCEEDED" archive.log
+      - name: Export IPA
+        working-directory: ios
+        run: |
+          cat > ExportOptions.plist <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>export</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>teamID</key><string>${{ secrets.APPLE_TEAM_ID }}</string>
+            <key>uploadSymbols</key><true/>
+          </dict></plist>
+          PLIST
+          xcodebuild -exportArchive -archivePath build/App.xcarchive -exportPath build/export -exportOptionsPlist ExportOptions.plist \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8 \
+            -authenticationKeyID ${{ secrets.ASC_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.ASC_ISSUER_ID }}
+          ls -la build/export
+      - name: Upload to TestFlight
+        working-directory: ios
+        run: |
+          IPA=$(ls build/export/*.ipa | head -1)
+          xcrun altool --upload-app -f "$IPA" --type ios --apiKey ${{ secrets.ASC_KEY_ID }} --apiIssuer ${{ secrets.ASC_ISSUER_ID }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ipa-${{ github.run_number }}
+          path: ios/build/export/*.ipa
+          if-no-files-found: ignore

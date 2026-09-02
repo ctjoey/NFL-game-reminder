@@ -19,6 +19,13 @@ targets:
       - path: NFLGameReminder
     resources:
       - path: NFLGameReminder/Resources
+      - path: NFLGameReminder/Assets.xcassets
+      - path: NFLGameReminder/PrivacyInfo.xcprivacy
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "1"
     info:
       path: NFLGameReminder/Info.plist
       properties:
@@ -44,6 +51,7 @@ targets:
       - path: NFLGameReminder/Services
     resources:
       - path: NFLGameReminder/Resources
+      - path: NFLGameReminder/PrivacyInfo.xcprivacy
     info:
       path: NFLGameReminderWidget/Info.plist
       properties:

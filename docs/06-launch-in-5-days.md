@@ -1,0 +1,72 @@
+# Launch on iOS in 5 days without a Mac
+
+The build machine is GitHub Actions (hosted macOS runners). You never touch Xcode. The workflow
+in `.github/workflows/ios.yml` builds and tests every push, and a manual run with the
+"testflight" box ticked signs the app with cloud-managed signing and uploads it to TestFlight.
+
+## Accounts you need (start these today; the Apple one is the long pole)
+
+| Account | Cost | Why | Lead time |
+|---|---|---|---|
+| **Apple Developer Program** (developer.apple.com/programs/enroll) | $99/yr | Required to put anything on a phone or in the App Store | Usually hours, can be 24–48 h for identity checks. Enroll as an individual with your Apple ID; turn on two-factor first. |
+| GitHub (you have it) | Free | Runs the macOS builds. Private repos get 2,000 free minutes/month; macOS minutes count 10×, so ~200 macOS minutes ≈ 12–15 builds. Making the repo **public** makes it unlimited. | none |
+| Backup builder: Codemagic (codemagic.io) | Free tier, 500 macOS minutes/mo | Same job if GitHub minutes run out; sign in with GitHub, point it at the repo, it reads `ios/project.yml` | 10 min |
+
+Not needed: a rented Mac (MacinCloud etc.). Only rent one if you want to *see* the Simulator yourself.
+
+## Day-by-day
+
+### Day 1 — accounts + first green build
+1. Enroll in the Apple Developer Program. While it processes:
+2. In App Store Connect → Users and Access → Integrations → **App Store Connect API**: create a key
+   with **App Manager** access. Download the `.p8` once (it cannot be re-downloaded). Note the
+   Key ID and Issuer ID.
+3. In GitHub → repo → Settings → Secrets and variables → Actions add:
+   - Variable `BUNDLE_ID_PREFIX` = something you own in reverse-domain form, e.g. `com.capozza`
+   - Secrets `APPLE_TEAM_ID`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8` (paste the whole .p8 text)
+4. Push anything under `ios/` (or Actions → iOS → Run workflow). The **Build + test** job must go green.
+   Claude fixes compile errors from the logs; each round trip is ~10 minutes.
+
+### Day 2 — TestFlight on your phone
+1. App Store Connect → Apps → **+ New App**: iOS, name "NFL Game Reminder" (or your name), bundle ID
+   `<prefix>.NFLGameReminder` (create it under Certificates, IDs & Profiles if it is not offered;
+   enable Push Notifications and App Groups capabilities on it).
+2. Actions → iOS → Run workflow → tick **testflight**. The job archives with cloud-managed signing
+   (Apple creates the certificate and profiles for you) and uploads.
+3. In App Store Connect → TestFlight, add yourself as an internal tester; install the TestFlight
+   app on your iPhone; install the build. Walk through onboarding, enable notifications, follow a
+   team, use the DEBUG-free flow (no simulator button in release builds).
+4. Fix what you find; re-run the workflow. Every run auto-increments the build number.
+
+### Day 3 — listing assets
+1. Screenshots: take them on your iPhone from the TestFlight build (Settings → Screenshots).
+   App Store needs 6.9"/6.7" (any recent Pro Max/Plus) and, if you support iPad, 13" (we do not:
+   the project is iPhone-only).
+2. In App Store Connect fill: name, subtitle ("Coverage, kickoff, your channel"), description
+   (lead with the two-clock promise), keywords, support URL (a GitHub Pages page or your site),
+   privacy policy URL (required; a one-paragraph page saying no data is collected is fine),
+   category Sports, age rating 4+, App Privacy → "Data Not Collected".
+3. Export compliance: the app uses only HTTPS → answer "No" to the encryption question
+   (`ITSAppUsesNonExemptEncryption` is already false in the build).
+
+### Day 4 — submit
+1. Pick the TestFlight build in the App Store version, add review notes:
+   "Enter ZIP 15201, provider DirecTV, follow the Steelers; alerts are scheduled locally. No login."
+2. Submit for review. Typical turnaround is 24–48 hours; first submissions of small utilities are
+   usually approved on the first pass when the privacy manifest and permission strings are present
+   (they are).
+
+### Day 5 — release
+1. If approved, release (manual release is selected by default). If rejected, the reason is
+   specific; fix and resubmit the same day, which often gets a faster second review.
+2. Post-launch: the schedule feed is ESPN's public endpoint; watch the first Sunday and keep the
+   `overrides-2026.json` coverage map updated on Wednesdays.
+
+## Honest risk list
+
+- **Apple enrollment delay** is the one thing that can blow the 5 days. Enroll first, today.
+- **Review timing** is out of our hands; 5 days lands you on TestFlight for sure and on the App
+  Store if review is normal.
+- **The Swift code has not been compiled yet.** Expect 2–4 CI round trips of compile fixes on Day 1.
+- **Widget extension** adds a second bundle ID and profile. If it causes signing trouble on Day 2,
+  remove the `NFLGameReminderWidget` target from `project.yml` and ship it in v1.1.
