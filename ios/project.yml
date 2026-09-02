@@ -52,6 +52,9 @@ targets:
     resources:
       - path: NFLGameReminder/Resources
       - path: NFLGameReminder/PrivacyInfo.xcprivacy
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.NFLGameReminder.Widget
     info:
       path: NFLGameReminderWidget/Info.plist
       properties:
