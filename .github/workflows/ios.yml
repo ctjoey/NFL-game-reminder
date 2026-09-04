@@ -38,7 +38,11 @@ jobs:
         working-directory: ios
         run: |
           ART=NFLGameReminder/Assets.xcassets/AppIcon.appiconset/artwork.png
-          if [ -f "$ART" ]; then pip3 install --quiet pillow && python3 scripts/normalize_icon.py "$ART" NFLGameReminder/Assets.xcassets/AppIcon.appiconset/icon-1024.png; else echo "no artwork.png; using icon-1024.png as committed"; fi
+          # Optional: the committed icon-1024.png is already normalized. If artwork.png exists, re-derive it,
+          # but never fail the build over it (the runner's Python needs a venv for pip installs).
+          if [ -f "$ART" ]; then
+            (python3 -m venv .venv && .venv/bin/pip install --quiet pillow && .venv/bin/python scripts/normalize_icon.py "$ART" NFLGameReminder/Assets.xcassets/AppIcon.appiconset/icon-1024.png) || echo "normalizer unavailable; using committed icon-1024.png"
+          else echo "no artwork.png; using icon-1024.png as committed"; fi
       - name: Generate project
         working-directory: ios
         run: |
@@ -110,7 +114,11 @@ jobs:
         working-directory: ios
         run: |
           ART=NFLGameReminder/Assets.xcassets/AppIcon.appiconset/artwork.png
-          if [ -f "$ART" ]; then pip3 install --quiet pillow && python3 scripts/normalize_icon.py "$ART" NFLGameReminder/Assets.xcassets/AppIcon.appiconset/icon-1024.png; fi
+          # Optional: the committed icon-1024.png is already normalized. If artwork.png exists, re-derive it,
+          # but never fail the build over it (the runner's Python needs a venv for pip installs).
+          if [ -f "$ART" ]; then
+            (python3 -m venv .venv && .venv/bin/pip install --quiet pillow && .venv/bin/python scripts/normalize_icon.py "$ART" NFLGameReminder/Assets.xcassets/AppIcon.appiconset/icon-1024.png) || echo "normalizer unavailable; using committed icon-1024.png"
+          else echo "no artwork.png; using icon-1024.png as committed"; fi
       - name: Generate project (with team + bundle id)
         working-directory: ios
         env:
