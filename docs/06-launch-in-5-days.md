@@ -18,9 +18,14 @@ Not needed: a rented Mac (MacinCloud etc.). Only rent one if you want to *see* t
 
 ### Day 1 — accounts + first green build
 1. Enroll in the Apple Developer Program. While it processes:
-2. In App Store Connect → Users and Access → Integrations → **App Store Connect API**: create a key
-   with **App Manager** access. Download the `.p8` once (it cannot be re-downloaded). Note the
-   Key ID and Issuer ID.
+2. In App Store Connect → Users and Access → Integrations → **App Store Connect API**: create a
+   **Team key** with the **Admin** role. Download the `.p8` once (it cannot be re-downloaded). Note
+   the Key ID and Issuer ID.
+   The Admin role is required, not optional: cloud signing has to create the distribution
+   certificate and provisioning profiles on your behalf, and an App Manager key cannot reach
+   Certificates, Identifiers & Profiles. An under-privileged key archives fine and then fails at
+   export with "Cloud signing permission error". A key's role cannot be edited after creation, so
+   an App Manager key must be replaced with a new Admin one.
 3. In GitHub → repo → Settings → Secrets and variables → Actions add:
    - Variable `BUNDLE_ID_PREFIX` = something you own in reverse-domain form, e.g. `com.capozza`
    - Secrets `APPLE_TEAM_ID`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8` (paste the whole .p8 text)
