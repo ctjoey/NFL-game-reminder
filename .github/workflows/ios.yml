@@ -26,12 +26,16 @@ concurrency:
 jobs:
   build-and-test:
     name: Build + test (Simulator)
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-      - name: Show Xcode (runner default matches its simulator runtimes)
-        run: xcodebuild -version && xcrun simctl list runtimes | tail -5
+      - name: Select the newest Xcode (App Store requires the iOS 26 SDK or later)
+        run: |
+          ls -d /Applications/Xcode*.app
+          sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+          xcodebuild -version
+          xcrun simctl list runtimes | tail -5
       - name: Install XcodeGen
         run: brew install xcodegen
       - name: Normalize uploaded icon artwork (if any)
@@ -102,12 +106,15 @@ jobs:
     name: Archive + upload to TestFlight
     if: github.event_name == 'workflow_dispatch' && inputs.testflight
     needs: build-and-test
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - name: Show Xcode
-        run: xcodebuild -version
+      - name: Select the newest Xcode (App Store requires the iOS 26 SDK or later)
+        run: |
+          ls -d /Applications/Xcode*.app
+          sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+          xcodebuild -version
       - name: Install XcodeGen
         run: brew install xcodegen
       - name: Normalize uploaded icon artwork (if any)
