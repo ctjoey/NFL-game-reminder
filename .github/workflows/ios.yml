@@ -137,6 +137,7 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild archive -project NFLGameReminder.xcodeproj -scheme NFLGameReminder \
+            -configuration Release \
             -destination "generic/platform=iOS" -archivePath build/App.xcarchive \
             -allowProvisioningUpdates -allowProvisioningDeviceRegistration \
             -authenticationKeyPath ~/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8 \
