@@ -1,4 +1,4 @@
-# NFL Game Reminder
+# Game Time Reminder
 
 Alerts for the NFL games you follow that tell you **when coverage begins, when kickoff is
 (in your time zone, with ET alongside), which network or streaming service has the game, and

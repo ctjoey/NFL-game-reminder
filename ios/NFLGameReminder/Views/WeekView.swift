@@ -32,7 +32,7 @@ struct WeekView: View {
                 }
             }
             .listStyle(.plain)
-            .navigationTitle("NFL Game Reminder")
+            .navigationTitle("Game Time Reminder")
             .refreshable { await state.syncAndReplan() }
             .sheet(item: $detail) { c in GameDetailView(cardId: c.id) }
             .onChange(of: state.deepLinkGameId) { _, id in if let id, let c = state.card(id) { state.selectedWeek = c.game.week; detail = c; state.deepLinkGameId = nil } }

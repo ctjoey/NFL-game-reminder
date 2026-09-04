@@ -1,6 +1,6 @@
 {
-  "name": "NFL Game Reminder",
-  "short_name": "Game Reminder",
+  "name": "Game Time Reminder",
+  "short_name": "Game Time",
   "description": "Coverage start, kickoff, network and your local channel for every NFL game you follow. No ads, no login.",
   "start_url": "/",
   "display": "standalone",

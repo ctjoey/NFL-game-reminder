@@ -34,6 +34,11 @@ jobs:
         run: xcodebuild -version && xcrun simctl list runtimes | tail -5
       - name: Install XcodeGen
         run: brew install xcodegen
+      - name: Normalize uploaded icon artwork (if any)
+        working-directory: ios
+        run: |
+          ART=NFLGameReminder/Assets.xcassets/AppIcon.appiconset/artwork.png
+          if [ -f "$ART" ]; then pip3 install --quiet pillow && python3 scripts/normalize_icon.py "$ART" NFLGameReminder/Assets.xcassets/AppIcon.appiconset/icon-1024.png; else echo "no artwork.png; using icon-1024.png as committed"; fi
       - name: Generate project
         working-directory: ios
         run: |
@@ -101,6 +106,11 @@ jobs:
         run: xcodebuild -version
       - name: Install XcodeGen
         run: brew install xcodegen
+      - name: Normalize uploaded icon artwork (if any)
+        working-directory: ios
+        run: |
+          ART=NFLGameReminder/Assets.xcassets/AppIcon.appiconset/artwork.png
+          if [ -f "$ART" ]; then pip3 install --quiet pillow && python3 scripts/normalize_icon.py "$ART" NFLGameReminder/Assets.xcassets/AppIcon.appiconset/icon-1024.png; fi
       - name: Generate project (with team + bundle id)
         working-directory: ios
         env:

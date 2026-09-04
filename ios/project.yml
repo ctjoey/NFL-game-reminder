@@ -29,7 +29,7 @@ targets:
     info:
       path: NFLGameReminder/Info.plist
       properties:
-        CFBundleDisplayName: Game Reminder
+        CFBundleDisplayName: Game Time Reminder
         UILaunchScreen: {}
         UIBackgroundModes: [fetch, remote-notification]
         BGTaskSchedulerPermittedIdentifiers: [com.yourcompany.NFLGameReminder.refresh]
