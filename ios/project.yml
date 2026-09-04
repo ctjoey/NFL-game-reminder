@@ -30,6 +30,8 @@ targets:
       path: NFLGameReminder/Info.plist
       properties:
         CFBundleDisplayName: Game Time Reminder
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleShortVersionString: $(MARKETING_VERSION)
         UILaunchScreen: {}
         UIBackgroundModes: [fetch]
         BGTaskSchedulerPermittedIdentifiers: [com.yourcompany.NFLGameReminder.refresh]
@@ -55,6 +57,8 @@ targets:
       path: NFLGameReminderWidget/Info.plist
       properties:
         CFBundleDisplayName: Next Game
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleShortVersionString: $(MARKETING_VERSION)
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
   NFLGameReminderTests:
