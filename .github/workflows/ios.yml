@@ -73,7 +73,9 @@ jobs:
           UDID=${{ steps.sim.outputs.udid }}
           xcrun simctl install "$UDID" "$APP"
           BID=$(defaults read "$PWD/$APP/Info" CFBundleIdentifier)
-          xcrun simctl launch "$UDID" "$BID" && sleep 6
+          # The install is asynchronous; retry the launch until SpringBoard accepts it.
+          for i in $(seq 1 12); do xcrun simctl launch "$UDID" "$BID" && break; sleep 5; done
+          sleep 8
           mkdir -p screenshots && xcrun simctl io "$UDID" screenshot screenshots/01-onboarding.png || true
       - name: Upload logs, app and screenshots
         if: always()
