@@ -33,6 +33,15 @@ final class AppState: ObservableObject {
         schedule.game(id).map { CardBuilder.build($0, user: user, all: schedule.games, changes: schedule.changes, planned: plan, catalog: catalog) }
     }
 
+    /// The alerts for one week. A season-wide count reads as an avalanche when what a person
+    /// actually wants to know is what is coming this Sunday.
+    func weekPlan(_ week: Int) -> [PlannedAlert] {
+        plan.filter { a in
+            if let w = a.week { return w == week }
+            return a.gameId.flatMap { schedule.game($0)?.week } == week
+        }
+    }
+
     func replan() async {
         plan = AlertPlanner.plan(user: user, games: schedule.games, catalog: catalog)
         if user.onboarded { await notifications.schedule(plan: plan, user: user) }

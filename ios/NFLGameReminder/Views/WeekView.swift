@@ -42,7 +42,7 @@ struct WeekView: View {
             }
             .background { Theme.background.ignoresSafeArea() }
             .scrollContentBackground(.hidden)
-            .navigationTitle("This Week")
+            .navigationTitle("This Week’s Games")
             .toolbarBackground(Theme.bgTop, for: .navigationBar)
             .refreshable { await state.syncAndReplan() }
             .sheet(item: $detail) { c in GameDetailView(cardId: c.id) }
@@ -78,7 +78,7 @@ struct WeekView: View {
             }
             HStack(spacing: 6) {
                 statChip("\(cards.filter(\.followed).count)", "following", Theme.accent)
-                statChip("\(state.plan.count)", "alerts set", Theme.ok)
+                statChip("\(state.weekPlan(state.selectedWeek).count)", "alerts set", Theme.ok)
                 Spacer(minLength: 0)
             }
         }
