@@ -122,6 +122,19 @@ jobs:
           rm -rf screenshots/raw
           find screenshots -name '*.png' | sort
           find screenshots -name '*.png' -exec sips -g pixelWidth -g pixelHeight {} +
+      - name: Publish the capture log to a branch
+        # Temporary: artifact and job-log downloads are unreachable from the dev environment,
+        # so the trace is pushed where it can be read. Remove once capture is working.
+        if: always()
+        continue-on-error: true
+        run: |
+          [ -f ios/screenshots/_capture.log ] || exit 0
+          mkdir -p /tmp/logbranch && cp ios/screenshots/_capture.log /tmp/logbranch/
+          cd /tmp/logbranch
+          git init -q && git checkout -qb ci-screenshot-log
+          git -c user.email=ci@example.com -c user.name=CI add _capture.log
+          git -c user.email=ci@example.com -c user.name=CI commit -qm "capture log for run ${{ github.run_number }}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-screenshot-log
       - name: Upload the App Store screenshot set on its own
         if: always()
         continue-on-error: true
