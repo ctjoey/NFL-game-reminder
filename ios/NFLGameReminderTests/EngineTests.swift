@@ -106,6 +106,44 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(second.contains { $0.kind == .network })
     }
 
+    func testStaleChangeLogFromAnOlderBuildIsDiscarded() async {
+        // Builds before the fix wrote a bare array and recorded the first live sync as a move.
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let stale = [ScheduleChange(at: Date(), kind: .network, field: "networks",
+                                    gameId: "2026-W01-ATL-PIT", oldValue: "Peacock", newValue: "")]
+        try? JSONEncoder().encode(stale).write(to: dir.appendingPathComponent("changes-2026.json"))
+        let store = await ScheduleStore(season: 2026, directory: dir)
+        let loaded = await store.changes
+        XCTAssertTrue(loaded.isEmpty, "history written by a build with the bug must not be shown")
+    }
+
+    func testAListingDisappearingIsNotRecordedAsAChange() async {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let store = await ScheduleStore(season: 2026, directory: dir)
+        var games = await store.games
+        guard let i = games.firstIndex(where: { $0.id == "2026-W01-ATL-PIT" }) else { return XCTFail("seed game missing") }
+        games[i].networks = ["NBC"]
+        _ = await store.apply(games, source: "espn")     // seed to live, nothing recorded
+        games[i].networks = []
+        _ = await store.apply(games, source: "espn")     // the feed stopped listing a network
+        let recorded = await store.changes
+        XCTAssertTrue(recorded.isEmpty, "a missing listing is a gap in the data, not a schedule change")
+    }
+
+    func testChangeHeadlinesReadAsSentences() {
+        let et = TimeFormat.eastern
+        let moved = ScheduleChange(at: Date(), kind: .date, field: "kickoff", gameId: "g",
+                                   oldValue: "2026-09-13T17:00:00Z", newValue: "2026-09-14T00:20:00Z")
+        XCTAssertTrue(moved.headline(tz: et).hasPrefix("Moved to Sun Sep 13"), moved.headline(tz: et))
+        let net = ScheduleChange(at: Date(), kind: .network, field: "networks", gameId: "g",
+                                 oldValue: "FOX", newValue: "NBC")
+        XCTAssertEqual(net.headline(tz: et), "Now on NBC.")
+        let old = ScheduleChange(at: Date().addingTimeInterval(-20 * 24 * 3600), kind: .network,
+                                 field: "networks", gameId: "g", oldValue: "FOX", newValue: "NBC")
+        XCTAssertFalse(old.isRecent(), "a three-week-old change should stop showing on the card")
+    }
+
     func testESPNNormalization() throws {
         let json = """
         {"events":[{"id":"401","date":"2026-09-15T00:15Z","name":"Denver Broncos at Kansas City Chiefs","week":{"number":1},"status":{"type":{"state":"pre"}},"competitions":[{"competitors":[{"homeAway":"home","team":{"abbreviation":"KC"}},{"homeAway":"away","team":{"abbreviation":"DEN"}}],"broadcasts":[{"names":["ESPN","ABC"]}],"geoBroadcasts":[{"market":{"type":"National"},"media":{"shortName":"ESPN+"}}],"venue":{"fullName":"GEHA Field at Arrowhead Stadium","address":{"city":"Kansas City"}}}]}]}

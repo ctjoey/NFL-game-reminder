@@ -16,6 +16,12 @@ final class ScheduleStore: ObservableObject {
     private let session: URLSession
 
     struct Snapshot: Codable { var season: Int; var games: [Game]; var source: String; var lastSync: Date? }
+    struct ChangeLog: Codable { var version: Int; var changes: [ScheduleChange] }
+
+    /// Bump when a bug leaves stored history untrustworthy. Builds before version 2 recorded the
+    /// first seed-to-live sync as though every game had moved, so those files are discarded on
+    /// upgrade: no history beats history that says a game moved when it did not.
+    static let changeLogVersion = 2
 
     init(season: Int = 2026, session: URLSession = .shared, directory: URL? = nil) {
         self.season = season
@@ -33,7 +39,14 @@ final class ScheduleStore: ObservableObject {
         } else {
             games = Self.loadSeed(season: season); source = "seed"
         }
-        if let data = try? Data(contentsOf: changesURL), let c = try? JSONDecoder().decode([ScheduleChange].self, from: data) { changes = c }
+        if let data = try? Data(contentsOf: changesURL),
+           let log = try? JSONDecoder().decode(ChangeLog.self, from: data),
+           log.version >= Self.changeLogVersion {
+            changes = log.changes
+        } else {
+            changes = []
+            try? FileManager.default.removeItem(at: changesURL)
+        }
     }
 
     nonisolated static func loadSeed(season: Int, bundle: Bundle = .main) -> [Game] {
@@ -43,7 +56,8 @@ final class ScheduleStore: ObservableObject {
 
     private func persist() {
         if let d = try? JSONEncoder().encode(Snapshot(season: season, games: games, source: source, lastSync: lastSync)) { try? d.write(to: fileURL, options: .atomic) }
-        if let d = try? JSONEncoder().encode(changes.suffix(500).map { $0 }) { try? d.write(to: changesURL, options: .atomic) }
+        let log = ChangeLog(version: Self.changeLogVersion, changes: changes.suffix(500).map { $0 })
+        if let d = try? JSONEncoder().encode(log) { try? d.write(to: changesURL, options: .atomic) }
     }
 
     var weeks: [Int] { Array(Set(games.map(\.week))).sorted() }
@@ -86,7 +100,11 @@ final class ScheduleStore: ObservableObject {
         // change; recording it would tell users games "moved" when nothing did.
         let wasSeed = previousSource == "seed" && source != "seed"
         if !wasSeed {
-            changes.append(contentsOf: delta.filter { [.time, .date, .network].contains($0.kind) })
+            changes.append(contentsOf: delta.filter {
+                guard [.time, .date, .network].contains($0.kind) else { return false }
+                // A listing disappearing from the feed is a gap in the data, not a schedule change.
+                return $0.kind != .network || $0.newValue?.isEmpty == false
+            })
         }
         persist()
         return wasSeed ? [] : delta

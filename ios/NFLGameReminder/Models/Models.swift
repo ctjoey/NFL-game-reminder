@@ -86,6 +86,28 @@ struct ScheduleChange: Codable, Identifiable, Equatable {
     var gameId: String
     var oldValue: String?
     var newValue: String?
+
+    /// A change stops being news once it is old. Beyond this the game card goes back to normal
+    /// and the history stays on the detail screen for anyone who wants it.
+    static let noticeWindow: TimeInterval = 14 * 24 * 3600
+
+    func isRecent(now: Date = Date()) -> Bool { now.timeIntervalSince(at) < Self.noticeWindow }
+
+    /// What changed, in words, rather than "kickoff 2026-09-13T20:20Z → 2026-09-14T00:20Z".
+    func headline(tz: TimeZone) -> String {
+        switch kind {
+        case .time, .date:
+            guard let iso = newValue, let d = DateParsing.parse(iso) else { return "Kickoff time changed." }
+            return "Moved to \(TimeFormat.dayTime(d, tz: tz))."
+        case .network:
+            let to = (newValue?.isEmpty == false) ? newValue!.replacingOccurrences(of: "/", with: " and ") : nil
+            guard let to else { return field == "streams" ? "No longer listed as streaming." : "No longer has a listed network." }
+            return field == "streams" ? "Now streaming on \(to)." : "Now on \(to)."
+        case .teams: return "The matchup changed."
+        case .added: return "Added to the schedule."
+        case .removed: return "Taken off the schedule."
+        }
+    }
 }
 
 // MARK: - Market / provider catalog

@@ -337,9 +337,8 @@ struct GameCardView: View {
             if !card.game.verified {
                 note(card.game.notes ?? "Some details are not confirmed yet.", Theme.textDim, "questionmark.circle")
             }
-            if let ch = card.changes.last {
-                note("Moved \(ch.at.formatted(date: .abbreviated, time: .shortened)). Reminders re-armed.",
-                     Theme.accent, "arrow.triangle.2.circlepath")
+            if let ch = card.changes.last(where: { $0.isRecent() }) {
+                note("\(ch.headline(tz: tz)) Reminders re-armed.", Theme.accent, "arrow.triangle.2.circlepath")
             }
         }
         .padding(.leading, 17).padding(.trailing, 14)

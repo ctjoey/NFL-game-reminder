@@ -15,7 +15,7 @@ struct GameDetailView: View {
                         section("Where to watch") { carriers(card) }
                         section("Can you watch it?") { access(card) }
                         section("Planned alerts") { alerts(card) }
-                        if !card.changes.isEmpty { section("Change log") { changes(card) } }
+                        if !card.changes.isEmpty { section("What changed") { changes(card) } }
                         #if DEBUG
                         Button("Simulate a flex to Sunday night on NBC") {
                             Task { await state.simulateFlex(gameId: card.id) }
@@ -136,12 +136,14 @@ struct GameDetailView: View {
 
     private func changes(_ card: GameCard) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            ForEach(card.changes) { c in
-                let from = (c.oldValue?.isEmpty == false) ? c.oldValue! : "none"
-                let to = (c.newValue?.isEmpty == false) ? c.newValue! : "none"
-                Text("\(c.at.formatted(date: .abbreviated, time: .shortened)): \(c.kind.rawValue) \(from) → \(to)")
-                    .font(.caption).foregroundStyle(Theme.textDim)
-                    .fixedSize(horizontal: false, vertical: true)
+            ForEach(card.changes.reversed()) { c in
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(c.headline(tz: tz)).font(.callout).foregroundStyle(Theme.text)
+                    Text("Noticed \(c.at.formatted(date: .abbreviated, time: .shortened))")
+                        .font(.caption2).foregroundStyle(Theme.textDim)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
