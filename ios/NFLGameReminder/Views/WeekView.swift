@@ -18,12 +18,12 @@ struct WeekView: View {
                     controlBar(cards: cards)
 
                     if state.schedule.source == "seed" {
-                        banner("Showing the built-in schedule. The full slate loads when the live feed is reachable.", .warn)
+                        banner("Showing the built-in schedule. The full slate loads when the live feed is reachable.", Theme.warn)
                     }
                     if shown.isEmpty {
                         banner(state.showAllGames
                                ? "No games loaded for this week yet."
-                               : "None of your games this week. Switch to All games to add one.", .textDim)
+                               : "None of your games this week. Switch to All games to add one.", Theme.textDim)
                     }
 
                     ForEach(groups, id: \.key) { _, dayCards in
