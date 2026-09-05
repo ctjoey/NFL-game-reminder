@@ -7,9 +7,12 @@ enum ScreenshotMode {
     enum Screen: String { case week, weekall, detail, alerts, settings }
 
     static var screen: Screen? {
-        guard let i = ProcessInfo.processInfo.arguments.firstIndex(of: "-screenshot"),
-              i + 1 < ProcessInfo.processInfo.arguments.count else { return nil }
-        return Screen(rawValue: ProcessInfo.processInfo.arguments[i + 1])
+        // simctl forwards SIMCTL_CHILD_SCREENSHOT to the app as SCREENSHOT. That path is
+        // documented and reliable; a leading-dash launch argument is not always passed through.
+        if let v = ProcessInfo.processInfo.environment["SCREENSHOT"], let s = Screen(rawValue: v) { return s }
+        let args = ProcessInfo.processInfo.arguments
+        if let i = args.firstIndex(of: "-screenshot"), i + 1 < args.count { return Screen(rawValue: args[i + 1]) }
+        return nil
     }
 
     static var isActive: Bool { screen != nil }
