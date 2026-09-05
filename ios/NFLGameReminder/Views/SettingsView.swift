@@ -38,6 +38,7 @@ struct SettingsView: View {
                     Text("No ads. No account. Data stays on this device.").font(.caption).foregroundStyle(.secondary)
                 }
             }
+            .dismissableKeyboard()
             .scrollContentBackground(.hidden)
             .background { Theme.background.ignoresSafeArea() }
             .navigationTitle("Settings")
@@ -76,7 +77,7 @@ struct TravelSection: View {
         Section("Traveling") {
             Text("In another city? Switch markets and the app shows that city's stations, channel numbers and regional games. Your home market is kept.")
                 .font(.caption).foregroundStyle(.secondary)
-            Picker("Watching from", selection: $draft.travelMarket) {
+            WidePicker(title: "Watching from", selection: $draft.travelMarket) {
                 Text("Home\(draft.market.flatMap { state.catalog.markets[$0]?.name }.map { " (\($0))" } ?? "")")
                     .tag(String?.none)
                 ForEach(state.catalog.marketList) { m in

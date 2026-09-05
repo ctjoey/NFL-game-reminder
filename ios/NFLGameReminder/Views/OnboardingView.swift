@@ -25,6 +25,7 @@ struct OnboardingView: View {
                     .buttonStyle(.borderedProminent)
                 }
             }
+            .dismissableKeyboard()
             .navigationTitle("Set up in 60 seconds")
             .alert("Pick your TV market", isPresented: $showMarketError) { Button("OK") {} } message: { Text("Enter a ZIP code or choose a market so we can find your channels.") }
         }
@@ -37,19 +38,23 @@ struct LocationSection: View {
     @Binding var marketHint: String
     var body: some View {
         Section("Where you watch") {
-            TextField("ZIP code", text: $draft.zip).keyboardType(.numberPad)
+            TextField("ZIP code", text: $draft.zip)
+                .keyboardType(.numberPad)
+                .textContentType(.postalCode)
                 .onChange(of: draft.zip) { _, z in
                     if z.count >= 5, let m = state.catalog.market(forZip: z) {
                         draft.market = m.id
                         marketHint = "\(m.name): CBS \(m.affiliates["CBS"]?.call ?? "") · FOX \(m.affiliates["FOX"]?.call ?? "") · NBC \(m.affiliates["NBC"]?.call ?? "") · ABC \(m.affiliates["ABC"]?.call ?? "")"
+                        // The market is settled, so get the number pad out of the way of the rest of the form.
+                        dismissKeyboard()
                     } else if z.count >= 5 { marketHint = "ZIP not in the built-in table yet. Pick your market below." }
                 }
             if !marketHint.isEmpty { Text(marketHint).font(.caption).foregroundStyle(.secondary) }
-            Picker("TV market", selection: $draft.market) {
+            WidePicker(title: "TV market", selection: $draft.market) {
                 Text("— pick —").tag(String?.none)
                 ForEach(state.catalog.marketList) { m in Text("\(m.name), \(m.state)").tag(String?.some(m.id)) }
             }
-            Picker("TV provider", selection: $draft.provider) {
+            WidePicker(title: "TV provider", selection: $draft.provider) {
                 Text("— how do you watch TV? —").tag(String?.none)
                 ForEach(state.catalog.providerList) { p in Text(p.name).tag(String?.some(p.id)) }
             }
@@ -58,7 +63,7 @@ struct LocationSection: View {
                 if let n = p.carriageNotes { Label(n, systemImage: "exclamationmark.triangle").font(.caption).foregroundStyle(.orange) }
             }
             Toggle("I also have an antenna (CBS/FOX/NBC/ABC free over the air)", isOn: $draft.hasAntenna)
-            Picker("Time zone", selection: $draft.tz) {
+            WidePicker(title: "Time zone", selection: $draft.tz) {
                 ForEach(Array(Set([draft.tz, "America/New_York", "America/Chicago", "America/Denver", "America/Phoenix", "America/Los_Angeles", "America/Anchorage", "Pacific/Honolulu"])).sorted(), id: \.self) { Text($0).tag($0) }
             }
         }
