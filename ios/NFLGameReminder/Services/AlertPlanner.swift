@@ -38,7 +38,10 @@ enum AlertPlanner {
         for g in mine {
             let card = CardBuilder.build(g, user: user, all: games, catalog: catalog)
             let ver = Int(g.kickoff.timeIntervalSince1970)
-            let ko = "\(TimeFormat.time(g.kickoff, tz: tz)) (\(TimeFormat.et(g.kickoff)))"
+            let localKO = TimeFormat.time(g.kickoff, tz: tz)
+            let etKO = TimeFormat.time(g.kickoff, tz: TimeFormat.eastern, zone: false)
+            let ko = TimeFormat.time(g.kickoff, tz: tz, zone: false) == etKO
+                ? localKO : "\(localKO) (\(etKO) ET)"
             let ch = chan(card, catalog: catalog)
             let cov = TimeFormat.time(card.coverage.start, tz: tz)
             if a.coverage {

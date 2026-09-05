@@ -26,7 +26,7 @@ enum CardBuilder {
 
     static func build(_ game: Game, user: UserProfile, all: [Game], changes: [ScheduleChange] = [], planned: [PlannedAlert] = [], catalog: Catalog = .shared) -> GameCard {
         let channels = game.networks.map { catalog.channel(for: $0, user: user) }
-        let inMarket = CoverageEngine.gameInMarket(game, marketKey: user.market, all: all, catalog: catalog)
+        let inMarket = CoverageEngine.gameInMarket(game, marketKey: user.activeMarket, all: all, catalog: catalog)
         let access = catalog.access(for: game, user: user)
         let (followed, reasons) = isFollowed(game, user: user)
         return GameCard(game: game, coverage: BroadcastWindows.coverage(for: game), channels: channels, inMarket: inMarket, access: access, followed: followed, followReasons: reasons,

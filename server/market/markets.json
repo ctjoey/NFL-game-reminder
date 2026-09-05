@@ -1,117 +1,3149 @@
 {
   "note": "Media markets (Nielsen DMAs) with their big-four affiliates. 'ota' is the station's virtual over-the-air channel. DirecTV and Dish carry locals on the same number as OTA in almost every market, so they default to it. Cable numbers vary by headend and are left for the user to set once. Streaming services (YouTube TV, Hulu + Live TV, Fubo, Sling, DirecTV Stream) have no channel numbers: find the station by call sign. 'teams' lists the local team(s) in priority order for regional-game resolution; 'affinity' lists nearby teams the market usually receives when its own team is not playing.",
   "markets": {
-    "newyork":      { "name": "New York", "state": "NY", "tz": "America/New_York", "teams": ["NYG", "NYJ"], "affinity": ["PHI", "BUF"], "affiliates": { "CBS": { "call": "WCBS", "ota": 2 }, "FOX": { "call": "WNYW", "ota": 5 }, "NBC": { "call": "WNBC", "ota": 4 }, "ABC": { "call": "WABC", "ota": 7 } } },
-    "losangeles":   { "name": "Los Angeles", "state": "CA", "tz": "America/Los_Angeles", "teams": ["LAR", "LAC"], "affinity": ["SF", "LV"], "affiliates": { "CBS": { "call": "KCBS", "ota": 2 }, "FOX": { "call": "KTTV", "ota": 11 }, "NBC": { "call": "KNBC", "ota": 4 }, "ABC": { "call": "KABC", "ota": 7 } } },
-    "chicago":      { "name": "Chicago", "state": "IL", "tz": "America/Chicago", "teams": ["CHI"], "affinity": ["GB", "IND"], "affiliates": { "CBS": { "call": "WBBM", "ota": 2 }, "FOX": { "call": "WFLD", "ota": 32 }, "NBC": { "call": "WMAQ", "ota": 5 }, "ABC": { "call": "WLS", "ota": 7 } } },
-    "philadelphia": { "name": "Philadelphia", "state": "PA", "tz": "America/New_York", "teams": ["PHI"], "affinity": ["NYG", "BAL", "PIT"], "affiliates": { "CBS": { "call": "KYW", "ota": 3 }, "FOX": { "call": "WTXF", "ota": 29 }, "NBC": { "call": "WCAU", "ota": 10 }, "ABC": { "call": "WPVI", "ota": 6 } } },
-    "dallas":       { "name": "Dallas-Fort Worth", "state": "TX", "tz": "America/Chicago", "teams": ["DAL"], "affinity": ["HOU"], "affiliates": { "CBS": { "call": "KTVT", "ota": 11 }, "FOX": { "call": "KDFW", "ota": 4 }, "NBC": { "call": "KXAS", "ota": 5 }, "ABC": { "call": "WFAA", "ota": 8 } } },
-    "sanfrancisco": { "name": "San Francisco-Oakland-San Jose", "state": "CA", "tz": "America/Los_Angeles", "teams": ["SF"], "affinity": ["LV", "LAR", "SEA"], "affiliates": { "CBS": { "call": "KPIX", "ota": 5 }, "FOX": { "call": "KTVU", "ota": 2 }, "NBC": { "call": "KNTV", "ota": 11 }, "ABC": { "call": "KGO", "ota": 7 } } },
-    "washington":   { "name": "Washington, DC", "state": "DC", "tz": "America/New_York", "teams": ["WAS"], "affinity": ["BAL", "PHI"], "affiliates": { "CBS": { "call": "WUSA", "ota": 9 }, "FOX": { "call": "WTTG", "ota": 5 }, "NBC": { "call": "WRC", "ota": 4 }, "ABC": { "call": "WJLA", "ota": 7 } } },
-    "houston":      { "name": "Houston", "state": "TX", "tz": "America/Chicago", "teams": ["HOU"], "affinity": ["DAL"], "affiliates": { "CBS": { "call": "KHOU", "ota": 11 }, "FOX": { "call": "KRIV", "ota": 26 }, "NBC": { "call": "KPRC", "ota": 2 }, "ABC": { "call": "KTRK", "ota": 13 } } },
-    "boston":       { "name": "Boston", "state": "MA", "tz": "America/New_York", "teams": ["NE"], "affinity": ["NYG", "BUF"], "affiliates": { "CBS": { "call": "WBZ", "ota": 4 }, "FOX": { "call": "WFXT", "ota": 25 }, "NBC": { "call": "WBTS", "ota": 10 }, "ABC": { "call": "WCVB", "ota": 5 } } },
-    "atlanta":      { "name": "Atlanta", "state": "GA", "tz": "America/New_York", "teams": ["ATL"], "affinity": ["CAR", "TEN", "JAX"], "affiliates": { "CBS": { "call": "WANF", "ota": 46 }, "FOX": { "call": "WAGA", "ota": 5 }, "NBC": { "call": "WXIA", "ota": 11 }, "ABC": { "call": "WSB", "ota": 2 } } },
-    "phoenix":      { "name": "Phoenix", "state": "AZ", "tz": "America/Phoenix", "teams": ["ARI"], "affinity": ["LAR", "LV", "SF"], "affiliates": { "CBS": { "call": "KPHO", "ota": 5 }, "FOX": { "call": "KSAZ", "ota": 10 }, "NBC": { "call": "KPNX", "ota": 12 }, "ABC": { "call": "KNXV", "ota": 15 } } },
-    "seattle":      { "name": "Seattle-Tacoma", "state": "WA", "tz": "America/Los_Angeles", "teams": ["SEA"], "affinity": ["SF", "LV"], "affiliates": { "CBS": { "call": "KIRO", "ota": 7 }, "FOX": { "call": "KCPQ", "ota": 13 }, "NBC": { "call": "KING", "ota": 5 }, "ABC": { "call": "KOMO", "ota": 4 } } },
-    "tampa":        { "name": "Tampa-St. Petersburg", "state": "FL", "tz": "America/New_York", "teams": ["TB"], "affinity": ["JAX", "MIA"], "affiliates": { "CBS": { "call": "WTSP", "ota": 10 }, "FOX": { "call": "WTVT", "ota": 13 }, "NBC": { "call": "WFLA", "ota": 8 }, "ABC": { "call": "WFTS", "ota": 28 } } },
-    "detroit":      { "name": "Detroit", "state": "MI", "tz": "America/Detroit", "teams": ["DET"], "affinity": ["GB", "CHI"], "affiliates": { "CBS": { "call": "WWJ", "ota": 62 }, "FOX": { "call": "WJBK", "ota": 2 }, "NBC": { "call": "WDIV", "ota": 4 }, "ABC": { "call": "WXYZ", "ota": 7 } } },
-    "minneapolis":  { "name": "Minneapolis-St. Paul", "state": "MN", "tz": "America/Chicago", "teams": ["MIN"], "affinity": ["GB", "CHI"], "affiliates": { "CBS": { "call": "WCCO", "ota": 4 }, "FOX": { "call": "KMSP", "ota": 9 }, "NBC": { "call": "KARE", "ota": 11 }, "ABC": { "call": "KSTP", "ota": 5 } } },
-    "denver":       { "name": "Denver", "state": "CO", "tz": "America/Denver", "teams": ["DEN"], "affinity": ["KC", "LV"], "affiliates": { "CBS": { "call": "KCNC", "ota": 4 }, "FOX": { "call": "KDVR", "ota": 31 }, "NBC": { "call": "KUSA", "ota": 9 }, "ABC": { "call": "KMGH", "ota": 7 } } },
-    "miami":        { "name": "Miami-Fort Lauderdale", "state": "FL", "tz": "America/New_York", "teams": ["MIA"], "affinity": ["TB", "JAX"], "affiliates": { "CBS": { "call": "WFOR", "ota": 4 }, "FOX": { "call": "WSVN", "ota": 7 }, "NBC": { "call": "WTVJ", "ota": 6 }, "ABC": { "call": "WPLG", "ota": 10 } } },
-    "cleveland":    { "name": "Cleveland-Akron", "state": "OH", "tz": "America/New_York", "teams": ["CLE"], "affinity": ["PIT", "CIN"], "affiliates": { "CBS": { "call": "WOIO", "ota": 19 }, "FOX": { "call": "WJW", "ota": 8 }, "NBC": { "call": "WKYC", "ota": 3 }, "ABC": { "call": "WEWS", "ota": 5 } } },
-    "charlotte":    { "name": "Charlotte", "state": "NC", "tz": "America/New_York", "teams": ["CAR"], "affinity": ["ATL", "WAS"], "affiliates": { "CBS": { "call": "WBTV", "ota": 3 }, "FOX": { "call": "WJZY", "ota": 46 }, "NBC": { "call": "WCNC", "ota": 36 }, "ABC": { "call": "WSOC", "ota": 9 } } },
-    "pittsburgh":   { "name": "Pittsburgh", "state": "PA", "tz": "America/New_York", "teams": ["PIT"], "affinity": ["CLE", "BAL", "PHI"], "affiliates": { "CBS": { "call": "KDKA", "ota": 2 }, "FOX": { "call": "WPGH", "ota": 53 }, "NBC": { "call": "WPXI", "ota": 11 }, "ABC": { "call": "WTAE", "ota": 4 } } },
-    "baltimore":    { "name": "Baltimore", "state": "MD", "tz": "America/New_York", "teams": ["BAL"], "affinity": ["WAS", "PIT", "PHI"], "affiliates": { "CBS": { "call": "WJZ", "ota": 13 }, "FOX": { "call": "WBFF", "ota": 45 }, "NBC": { "call": "WBAL", "ota": 11 }, "ABC": { "call": "WMAR", "ota": 2 } } },
-    "indianapolis": { "name": "Indianapolis", "state": "IN", "tz": "America/Indiana/Indianapolis", "teams": ["IND"], "affinity": ["CIN", "CHI"], "affiliates": { "CBS": { "call": "WTTV", "ota": 4 }, "FOX": { "call": "WXIN", "ota": 59 }, "NBC": { "call": "WTHR", "ota": 13 }, "ABC": { "call": "WRTV", "ota": 6 } } },
-    "nashville":    { "name": "Nashville", "state": "TN", "tz": "America/Chicago", "teams": ["TEN"], "affinity": ["ATL", "KC"], "affiliates": { "CBS": { "call": "WTVF", "ota": 5 }, "FOX": { "call": "WZTV", "ota": 17 }, "NBC": { "call": "WSMV", "ota": 4 }, "ABC": { "call": "WKRN", "ota": 2 } } },
-    "kansascity":   { "name": "Kansas City", "state": "MO", "tz": "America/Chicago", "teams": ["KC"], "affinity": ["DEN", "DAL"], "affiliates": { "CBS": { "call": "KCTV", "ota": 5 }, "FOX": { "call": "WDAF", "ota": 4 }, "NBC": { "call": "KSHB", "ota": 41 }, "ABC": { "call": "KMBC", "ota": 9 } } },
-    "cincinnati":   { "name": "Cincinnati", "state": "OH", "tz": "America/New_York", "teams": ["CIN"], "affinity": ["CLE", "IND"], "affiliates": { "CBS": { "call": "WKRC", "ota": 12 }, "FOX": { "call": "WXIX", "ota": 19 }, "NBC": { "call": "WLWT", "ota": 5 }, "ABC": { "call": "WCPO", "ota": 9 } } },
-    "greenbay":     { "name": "Green Bay-Appleton", "state": "WI", "tz": "America/Chicago", "teams": ["GB"], "affinity": ["MIN", "CHI"], "affiliates": { "CBS": { "call": "WFRV", "ota": 5 }, "FOX": { "call": "WLUK", "ota": 11 }, "NBC": { "call": "WGBA", "ota": 26 }, "ABC": { "call": "WBAY", "ota": 2 } } },
-    "milwaukee":    { "name": "Milwaukee", "state": "WI", "tz": "America/Chicago", "teams": [], "affinity": ["GB", "CHI", "MIN"], "affiliates": { "CBS": { "call": "WDJT", "ota": 58 }, "FOX": { "call": "WITI", "ota": 6 }, "NBC": { "call": "WTMJ", "ota": 4 }, "ABC": { "call": "WISN", "ota": 12 } } },
-    "buffalo":      { "name": "Buffalo", "state": "NY", "tz": "America/New_York", "teams": ["BUF"], "affinity": ["NYG", "NYJ", "PIT"], "affiliates": { "CBS": { "call": "WIVB", "ota": 4 }, "FOX": { "call": "WUTV", "ota": 29 }, "NBC": { "call": "WGRZ", "ota": 2 }, "ABC": { "call": "WKBW", "ota": 7 } } },
-    "neworleans":   { "name": "New Orleans", "state": "LA", "tz": "America/Chicago", "teams": ["NO"], "affinity": ["ATL", "HOU"], "affiliates": { "CBS": { "call": "WWL", "ota": 4 }, "FOX": { "call": "WVUE", "ota": 8 }, "NBC": { "call": "WDSU", "ota": 6 }, "ABC": { "call": "WGNO", "ota": 26 } } },
-    "jacksonville": { "name": "Jacksonville", "state": "FL", "tz": "America/New_York", "teams": ["JAX"], "affinity": ["TB", "ATL", "MIA"], "affiliates": { "CBS": { "call": "WJAX", "ota": 47 }, "FOX": { "call": "WFOX", "ota": 30 }, "NBC": { "call": "WTLV", "ota": 12 }, "ABC": { "call": "WJXX", "ota": 25 } } },
-    "lasvegas":     { "name": "Las Vegas", "state": "NV", "tz": "America/Los_Angeles", "teams": ["LV"], "affinity": ["LAR", "LAC", "SF"], "affiliates": { "CBS": { "call": "KLAS", "ota": 8 }, "FOX": { "call": "KVVU", "ota": 5 }, "NBC": { "call": "KSNV", "ota": 3 }, "ABC": { "call": "KTNV", "ota": 13 } } },
-    "sacramento":   { "name": "Sacramento-Stockton-Modesto", "state": "CA", "tz": "America/Los_Angeles", "teams": [], "affinity": ["SF", "LV", "LAR"], "affiliates": { "CBS": { "call": "KOVR", "ota": 13 }, "FOX": { "call": "KTXL", "ota": 40 }, "NBC": { "call": "KCRA", "ota": 3 }, "ABC": { "call": "KXTV", "ota": 10 } } },
-    "sandiego":     { "name": "San Diego", "state": "CA", "tz": "America/Los_Angeles", "teams": [], "affinity": ["LAC", "LAR", "LV"], "affiliates": { "CBS": { "call": "KFMB", "ota": 8 }, "FOX": { "call": "KSWB", "ota": 69 }, "NBC": { "call": "KNSD", "ota": 39 }, "ABC": { "call": "KGTV", "ota": 10 } } },
-    "portland":     { "name": "Portland, OR", "state": "OR", "tz": "America/Los_Angeles", "teams": [], "affinity": ["SEA", "SF"], "affiliates": { "CBS": { "call": "KOIN", "ota": 6 }, "FOX": { "call": "KPTV", "ota": 12 }, "NBC": { "call": "KGW", "ota": 8 }, "ABC": { "call": "KATU", "ota": 2 } } },
-    "stlouis":      { "name": "St. Louis", "state": "MO", "tz": "America/Chicago", "teams": [], "affinity": ["KC", "CHI"], "affiliates": { "CBS": { "call": "KMOV", "ota": 4 }, "FOX": { "call": "KTVI", "ota": 2 }, "NBC": { "call": "KSDK", "ota": 5 }, "ABC": { "call": "KDNL", "ota": 30 } } },
-    "columbus":     { "name": "Columbus, OH", "state": "OH", "tz": "America/New_York", "teams": [], "affinity": ["CLE", "CIN", "PIT"], "affiliates": { "CBS": { "call": "WBNS", "ota": 10 }, "FOX": { "call": "WTTE", "ota": 28 }, "NBC": { "call": "WCMH", "ota": 4 }, "ABC": { "call": "WSYX", "ota": 6 } } },
-    "saltlake":     { "name": "Salt Lake City", "state": "UT", "tz": "America/Denver", "teams": [], "affinity": ["DEN", "LV", "SF"], "affiliates": { "CBS": { "call": "KUTV", "ota": 2 }, "FOX": { "call": "KSTU", "ota": 13 }, "NBC": { "call": "KSL", "ota": 5 }, "ABC": { "call": "KTVX", "ota": 4 } } },
-    "orlando":      { "name": "Orlando-Daytona Beach", "state": "FL", "tz": "America/New_York", "teams": [], "affinity": ["TB", "JAX", "MIA"], "affiliates": { "CBS": { "call": "WKMG", "ota": 6 }, "FOX": { "call": "WOFL", "ota": 35 }, "NBC": { "call": "WESH", "ota": 2 }, "ABC": { "call": "WFTV", "ota": 9 } } },
-    "hartford":     { "name": "Hartford-New Haven", "state": "CT", "tz": "America/New_York", "teams": [], "affinity": ["NE", "NYG", "NYJ"], "affiliates": { "CBS": { "call": "WFSB", "ota": 3 }, "FOX": { "call": "WTIC", "ota": 61 }, "NBC": { "call": "WVIT", "ota": 30 }, "ABC": { "call": "WTNH", "ota": 8 } } },
-    "raleigh":      { "name": "Raleigh-Durham", "state": "NC", "tz": "America/New_York", "teams": [], "affinity": ["CAR", "WAS"], "affiliates": { "CBS": { "call": "WNCN", "ota": 17 }, "FOX": { "call": "WRAZ", "ota": 50 }, "NBC": { "call": "WRAL", "ota": 5 }, "ABC": { "call": "WTVD", "ota": 11 } } },
-    "richmond":     { "name": "Richmond-Petersburg", "state": "VA", "tz": "America/New_York", "teams": [], "affinity": ["WAS", "CAR"], "affiliates": { "CBS": { "call": "WTVR", "ota": 6 }, "FOX": { "call": "WRLH", "ota": 35 }, "NBC": { "call": "WWBT", "ota": 12 }, "ABC": { "call": "WRIC", "ota": 8 } } },
-    "norfolk":      { "name": "Norfolk-Virginia Beach", "state": "VA", "tz": "America/New_York", "teams": [], "affinity": ["WAS", "CAR"], "affiliates": { "CBS": { "call": "WTKR", "ota": 3 }, "FOX": { "call": "WVBT", "ota": 43 }, "NBC": { "call": "WAVY", "ota": 10 }, "ABC": { "call": "WVEC", "ota": 13 } } },
-    "birmingham":   { "name": "Birmingham", "state": "AL", "tz": "America/Chicago", "teams": [], "affinity": ["ATL", "TEN", "NO"], "affiliates": { "CBS": { "call": "WIAT", "ota": 42 }, "FOX": { "call": "WBRC", "ota": 6 }, "NBC": { "call": "WVTM", "ota": 13 }, "ABC": { "call": "WBMA", "ota": 33 } } },
-    "memphis":      { "name": "Memphis", "state": "TN", "tz": "America/Chicago", "teams": [], "affinity": ["TEN", "NO", "KC"], "affiliates": { "CBS": { "call": "WREG", "ota": 3 }, "FOX": { "call": "WHBQ", "ota": 13 }, "NBC": { "call": "WMC", "ota": 5 }, "ABC": { "call": "WATN", "ota": 24 } } },
-    "oklahomacity": { "name": "Oklahoma City", "state": "OK", "tz": "America/Chicago", "teams": [], "affinity": ["DAL", "KC"], "affiliates": { "CBS": { "call": "KWTV", "ota": 9 }, "FOX": { "call": "KOKH", "ota": 25 }, "NBC": { "call": "KFOR", "ota": 4 }, "ABC": { "call": "KOCO", "ota": 5 } } },
-    "austin":       { "name": "Austin", "state": "TX", "tz": "America/Chicago", "teams": [], "affinity": ["DAL", "HOU"], "affiliates": { "CBS": { "call": "KEYE", "ota": 42 }, "FOX": { "call": "KTBC", "ota": 7 }, "NBC": { "call": "KXAN", "ota": 36 }, "ABC": { "call": "KVUE", "ota": 24 } } },
-    "sanantonio":   { "name": "San Antonio", "state": "TX", "tz": "America/Chicago", "teams": [], "affinity": ["DAL", "HOU"], "affiliates": { "CBS": { "call": "KENS", "ota": 5 }, "FOX": { "call": "KABB", "ota": 29 }, "NBC": { "call": "WOAI", "ota": 4 }, "ABC": { "call": "KSAT", "ota": 12 } } },
-    "louisville":   { "name": "Louisville", "state": "KY", "tz": "America/New_York", "teams": [], "affinity": ["CIN", "IND", "TEN"], "affiliates": { "CBS": { "call": "WLKY", "ota": 32 }, "FOX": { "call": "WDRB", "ota": 41 }, "NBC": { "call": "WAVE", "ota": 3 }, "ABC": { "call": "WHAS", "ota": 11 } } },
-    "albany":       { "name": "Albany-Schenectady-Troy", "state": "NY", "tz": "America/New_York", "teams": [], "affinity": ["NYG", "BUF", "NE"], "affiliates": { "CBS": { "call": "WRGB", "ota": 6 }, "FOX": { "call": "WXXA", "ota": 23 }, "NBC": { "call": "WNYT", "ota": 13 }, "ABC": { "call": "WTEN", "ota": 10 } } },
-    "harrisburg":   { "name": "Harrisburg-Lancaster-York", "state": "PA", "tz": "America/New_York", "teams": [], "affinity": ["PHI", "PIT", "BAL"], "affiliates": { "CBS": { "call": "WHP", "ota": 21 }, "FOX": { "call": "WPMT", "ota": 43 }, "NBC": { "call": "WGAL", "ota": 8 }, "ABC": { "call": "WHTM", "ota": 27 } } },
-    "omaha":        { "name": "Omaha", "state": "NE", "tz": "America/Chicago", "teams": [], "affinity": ["KC", "MIN", "DEN"], "affiliates": { "CBS": { "call": "KMTV", "ota": 3 }, "FOX": { "call": "KPTM", "ota": 42 }, "NBC": { "call": "WOWT", "ota": 6 }, "ABC": { "call": "KETV", "ota": 7 } } },
-    "desmoines":    { "name": "Des Moines-Ames", "state": "IA", "tz": "America/Chicago", "teams": [], "affinity": ["KC", "MIN", "CHI"], "affiliates": { "CBS": { "call": "KCCI", "ota": 8 }, "FOX": { "call": "KDSM", "ota": 17 }, "NBC": { "call": "WHO", "ota": 13 }, "ABC": { "call": "WOI", "ota": 5 } } },
-    "providence":   { "name": "Providence-New Bedford", "state": "RI", "tz": "America/New_York", "teams": [], "affinity": ["NE", "NYG"], "affiliates": { "CBS": { "call": "WPRI", "ota": 12 }, "FOX": { "call": "WNAC", "ota": 64 }, "NBC": { "call": "WJAR", "ota": 10 }, "ABC": { "call": "WLNE", "ota": 6 } } },
-    "youngstown":   { "name": "Youngstown", "state": "OH", "tz": "America/New_York", "teams": [], "affinity": ["CLE", "PIT"], "affiliates": { "CBS": { "call": "WKBN", "ota": 27 }, "FOX": { "call": "WYFX", "ota": 62 }, "NBC": { "call": "WFMJ", "ota": 21 }, "ABC": { "call": "WYTV", "ota": 33 } } }
+    "newyork": {
+      "name": "New York",
+      "state": "NY",
+      "tz": "America/New_York",
+      "teams": [
+        "NYG",
+        "NYJ"
+      ],
+      "affinity": [
+        "PHI",
+        "BUF"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WCBS",
+          "ota": 2
+        },
+        "FOX": {
+          "call": "WNYW",
+          "ota": 5
+        },
+        "NBC": {
+          "call": "WNBC",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "WABC",
+          "ota": 7
+        }
+      }
+    },
+    "losangeles": {
+      "name": "Los Angeles",
+      "state": "CA",
+      "tz": "America/Los_Angeles",
+      "teams": [
+        "LAR",
+        "LAC"
+      ],
+      "affinity": [
+        "SF",
+        "LV"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KCBS",
+          "ota": 2
+        },
+        "FOX": {
+          "call": "KTTV",
+          "ota": 11
+        },
+        "NBC": {
+          "call": "KNBC",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "KABC",
+          "ota": 7
+        }
+      }
+    },
+    "chicago": {
+      "name": "Chicago",
+      "state": "IL",
+      "tz": "America/Chicago",
+      "teams": [
+        "CHI"
+      ],
+      "affinity": [
+        "GB",
+        "IND"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WBBM",
+          "ota": 2
+        },
+        "FOX": {
+          "call": "WFLD",
+          "ota": 32
+        },
+        "NBC": {
+          "call": "WMAQ",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "WLS",
+          "ota": 7
+        }
+      }
+    },
+    "philadelphia": {
+      "name": "Philadelphia",
+      "state": "PA",
+      "tz": "America/New_York",
+      "teams": [
+        "PHI"
+      ],
+      "affinity": [
+        "NYG",
+        "BAL",
+        "PIT"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KYW",
+          "ota": 3
+        },
+        "FOX": {
+          "call": "WTXF",
+          "ota": 29
+        },
+        "NBC": {
+          "call": "WCAU",
+          "ota": 10
+        },
+        "ABC": {
+          "call": "WPVI",
+          "ota": 6
+        }
+      }
+    },
+    "dallas": {
+      "name": "Dallas-Fort Worth",
+      "state": "TX",
+      "tz": "America/Chicago",
+      "teams": [
+        "DAL"
+      ],
+      "affinity": [
+        "HOU"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KTVT",
+          "ota": 11
+        },
+        "FOX": {
+          "call": "KDFW",
+          "ota": 4
+        },
+        "NBC": {
+          "call": "KXAS",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "WFAA",
+          "ota": 8
+        }
+      }
+    },
+    "sanfrancisco": {
+      "name": "San Francisco-Oakland-San Jose",
+      "state": "CA",
+      "tz": "America/Los_Angeles",
+      "teams": [
+        "SF"
+      ],
+      "affinity": [
+        "LV",
+        "LAR",
+        "SEA"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KPIX",
+          "ota": 5
+        },
+        "FOX": {
+          "call": "KTVU",
+          "ota": 2
+        },
+        "NBC": {
+          "call": "KNTV",
+          "ota": 11
+        },
+        "ABC": {
+          "call": "KGO",
+          "ota": 7
+        }
+      }
+    },
+    "washington": {
+      "name": "Washington, DC",
+      "state": "DC",
+      "tz": "America/New_York",
+      "teams": [
+        "WAS"
+      ],
+      "affinity": [
+        "BAL",
+        "PHI"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WUSA",
+          "ota": 9
+        },
+        "FOX": {
+          "call": "WTTG",
+          "ota": 5
+        },
+        "NBC": {
+          "call": "WRC",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "WJLA",
+          "ota": 7
+        }
+      }
+    },
+    "houston": {
+      "name": "Houston",
+      "state": "TX",
+      "tz": "America/Chicago",
+      "teams": [
+        "HOU"
+      ],
+      "affinity": [
+        "DAL"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KHOU",
+          "ota": 11
+        },
+        "FOX": {
+          "call": "KRIV",
+          "ota": 26
+        },
+        "NBC": {
+          "call": "KPRC",
+          "ota": 2
+        },
+        "ABC": {
+          "call": "KTRK",
+          "ota": 13
+        }
+      }
+    },
+    "boston": {
+      "name": "Boston",
+      "state": "MA",
+      "tz": "America/New_York",
+      "teams": [
+        "NE"
+      ],
+      "affinity": [
+        "NYG",
+        "BUF"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WBZ",
+          "ota": 4
+        },
+        "FOX": {
+          "call": "WFXT",
+          "ota": 25
+        },
+        "NBC": {
+          "call": "WBTS",
+          "ota": 10
+        },
+        "ABC": {
+          "call": "WCVB",
+          "ota": 5
+        }
+      }
+    },
+    "atlanta": {
+      "name": "Atlanta",
+      "state": "GA",
+      "tz": "America/New_York",
+      "teams": [
+        "ATL"
+      ],
+      "affinity": [
+        "CAR",
+        "TEN",
+        "JAX"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WANF",
+          "ota": 46
+        },
+        "FOX": {
+          "call": "WAGA",
+          "ota": 5
+        },
+        "NBC": {
+          "call": "WXIA",
+          "ota": 11
+        },
+        "ABC": {
+          "call": "WSB",
+          "ota": 2
+        }
+      }
+    },
+    "phoenix": {
+      "name": "Phoenix",
+      "state": "AZ",
+      "tz": "America/Phoenix",
+      "teams": [
+        "ARI"
+      ],
+      "affinity": [
+        "LAR",
+        "LV",
+        "SF"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KPHO",
+          "ota": 5
+        },
+        "FOX": {
+          "call": "KSAZ",
+          "ota": 10
+        },
+        "NBC": {
+          "call": "KPNX",
+          "ota": 12
+        },
+        "ABC": {
+          "call": "KNXV",
+          "ota": 15
+        }
+      }
+    },
+    "seattle": {
+      "name": "Seattle-Tacoma",
+      "state": "WA",
+      "tz": "America/Los_Angeles",
+      "teams": [
+        "SEA"
+      ],
+      "affinity": [
+        "SF",
+        "LV"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KIRO",
+          "ota": 7
+        },
+        "FOX": {
+          "call": "KCPQ",
+          "ota": 13
+        },
+        "NBC": {
+          "call": "KING",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "KOMO",
+          "ota": 4
+        }
+      }
+    },
+    "tampa": {
+      "name": "Tampa-St. Petersburg",
+      "state": "FL",
+      "tz": "America/New_York",
+      "teams": [
+        "TB"
+      ],
+      "affinity": [
+        "JAX",
+        "MIA"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WTSP",
+          "ota": 10
+        },
+        "FOX": {
+          "call": "WTVT",
+          "ota": 13
+        },
+        "NBC": {
+          "call": "WFLA",
+          "ota": 8
+        },
+        "ABC": {
+          "call": "WFTS",
+          "ota": 28
+        }
+      }
+    },
+    "detroit": {
+      "name": "Detroit",
+      "state": "MI",
+      "tz": "America/Detroit",
+      "teams": [
+        "DET"
+      ],
+      "affinity": [
+        "GB",
+        "CHI"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WWJ",
+          "ota": 62
+        },
+        "FOX": {
+          "call": "WJBK",
+          "ota": 2
+        },
+        "NBC": {
+          "call": "WDIV",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "WXYZ",
+          "ota": 7
+        }
+      }
+    },
+    "minneapolis": {
+      "name": "Minneapolis-St. Paul",
+      "state": "MN",
+      "tz": "America/Chicago",
+      "teams": [
+        "MIN"
+      ],
+      "affinity": [
+        "GB",
+        "CHI"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WCCO",
+          "ota": 4
+        },
+        "FOX": {
+          "call": "KMSP",
+          "ota": 9
+        },
+        "NBC": {
+          "call": "KARE",
+          "ota": 11
+        },
+        "ABC": {
+          "call": "KSTP",
+          "ota": 5
+        }
+      }
+    },
+    "denver": {
+      "name": "Denver",
+      "state": "CO",
+      "tz": "America/Denver",
+      "teams": [
+        "DEN"
+      ],
+      "affinity": [
+        "KC",
+        "LV"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KCNC",
+          "ota": 4
+        },
+        "FOX": {
+          "call": "KDVR",
+          "ota": 31
+        },
+        "NBC": {
+          "call": "KUSA",
+          "ota": 9
+        },
+        "ABC": {
+          "call": "KMGH",
+          "ota": 7
+        }
+      }
+    },
+    "miami": {
+      "name": "Miami-Fort Lauderdale",
+      "state": "FL",
+      "tz": "America/New_York",
+      "teams": [
+        "MIA"
+      ],
+      "affinity": [
+        "TB",
+        "JAX"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WFOR",
+          "ota": 4
+        },
+        "FOX": {
+          "call": "WSVN",
+          "ota": 7
+        },
+        "NBC": {
+          "call": "WTVJ",
+          "ota": 6
+        },
+        "ABC": {
+          "call": "WPLG",
+          "ota": 10
+        }
+      }
+    },
+    "cleveland": {
+      "name": "Cleveland-Akron",
+      "state": "OH",
+      "tz": "America/New_York",
+      "teams": [
+        "CLE"
+      ],
+      "affinity": [
+        "PIT",
+        "CIN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WOIO",
+          "ota": 19
+        },
+        "FOX": {
+          "call": "WJW",
+          "ota": 8
+        },
+        "NBC": {
+          "call": "WKYC",
+          "ota": 3
+        },
+        "ABC": {
+          "call": "WEWS",
+          "ota": 5
+        }
+      }
+    },
+    "charlotte": {
+      "name": "Charlotte",
+      "state": "NC",
+      "tz": "America/New_York",
+      "teams": [
+        "CAR"
+      ],
+      "affinity": [
+        "ATL",
+        "WAS"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WBTV",
+          "ota": 3
+        },
+        "FOX": {
+          "call": "WJZY",
+          "ota": 46
+        },
+        "NBC": {
+          "call": "WCNC",
+          "ota": 36
+        },
+        "ABC": {
+          "call": "WSOC",
+          "ota": 9
+        }
+      }
+    },
+    "pittsburgh": {
+      "name": "Pittsburgh",
+      "state": "PA",
+      "tz": "America/New_York",
+      "teams": [
+        "PIT"
+      ],
+      "affinity": [
+        "CLE",
+        "BAL",
+        "PHI"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KDKA",
+          "ota": 2
+        },
+        "FOX": {
+          "call": "WPGH",
+          "ota": 53
+        },
+        "NBC": {
+          "call": "WPXI",
+          "ota": 11
+        },
+        "ABC": {
+          "call": "WTAE",
+          "ota": 4
+        }
+      }
+    },
+    "baltimore": {
+      "name": "Baltimore",
+      "state": "MD",
+      "tz": "America/New_York",
+      "teams": [
+        "BAL"
+      ],
+      "affinity": [
+        "WAS",
+        "PIT",
+        "PHI"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WJZ",
+          "ota": 13
+        },
+        "FOX": {
+          "call": "WBFF",
+          "ota": 45
+        },
+        "NBC": {
+          "call": "WBAL",
+          "ota": 11
+        },
+        "ABC": {
+          "call": "WMAR",
+          "ota": 2
+        }
+      }
+    },
+    "indianapolis": {
+      "name": "Indianapolis",
+      "state": "IN",
+      "tz": "America/Indiana/Indianapolis",
+      "teams": [
+        "IND"
+      ],
+      "affinity": [
+        "CIN",
+        "CHI"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WTTV",
+          "ota": 4
+        },
+        "FOX": {
+          "call": "WXIN",
+          "ota": 59
+        },
+        "NBC": {
+          "call": "WTHR",
+          "ota": 13
+        },
+        "ABC": {
+          "call": "WRTV",
+          "ota": 6
+        }
+      }
+    },
+    "nashville": {
+      "name": "Nashville",
+      "state": "TN",
+      "tz": "America/Chicago",
+      "teams": [
+        "TEN"
+      ],
+      "affinity": [
+        "ATL",
+        "KC"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WTVF",
+          "ota": 5
+        },
+        "FOX": {
+          "call": "WZTV",
+          "ota": 17
+        },
+        "NBC": {
+          "call": "WSMV",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "WKRN",
+          "ota": 2
+        }
+      }
+    },
+    "kansascity": {
+      "name": "Kansas City",
+      "state": "MO",
+      "tz": "America/Chicago",
+      "teams": [
+        "KC"
+      ],
+      "affinity": [
+        "DEN",
+        "DAL"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KCTV",
+          "ota": 5
+        },
+        "FOX": {
+          "call": "WDAF",
+          "ota": 4
+        },
+        "NBC": {
+          "call": "KSHB",
+          "ota": 41
+        },
+        "ABC": {
+          "call": "KMBC",
+          "ota": 9
+        }
+      }
+    },
+    "cincinnati": {
+      "name": "Cincinnati",
+      "state": "OH",
+      "tz": "America/New_York",
+      "teams": [
+        "CIN"
+      ],
+      "affinity": [
+        "CLE",
+        "IND"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WKRC",
+          "ota": 12
+        },
+        "FOX": {
+          "call": "WXIX",
+          "ota": 19
+        },
+        "NBC": {
+          "call": "WLWT",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "WCPO",
+          "ota": 9
+        }
+      }
+    },
+    "greenbay": {
+      "name": "Green Bay-Appleton",
+      "state": "WI",
+      "tz": "America/Chicago",
+      "teams": [
+        "GB"
+      ],
+      "affinity": [
+        "MIN",
+        "CHI"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WFRV",
+          "ota": 5
+        },
+        "FOX": {
+          "call": "WLUK",
+          "ota": 11
+        },
+        "NBC": {
+          "call": "WGBA",
+          "ota": 26
+        },
+        "ABC": {
+          "call": "WBAY",
+          "ota": 2
+        }
+      }
+    },
+    "milwaukee": {
+      "name": "Milwaukee",
+      "state": "WI",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "GB",
+        "CHI",
+        "MIN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WDJT",
+          "ota": 58
+        },
+        "FOX": {
+          "call": "WITI",
+          "ota": 6
+        },
+        "NBC": {
+          "call": "WTMJ",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "WISN",
+          "ota": 12
+        }
+      }
+    },
+    "buffalo": {
+      "name": "Buffalo",
+      "state": "NY",
+      "tz": "America/New_York",
+      "teams": [
+        "BUF"
+      ],
+      "affinity": [
+        "NYG",
+        "NYJ",
+        "PIT"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WIVB",
+          "ota": 4
+        },
+        "FOX": {
+          "call": "WUTV",
+          "ota": 29
+        },
+        "NBC": {
+          "call": "WGRZ",
+          "ota": 2
+        },
+        "ABC": {
+          "call": "WKBW",
+          "ota": 7
+        }
+      }
+    },
+    "neworleans": {
+      "name": "New Orleans",
+      "state": "LA",
+      "tz": "America/Chicago",
+      "teams": [
+        "NO"
+      ],
+      "affinity": [
+        "ATL",
+        "HOU"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WWL",
+          "ota": 4
+        },
+        "FOX": {
+          "call": "WVUE",
+          "ota": 8
+        },
+        "NBC": {
+          "call": "WDSU",
+          "ota": 6
+        },
+        "ABC": {
+          "call": "WGNO",
+          "ota": 26
+        }
+      }
+    },
+    "jacksonville": {
+      "name": "Jacksonville",
+      "state": "FL",
+      "tz": "America/New_York",
+      "teams": [
+        "JAX"
+      ],
+      "affinity": [
+        "TB",
+        "ATL",
+        "MIA"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WJAX",
+          "ota": 47
+        },
+        "FOX": {
+          "call": "WFOX",
+          "ota": 30
+        },
+        "NBC": {
+          "call": "WTLV",
+          "ota": 12
+        },
+        "ABC": {
+          "call": "WJXX",
+          "ota": 25
+        }
+      }
+    },
+    "lasvegas": {
+      "name": "Las Vegas",
+      "state": "NV",
+      "tz": "America/Los_Angeles",
+      "teams": [
+        "LV"
+      ],
+      "affinity": [
+        "LAR",
+        "LAC",
+        "SF"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KLAS",
+          "ota": 8
+        },
+        "FOX": {
+          "call": "KVVU",
+          "ota": 5
+        },
+        "NBC": {
+          "call": "KSNV",
+          "ota": 3
+        },
+        "ABC": {
+          "call": "KTNV",
+          "ota": 13
+        }
+      }
+    },
+    "sacramento": {
+      "name": "Sacramento-Stockton-Modesto",
+      "state": "CA",
+      "tz": "America/Los_Angeles",
+      "teams": [],
+      "affinity": [
+        "SF",
+        "LV",
+        "LAR"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KOVR",
+          "ota": 13
+        },
+        "FOX": {
+          "call": "KTXL",
+          "ota": 40
+        },
+        "NBC": {
+          "call": "KCRA",
+          "ota": 3
+        },
+        "ABC": {
+          "call": "KXTV",
+          "ota": 10
+        }
+      }
+    },
+    "sandiego": {
+      "name": "San Diego",
+      "state": "CA",
+      "tz": "America/Los_Angeles",
+      "teams": [],
+      "affinity": [
+        "LAC",
+        "LAR",
+        "LV"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KFMB",
+          "ota": 8
+        },
+        "FOX": {
+          "call": "KSWB",
+          "ota": 69
+        },
+        "NBC": {
+          "call": "KNSD",
+          "ota": 39
+        },
+        "ABC": {
+          "call": "KGTV",
+          "ota": 10
+        }
+      }
+    },
+    "portland": {
+      "name": "Portland, OR",
+      "state": "OR",
+      "tz": "America/Los_Angeles",
+      "teams": [],
+      "affinity": [
+        "SEA",
+        "SF"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KOIN",
+          "ota": 6
+        },
+        "FOX": {
+          "call": "KPTV",
+          "ota": 12
+        },
+        "NBC": {
+          "call": "KGW",
+          "ota": 8
+        },
+        "ABC": {
+          "call": "KATU",
+          "ota": 2
+        }
+      }
+    },
+    "stlouis": {
+      "name": "St. Louis",
+      "state": "MO",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "KC",
+        "CHI"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KMOV",
+          "ota": 4
+        },
+        "FOX": {
+          "call": "KTVI",
+          "ota": 2
+        },
+        "NBC": {
+          "call": "KSDK",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "KDNL",
+          "ota": 30
+        }
+      }
+    },
+    "columbus": {
+      "name": "Columbus, OH",
+      "state": "OH",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "CLE",
+        "CIN",
+        "PIT"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WBNS",
+          "ota": 10
+        },
+        "FOX": {
+          "call": "WTTE",
+          "ota": 28
+        },
+        "NBC": {
+          "call": "WCMH",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "WSYX",
+          "ota": 6
+        }
+      }
+    },
+    "saltlake": {
+      "name": "Salt Lake City",
+      "state": "UT",
+      "tz": "America/Denver",
+      "teams": [],
+      "affinity": [
+        "DEN",
+        "LV",
+        "SF"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KUTV",
+          "ota": 2
+        },
+        "FOX": {
+          "call": "KSTU",
+          "ota": 13
+        },
+        "NBC": {
+          "call": "KSL",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "KTVX",
+          "ota": 4
+        }
+      }
+    },
+    "orlando": {
+      "name": "Orlando-Daytona Beach",
+      "state": "FL",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "TB",
+        "JAX",
+        "MIA"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WKMG",
+          "ota": 6
+        },
+        "FOX": {
+          "call": "WOFL",
+          "ota": 35
+        },
+        "NBC": {
+          "call": "WESH",
+          "ota": 2
+        },
+        "ABC": {
+          "call": "WFTV",
+          "ota": 9
+        }
+      }
+    },
+    "hartford": {
+      "name": "Hartford-New Haven",
+      "state": "CT",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "NE",
+        "NYG",
+        "NYJ"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WFSB",
+          "ota": 3
+        },
+        "FOX": {
+          "call": "WTIC",
+          "ota": 61
+        },
+        "NBC": {
+          "call": "WVIT",
+          "ota": 30
+        },
+        "ABC": {
+          "call": "WTNH",
+          "ota": 8
+        }
+      }
+    },
+    "raleigh": {
+      "name": "Raleigh-Durham",
+      "state": "NC",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "CAR",
+        "WAS"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WNCN",
+          "ota": 17
+        },
+        "FOX": {
+          "call": "WRAZ",
+          "ota": 50
+        },
+        "NBC": {
+          "call": "WRAL",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "WTVD",
+          "ota": 11
+        }
+      }
+    },
+    "richmond": {
+      "name": "Richmond-Petersburg",
+      "state": "VA",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "WAS",
+        "CAR"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WTVR",
+          "ota": 6
+        },
+        "FOX": {
+          "call": "WRLH",
+          "ota": 35
+        },
+        "NBC": {
+          "call": "WWBT",
+          "ota": 12
+        },
+        "ABC": {
+          "call": "WRIC",
+          "ota": 8
+        }
+      }
+    },
+    "norfolk": {
+      "name": "Norfolk-Virginia Beach",
+      "state": "VA",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "WAS",
+        "CAR"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WTKR",
+          "ota": 3
+        },
+        "FOX": {
+          "call": "WVBT",
+          "ota": 43
+        },
+        "NBC": {
+          "call": "WAVY",
+          "ota": 10
+        },
+        "ABC": {
+          "call": "WVEC",
+          "ota": 13
+        }
+      }
+    },
+    "birmingham": {
+      "name": "Birmingham",
+      "state": "AL",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "ATL",
+        "TEN",
+        "NO"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WIAT",
+          "ota": 42
+        },
+        "FOX": {
+          "call": "WBRC",
+          "ota": 6
+        },
+        "NBC": {
+          "call": "WVTM",
+          "ota": 13
+        },
+        "ABC": {
+          "call": "WBMA",
+          "ota": 33
+        }
+      }
+    },
+    "memphis": {
+      "name": "Memphis",
+      "state": "TN",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "TEN",
+        "NO",
+        "KC"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WREG",
+          "ota": 3
+        },
+        "FOX": {
+          "call": "WHBQ",
+          "ota": 13
+        },
+        "NBC": {
+          "call": "WMC",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "WATN",
+          "ota": 24
+        }
+      }
+    },
+    "oklahomacity": {
+      "name": "Oklahoma City",
+      "state": "OK",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "DAL",
+        "KC"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KWTV",
+          "ota": 9
+        },
+        "FOX": {
+          "call": "KOKH",
+          "ota": 25
+        },
+        "NBC": {
+          "call": "KFOR",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "KOCO",
+          "ota": 5
+        }
+      }
+    },
+    "austin": {
+      "name": "Austin",
+      "state": "TX",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "DAL",
+        "HOU"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KEYE",
+          "ota": 42
+        },
+        "FOX": {
+          "call": "KTBC",
+          "ota": 7
+        },
+        "NBC": {
+          "call": "KXAN",
+          "ota": 36
+        },
+        "ABC": {
+          "call": "KVUE",
+          "ota": 24
+        }
+      }
+    },
+    "sanantonio": {
+      "name": "San Antonio",
+      "state": "TX",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "DAL",
+        "HOU"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KENS",
+          "ota": 5
+        },
+        "FOX": {
+          "call": "KABB",
+          "ota": 29
+        },
+        "NBC": {
+          "call": "WOAI",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "KSAT",
+          "ota": 12
+        }
+      }
+    },
+    "louisville": {
+      "name": "Louisville",
+      "state": "KY",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "CIN",
+        "IND",
+        "TEN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WLKY",
+          "ota": 32
+        },
+        "FOX": {
+          "call": "WDRB",
+          "ota": 41
+        },
+        "NBC": {
+          "call": "WAVE",
+          "ota": 3
+        },
+        "ABC": {
+          "call": "WHAS",
+          "ota": 11
+        }
+      }
+    },
+    "albany": {
+      "name": "Albany-Schenectady-Troy",
+      "state": "NY",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "NYG",
+        "BUF",
+        "NE"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WRGB",
+          "ota": 6
+        },
+        "FOX": {
+          "call": "WXXA",
+          "ota": 23
+        },
+        "NBC": {
+          "call": "WNYT",
+          "ota": 13
+        },
+        "ABC": {
+          "call": "WTEN",
+          "ota": 10
+        }
+      }
+    },
+    "harrisburg": {
+      "name": "Harrisburg-Lancaster-York",
+      "state": "PA",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "PHI",
+        "PIT",
+        "BAL"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WHP",
+          "ota": 21
+        },
+        "FOX": {
+          "call": "WPMT",
+          "ota": 43
+        },
+        "NBC": {
+          "call": "WGAL",
+          "ota": 8
+        },
+        "ABC": {
+          "call": "WHTM",
+          "ota": 27
+        }
+      }
+    },
+    "omaha": {
+      "name": "Omaha",
+      "state": "NE",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "KC",
+        "MIN",
+        "DEN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KMTV",
+          "ota": 3
+        },
+        "FOX": {
+          "call": "KPTM",
+          "ota": 42
+        },
+        "NBC": {
+          "call": "WOWT",
+          "ota": 6
+        },
+        "ABC": {
+          "call": "KETV",
+          "ota": 7
+        }
+      }
+    },
+    "desmoines": {
+      "name": "Des Moines-Ames",
+      "state": "IA",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "KC",
+        "MIN",
+        "CHI"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KCCI",
+          "ota": 8
+        },
+        "FOX": {
+          "call": "KDSM",
+          "ota": 17
+        },
+        "NBC": {
+          "call": "WHO",
+          "ota": 13
+        },
+        "ABC": {
+          "call": "WOI",
+          "ota": 5
+        }
+      }
+    },
+    "providence": {
+      "name": "Providence-New Bedford",
+      "state": "RI",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "NE",
+        "NYG"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WPRI",
+          "ota": 12
+        },
+        "FOX": {
+          "call": "WNAC",
+          "ota": 64
+        },
+        "NBC": {
+          "call": "WJAR",
+          "ota": 10
+        },
+        "ABC": {
+          "call": "WLNE",
+          "ota": 6
+        }
+      }
+    },
+    "youngstown": {
+      "name": "Youngstown",
+      "state": "OH",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "CLE",
+        "PIT"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WKBN",
+          "ota": 27
+        },
+        "FOX": {
+          "call": "WYFX",
+          "ota": 62
+        },
+        "NBC": {
+          "call": "WFMJ",
+          "ota": 21
+        },
+        "ABC": {
+          "call": "WYTV",
+          "ota": 33
+        }
+      }
+    },
+    "westpalm": {
+      "name": "West Palm Beach-Fort Pierce",
+      "state": "FL",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "MIA",
+        "TB",
+        "JAX"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WPEC",
+          "ota": 12
+        },
+        "FOX": {
+          "call": "WFLX",
+          "ota": 29
+        },
+        "NBC": {
+          "call": "WPTV",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "WPBF",
+          "ota": 25
+        }
+      }
+    },
+    "fortmyers": {
+      "name": "Fort Myers-Naples",
+      "state": "FL",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "TB",
+        "MIA",
+        "JAX"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WINK",
+          "ota": 11
+        },
+        "FOX": {
+          "call": "WFTX",
+          "ota": 4
+        },
+        "NBC": {
+          "call": "WBBH",
+          "ota": 20
+        },
+        "ABC": {
+          "call": "WZVN",
+          "ota": 26
+        }
+      }
+    },
+    "savannah": {
+      "name": "Savannah",
+      "state": "GA",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "ATL",
+        "JAX",
+        "CAR"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WTOC",
+          "ota": 11
+        },
+        "FOX": {
+          "call": "WTGS",
+          "ota": 28
+        },
+        "NBC": {
+          "call": "WSAV",
+          "ota": 3
+        },
+        "ABC": {
+          "call": "WJCL",
+          "ota": 22
+        }
+      }
+    },
+    "charlestonsc": {
+      "name": "Charleston",
+      "state": "SC",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "CAR",
+        "ATL",
+        "JAX"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WCSC",
+          "ota": 5
+        },
+        "FOX": {
+          "call": "WTAT",
+          "ota": 24
+        },
+        "NBC": {
+          "call": "WCBD",
+          "ota": 2
+        },
+        "ABC": {
+          "call": "WCIV",
+          "ota": 4
+        }
+      }
+    },
+    "myrtlebeach": {
+      "name": "Myrtle Beach-Florence",
+      "state": "SC",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "CAR",
+        "WAS"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WBTW",
+          "ota": 13
+        },
+        "FOX": {
+          "call": "WFXB",
+          "ota": 43
+        },
+        "NBC": {
+          "call": "WMBF",
+          "ota": 32
+        },
+        "ABC": {
+          "call": "WPDE",
+          "ota": 15
+        }
+      }
+    },
+    "greenvillesc": {
+      "name": "Greenville-Spartanburg-Asheville",
+      "state": "SC",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "CAR",
+        "ATL",
+        "TEN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WSPA",
+          "ota": 7
+        },
+        "FOX": {
+          "call": "WHNS",
+          "ota": 21
+        },
+        "NBC": {
+          "call": "WYFF",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "WLOS",
+          "ota": 13
+        }
+      }
+    },
+    "greensboro": {
+      "name": "Greensboro-Winston-Salem",
+      "state": "NC",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "CAR",
+        "WAS"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WFMY",
+          "ota": 2
+        },
+        "FOX": {
+          "call": "WGHP",
+          "ota": 8
+        },
+        "NBC": {
+          "call": "WXII",
+          "ota": 12
+        },
+        "ABC": {
+          "call": "WXLV",
+          "ota": 45
+        }
+      }
+    },
+    "knoxville": {
+      "name": "Knoxville",
+      "state": "TN",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "TEN",
+        "ATL",
+        "CIN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WVLT",
+          "ota": 8
+        },
+        "FOX": {
+          "call": "WTNZ",
+          "ota": 43
+        },
+        "NBC": {
+          "call": "WBIR",
+          "ota": 10
+        },
+        "ABC": {
+          "call": "WATE",
+          "ota": 6
+        }
+      }
+    },
+    "chattanooga": {
+      "name": "Chattanooga",
+      "state": "TN",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "TEN",
+        "ATL"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WDEF",
+          "ota": 12
+        },
+        "FOX": {
+          "call": "WTVC",
+          "ota": 9
+        },
+        "NBC": {
+          "call": "WRCB",
+          "ota": 3
+        },
+        "ABC": {
+          "call": "WTVC",
+          "ota": 9
+        }
+      }
+    },
+    "lexington": {
+      "name": "Lexington",
+      "state": "KY",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "CIN",
+        "IND",
+        "TEN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WKYT",
+          "ota": 27
+        },
+        "FOX": {
+          "call": "WDKY",
+          "ota": 56
+        },
+        "NBC": {
+          "call": "WLEX",
+          "ota": 18
+        },
+        "ABC": {
+          "call": "WTVQ",
+          "ota": 36
+        }
+      }
+    },
+    "dayton": {
+      "name": "Dayton",
+      "state": "OH",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "CIN",
+        "CLE",
+        "IND"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WHIO",
+          "ota": 7
+        },
+        "FOX": {
+          "call": "WRGT",
+          "ota": 45
+        },
+        "NBC": {
+          "call": "WDTN",
+          "ota": 2
+        },
+        "ABC": {
+          "call": "WKEF",
+          "ota": 22
+        }
+      }
+    },
+    "toledo": {
+      "name": "Toledo",
+      "state": "OH",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "DET",
+        "CLE"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WTOL",
+          "ota": 11
+        },
+        "FOX": {
+          "call": "WUPW",
+          "ota": 36
+        },
+        "NBC": {
+          "call": "WNWO",
+          "ota": 24
+        },
+        "ABC": {
+          "call": "WTVG",
+          "ota": 13
+        }
+      }
+    },
+    "grandrapids": {
+      "name": "Grand Rapids-Kalamazoo",
+      "state": "MI",
+      "tz": "America/Detroit",
+      "teams": [],
+      "affinity": [
+        "DET",
+        "CHI",
+        "GB"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WWMT",
+          "ota": 3
+        },
+        "FOX": {
+          "call": "WXMI",
+          "ota": 17
+        },
+        "NBC": {
+          "call": "WOOD",
+          "ota": 8
+        },
+        "ABC": {
+          "call": "WZZM",
+          "ota": 13
+        }
+      }
+    },
+    "madison": {
+      "name": "Madison",
+      "state": "WI",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "GB",
+        "CHI",
+        "MIN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WISC",
+          "ota": 3
+        },
+        "FOX": {
+          "call": "WMSN",
+          "ota": 47
+        },
+        "NBC": {
+          "call": "WMTV",
+          "ota": 15
+        },
+        "ABC": {
+          "call": "WKOW",
+          "ota": 27
+        }
+      }
+    },
+    "tulsa": {
+      "name": "Tulsa",
+      "state": "OK",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "KC",
+        "DAL"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KOTV",
+          "ota": 6
+        },
+        "FOX": {
+          "call": "KOKI",
+          "ota": 23
+        },
+        "NBC": {
+          "call": "KJRH",
+          "ota": 2
+        },
+        "ABC": {
+          "call": "KTUL",
+          "ota": 8
+        }
+      }
+    },
+    "littlerock": {
+      "name": "Little Rock",
+      "state": "AR",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "DAL",
+        "KC",
+        "TEN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KTHV",
+          "ota": 11
+        },
+        "FOX": {
+          "call": "KLRT",
+          "ota": 16
+        },
+        "NBC": {
+          "call": "KARK",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "KATV",
+          "ota": 7
+        }
+      }
+    },
+    "batonrouge": {
+      "name": "Baton Rouge",
+      "state": "LA",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "NO",
+        "HOU",
+        "DAL"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WAFB",
+          "ota": 9
+        },
+        "FOX": {
+          "call": "WGMB",
+          "ota": 44
+        },
+        "NBC": {
+          "call": "WVLA",
+          "ota": 33
+        },
+        "ABC": {
+          "call": "WBRZ",
+          "ota": 2
+        }
+      }
+    },
+    "mobile": {
+      "name": "Mobile-Pensacola",
+      "state": "AL",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "NO",
+        "ATL",
+        "TB"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WKRG",
+          "ota": 5
+        },
+        "FOX": {
+          "call": "WALA",
+          "ota": 10
+        },
+        "NBC": {
+          "call": "WPMI",
+          "ota": 15
+        },
+        "ABC": {
+          "call": "WEAR",
+          "ota": 3
+        }
+      }
+    },
+    "birmingham2": {
+      "name": "Huntsville-Decatur",
+      "state": "AL",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "TEN",
+        "ATL"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WHNT",
+          "ota": 19
+        },
+        "FOX": {
+          "call": "WZDX",
+          "ota": 54
+        },
+        "NBC": {
+          "call": "WAFF",
+          "ota": 48
+        },
+        "ABC": {
+          "call": "WAAY",
+          "ota": 31
+        }
+      }
+    },
+    "tucson": {
+      "name": "Tucson",
+      "state": "AZ",
+      "tz": "America/Phoenix",
+      "teams": [],
+      "affinity": [
+        "ARI",
+        "LAR",
+        "LAC"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KOLD",
+          "ota": 13
+        },
+        "FOX": {
+          "call": "KMSB",
+          "ota": 11
+        },
+        "NBC": {
+          "call": "KVOA",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "KGUN",
+          "ota": 9
+        }
+      }
+    },
+    "albuquerque": {
+      "name": "Albuquerque-Santa Fe",
+      "state": "NM",
+      "tz": "America/Denver",
+      "teams": [],
+      "affinity": [
+        "DEN",
+        "ARI",
+        "DAL"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KRQE",
+          "ota": 13
+        },
+        "FOX": {
+          "call": "KASA",
+          "ota": 2
+        },
+        "NBC": {
+          "call": "KOB",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "KOAT",
+          "ota": 7
+        }
+      }
+    },
+    "elpaso": {
+      "name": "El Paso",
+      "state": "TX",
+      "tz": "America/Denver",
+      "teams": [],
+      "affinity": [
+        "DAL",
+        "ARI",
+        "DEN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KDBC",
+          "ota": 4
+        },
+        "FOX": {
+          "call": "KFOX",
+          "ota": 14
+        },
+        "NBC": {
+          "call": "KTSM",
+          "ota": 9
+        },
+        "ABC": {
+          "call": "KVIA",
+          "ota": 7
+        }
+      }
+    },
+    "boise": {
+      "name": "Boise",
+      "state": "ID",
+      "tz": "America/Denver",
+      "teams": [],
+      "affinity": [
+        "SEA",
+        "DEN",
+        "SF"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KBOI",
+          "ota": 2
+        },
+        "FOX": {
+          "call": "KNIN",
+          "ota": 9
+        },
+        "NBC": {
+          "call": "KTVB",
+          "ota": 7
+        },
+        "ABC": {
+          "call": "KIVI",
+          "ota": 6
+        }
+      }
+    },
+    "spokane": {
+      "name": "Spokane",
+      "state": "WA",
+      "tz": "America/Los_Angeles",
+      "teams": [],
+      "affinity": [
+        "SEA",
+        "DEN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KREM",
+          "ota": 2
+        },
+        "FOX": {
+          "call": "KAYU",
+          "ota": 28
+        },
+        "NBC": {
+          "call": "KHQ",
+          "ota": 6
+        },
+        "ABC": {
+          "call": "KXLY",
+          "ota": 4
+        }
+      }
+    },
+    "reno": {
+      "name": "Reno",
+      "state": "NV",
+      "tz": "America/Los_Angeles",
+      "teams": [],
+      "affinity": [
+        "SF",
+        "LV",
+        "LAR"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KTVN",
+          "ota": 2
+        },
+        "FOX": {
+          "call": "KRXI",
+          "ota": 11
+        },
+        "NBC": {
+          "call": "KRNV",
+          "ota": 4
+        },
+        "ABC": {
+          "call": "KOLO",
+          "ota": 8
+        }
+      }
+    },
+    "coloradosprings": {
+      "name": "Colorado Springs-Pueblo",
+      "state": "CO",
+      "tz": "America/Denver",
+      "teams": [],
+      "affinity": [
+        "DEN",
+        "KC"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KKTV",
+          "ota": 11
+        },
+        "FOX": {
+          "call": "KXRM",
+          "ota": 21
+        },
+        "NBC": {
+          "call": "KOAA",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "KRDO",
+          "ota": 13
+        }
+      }
+    },
+    "honolulu": {
+      "name": "Honolulu",
+      "state": "HI",
+      "tz": "Pacific/Honolulu",
+      "teams": [],
+      "affinity": [
+        "SF",
+        "SEA",
+        "LAR"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KGMB",
+          "ota": 5
+        },
+        "FOX": {
+          "call": "KHON",
+          "ota": 2
+        },
+        "NBC": {
+          "call": "KHNL",
+          "ota": 13
+        },
+        "ABC": {
+          "call": "KITV",
+          "ota": 4
+        }
+      }
+    },
+    "fresno": {
+      "name": "Fresno-Visalia",
+      "state": "CA",
+      "tz": "America/Los_Angeles",
+      "teams": [],
+      "affinity": [
+        "SF",
+        "LAR",
+        "LAC"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KGPE",
+          "ota": 47
+        },
+        "FOX": {
+          "call": "KMPH",
+          "ota": 26
+        },
+        "NBC": {
+          "call": "KSEE",
+          "ota": 24
+        },
+        "ABC": {
+          "call": "KFSN",
+          "ota": 30
+        }
+      }
+    },
+    "bakersfield": {
+      "name": "Bakersfield",
+      "state": "CA",
+      "tz": "America/Los_Angeles",
+      "teams": [],
+      "affinity": [
+        "LAR",
+        "LAC",
+        "SF"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KBAK",
+          "ota": 29
+        },
+        "FOX": {
+          "call": "KBFX",
+          "ota": 58
+        },
+        "NBC": {
+          "call": "KGET",
+          "ota": 17
+        },
+        "ABC": {
+          "call": "KERO",
+          "ota": 23
+        }
+      }
+    },
+    "palmsprings": {
+      "name": "Palm Springs",
+      "state": "CA",
+      "tz": "America/Los_Angeles",
+      "teams": [],
+      "affinity": [
+        "LAR",
+        "LAC",
+        "ARI"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KPSP",
+          "ota": 2
+        },
+        "FOX": {
+          "call": "KDFX",
+          "ota": 11
+        },
+        "NBC": {
+          "call": "KMIR",
+          "ota": 36
+        },
+        "ABC": {
+          "call": "KESQ",
+          "ota": 3
+        }
+      }
+    },
+    "syracuse": {
+      "name": "Syracuse",
+      "state": "NY",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "BUF",
+        "NYG",
+        "NYJ"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WTVH",
+          "ota": 5
+        },
+        "FOX": {
+          "call": "WSYT",
+          "ota": 68
+        },
+        "NBC": {
+          "call": "WSTM",
+          "ota": 3
+        },
+        "ABC": {
+          "call": "WSYR",
+          "ota": 9
+        }
+      }
+    },
+    "rochesterny": {
+      "name": "Rochester",
+      "state": "NY",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "BUF",
+        "NYG"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WROC",
+          "ota": 8
+        },
+        "FOX": {
+          "call": "WUHF",
+          "ota": 31
+        },
+        "NBC": {
+          "call": "WHEC",
+          "ota": 10
+        },
+        "ABC": {
+          "call": "WHAM",
+          "ota": 13
+        }
+      }
+    },
+    "portlandme": {
+      "name": "Portland-Auburn",
+      "state": "ME",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "NE",
+        "BUF"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WGME",
+          "ota": 13
+        },
+        "FOX": {
+          "call": "WPFO",
+          "ota": 23
+        },
+        "NBC": {
+          "call": "WCSH",
+          "ota": 6
+        },
+        "ABC": {
+          "call": "WMTW",
+          "ota": 8
+        }
+      }
+    },
+    "burlington": {
+      "name": "Burlington-Plattsburgh",
+      "state": "VT",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "NE",
+        "BUF",
+        "NYG"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WCAX",
+          "ota": 3
+        },
+        "FOX": {
+          "call": "WFFF",
+          "ota": 44
+        },
+        "NBC": {
+          "call": "WPTZ",
+          "ota": 5
+        },
+        "ABC": {
+          "call": "WVNY",
+          "ota": 22
+        }
+      }
+    },
+    "scranton": {
+      "name": "Scranton-Wilkes-Barre",
+      "state": "PA",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "PHI",
+        "NYG",
+        "NYJ",
+        "BUF"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WYOU",
+          "ota": 22
+        },
+        "FOX": {
+          "call": "WOLF",
+          "ota": 56
+        },
+        "NBC": {
+          "call": "WBRE",
+          "ota": 28
+        },
+        "ABC": {
+          "call": "WNEP",
+          "ota": 16
+        }
+      }
+    },
+    "roanoke": {
+      "name": "Roanoke-Lynchburg",
+      "state": "VA",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "WAS",
+        "CAR"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WDBJ",
+          "ota": 7
+        },
+        "FOX": {
+          "call": "WFXR",
+          "ota": 27
+        },
+        "NBC": {
+          "call": "WSLS",
+          "ota": 10
+        },
+        "ABC": {
+          "call": "WSET",
+          "ota": 13
+        }
+      }
+    },
+    "charlestonwv": {
+      "name": "Charleston-Huntington",
+      "state": "WV",
+      "tz": "America/New_York",
+      "teams": [],
+      "affinity": [
+        "PIT",
+        "CIN",
+        "CLE",
+        "WAS"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "WOWK",
+          "ota": 13
+        },
+        "FOX": {
+          "call": "WVAH",
+          "ota": 11
+        },
+        "NBC": {
+          "call": "WSAZ",
+          "ota": 3
+        },
+        "ABC": {
+          "call": "WCHS",
+          "ota": 8
+        }
+      }
+    },
+    "springfieldmo": {
+      "name": "Springfield",
+      "state": "MO",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "KC",
+        "DAL",
+        "TEN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KOLR",
+          "ota": 10
+        },
+        "FOX": {
+          "call": "KRBK",
+          "ota": 49
+        },
+        "NBC": {
+          "call": "KYTV",
+          "ota": 3
+        },
+        "ABC": {
+          "call": "KSPR",
+          "ota": 33
+        }
+      }
+    },
+    "wichita": {
+      "name": "Wichita-Hutchinson",
+      "state": "KS",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "KC",
+        "DAL",
+        "DEN"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KWCH",
+          "ota": 12
+        },
+        "FOX": {
+          "call": "KSAS",
+          "ota": 24
+        },
+        "NBC": {
+          "call": "KSNW",
+          "ota": 3
+        },
+        "ABC": {
+          "call": "KAKE",
+          "ota": 10
+        }
+      }
+    },
+    "shreveport": {
+      "name": "Shreveport",
+      "state": "LA",
+      "tz": "America/Chicago",
+      "teams": [],
+      "affinity": [
+        "DAL",
+        "NO",
+        "HOU"
+      ],
+      "affiliates": {
+        "CBS": {
+          "call": "KSLA",
+          "ota": 12
+        },
+        "FOX": {
+          "call": "KMSS",
+          "ota": 33
+        },
+        "NBC": {
+          "call": "KTAL",
+          "ota": 6
+        },
+        "ABC": {
+          "call": "KTBS",
+          "ota": 3
+        }
+      }
+    }
   },
   "zipPrefixes": {
-    "100": "newyork", "101": "newyork", "102": "newyork", "103": "newyork", "104": "newyork", "105": "newyork", "106": "newyork", "107": "newyork", "108": "newyork", "109": "newyork",
-    "110": "newyork", "111": "newyork", "112": "newyork", "113": "newyork", "114": "newyork", "115": "newyork", "116": "newyork", "117": "newyork", "118": "newyork", "119": "newyork",
-    "070": "newyork", "071": "newyork", "072": "newyork", "073": "newyork", "074": "newyork", "075": "newyork", "076": "newyork", "077": "newyork", "078": "newyork", "079": "newyork", "088": "newyork", "089": "newyork", "068": "newyork", "069": "newyork",
-    "900": "losangeles", "901": "losangeles", "902": "losangeles", "903": "losangeles", "904": "losangeles", "905": "losangeles", "906": "losangeles", "907": "losangeles", "908": "losangeles", "910": "losangeles", "911": "losangeles", "912": "losangeles", "913": "losangeles", "914": "losangeles", "915": "losangeles", "916": "losangeles", "917": "losangeles", "918": "losangeles", "926": "losangeles", "927": "losangeles", "928": "losangeles", "935": "losangeles",
-    "600": "chicago", "601": "chicago", "602": "chicago", "603": "chicago", "604": "chicago", "605": "chicago", "606": "chicago", "607": "chicago", "608": "chicago", "463": "chicago", "464": "chicago",
-    "190": "philadelphia", "191": "philadelphia", "194": "philadelphia", "080": "philadelphia", "081": "philadelphia", "197": "philadelphia", "198": "philadelphia", "199": "philadelphia",
-    "750": "dallas", "751": "dallas", "752": "dallas", "753": "dallas", "760": "dallas", "761": "dallas", "762": "dallas",
-    "940": "sanfrancisco", "941": "sanfrancisco", "943": "sanfrancisco", "944": "sanfrancisco", "945": "sanfrancisco", "946": "sanfrancisco", "947": "sanfrancisco", "948": "sanfrancisco", "949": "sanfrancisco", "950": "sanfrancisco", "951": "sanfrancisco",
-    "200": "washington", "201": "washington", "202": "washington", "203": "washington", "204": "washington", "205": "washington", "206": "washington", "207": "washington", "208": "washington", "209": "washington", "220": "washington", "221": "washington", "222": "washington", "223": "washington",
-    "770": "houston", "771": "houston", "772": "houston", "773": "houston", "774": "houston", "775": "houston",
-    "014": "boston", "015": "boston", "016": "boston", "017": "boston", "018": "boston", "019": "boston", "020": "boston", "021": "boston", "022": "boston", "023": "boston", "024": "boston", "030": "boston", "031": "boston", "032": "boston", "033": "boston", "034": "boston",
-    "300": "atlanta", "301": "atlanta", "302": "atlanta", "303": "atlanta", "305": "atlanta", "306": "atlanta",
-    "850": "phoenix", "851": "phoenix", "852": "phoenix", "853": "phoenix",
-    "980": "seattle", "981": "seattle", "982": "seattle", "983": "seattle", "984": "seattle",
-    "335": "tampa", "336": "tampa", "337": "tampa", "346": "tampa",
-    "480": "detroit", "481": "detroit", "482": "detroit", "483": "detroit",
-    "550": "minneapolis", "551": "minneapolis", "553": "minneapolis", "554": "minneapolis",
-    "800": "denver", "801": "denver", "802": "denver", "803": "denver", "804": "denver", "805": "denver",
-    "330": "miami", "331": "miami", "332": "miami", "333": "miami",
-    "440": "cleveland", "441": "cleveland", "442": "cleveland", "443": "cleveland",
-    "280": "charlotte", "281": "charlotte", "282": "charlotte",
-    "150": "pittsburgh", "151": "pittsburgh", "152": "pittsburgh", "153": "pittsburgh", "154": "pittsburgh", "156": "pittsburgh", "260": "pittsburgh",
-    "210": "baltimore", "211": "baltimore", "212": "baltimore", "214": "baltimore",
-    "460": "indianapolis", "461": "indianapolis", "462": "indianapolis",
-    "370": "nashville", "371": "nashville", "372": "nashville",
-    "640": "kansascity", "641": "kansascity", "660": "kansascity", "661": "kansascity", "662": "kansascity",
-    "450": "cincinnati", "451": "cincinnati", "452": "cincinnati", "410": "cincinnati",
-    "541": "greenbay", "542": "greenbay", "543": "greenbay", "549": "greenbay",
-    "530": "milwaukee", "531": "milwaukee", "532": "milwaukee",
-    "140": "buffalo", "141": "buffalo", "142": "buffalo", "143": "buffalo",
-    "700": "neworleans", "701": "neworleans",
-    "320": "jacksonville", "321": "jacksonville", "322": "jacksonville",
-    "889": "lasvegas", "890": "lasvegas", "891": "lasvegas",
-    "956": "sacramento", "957": "sacramento", "958": "sacramento",
-    "919": "sandiego", "920": "sandiego", "921": "sandiego",
-    "970": "portland", "971": "portland", "972": "portland",
-    "630": "stlouis", "631": "stlouis", "620": "stlouis",
-    "430": "columbus", "431": "columbus", "432": "columbus",
-    "840": "saltlake", "841": "saltlake",
-    "327": "orlando", "328": "orlando",
-    "060": "hartford", "061": "hartford", "062": "hartford", "064": "hartford", "065": "hartford",
-    "275": "raleigh", "276": "raleigh", "277": "raleigh",
-    "230": "richmond", "231": "richmond", "232": "richmond",
-    "233": "norfolk", "234": "norfolk", "235": "norfolk", "236": "norfolk",
-    "350": "birmingham", "351": "birmingham", "352": "birmingham",
-    "380": "memphis", "381": "memphis",
-    "730": "oklahomacity", "731": "oklahomacity",
-    "786": "austin", "787": "austin",
-    "780": "sanantonio", "781": "sanantonio", "782": "sanantonio",
-    "400": "louisville", "401": "louisville", "402": "louisville",
-    "120": "albany", "121": "albany", "122": "albany", "123": "albany",
-    "170": "harrisburg", "171": "harrisburg", "173": "harrisburg", "174": "harrisburg", "175": "harrisburg", "176": "harrisburg",
-    "680": "omaha", "681": "omaha",
-    "500": "desmoines", "501": "desmoines", "502": "desmoines", "503": "desmoines",
-    "028": "providence", "029": "providence", "027": "providence",
-    "444": "youngstown", "445": "youngstown"
+    "100": "newyork",
+    "101": "newyork",
+    "102": "newyork",
+    "103": "newyork",
+    "104": "newyork",
+    "105": "newyork",
+    "106": "newyork",
+    "107": "newyork",
+    "108": "newyork",
+    "109": "newyork",
+    "110": "newyork",
+    "111": "newyork",
+    "112": "newyork",
+    "113": "newyork",
+    "114": "newyork",
+    "115": "newyork",
+    "116": "newyork",
+    "117": "newyork",
+    "118": "newyork",
+    "119": "newyork",
+    "070": "newyork",
+    "071": "newyork",
+    "072": "newyork",
+    "073": "newyork",
+    "074": "newyork",
+    "075": "newyork",
+    "076": "newyork",
+    "077": "newyork",
+    "078": "newyork",
+    "079": "newyork",
+    "088": "newyork",
+    "089": "newyork",
+    "068": "newyork",
+    "069": "newyork",
+    "900": "losangeles",
+    "901": "losangeles",
+    "902": "losangeles",
+    "903": "losangeles",
+    "904": "losangeles",
+    "905": "losangeles",
+    "906": "losangeles",
+    "907": "losangeles",
+    "908": "losangeles",
+    "910": "losangeles",
+    "911": "losangeles",
+    "912": "losangeles",
+    "913": "losangeles",
+    "914": "losangeles",
+    "915": "losangeles",
+    "916": "losangeles",
+    "917": "losangeles",
+    "918": "losangeles",
+    "926": "losangeles",
+    "927": "losangeles",
+    "928": "losangeles",
+    "935": "losangeles",
+    "600": "chicago",
+    "601": "chicago",
+    "602": "chicago",
+    "603": "chicago",
+    "604": "chicago",
+    "605": "chicago",
+    "606": "chicago",
+    "607": "chicago",
+    "608": "chicago",
+    "463": "chicago",
+    "464": "chicago",
+    "190": "philadelphia",
+    "191": "philadelphia",
+    "194": "philadelphia",
+    "080": "philadelphia",
+    "081": "philadelphia",
+    "197": "philadelphia",
+    "198": "philadelphia",
+    "199": "philadelphia",
+    "750": "dallas",
+    "751": "dallas",
+    "752": "dallas",
+    "753": "dallas",
+    "760": "dallas",
+    "761": "dallas",
+    "762": "dallas",
+    "940": "sanfrancisco",
+    "941": "sanfrancisco",
+    "943": "sanfrancisco",
+    "944": "sanfrancisco",
+    "945": "sanfrancisco",
+    "946": "sanfrancisco",
+    "947": "sanfrancisco",
+    "948": "sanfrancisco",
+    "949": "sanfrancisco",
+    "950": "sanfrancisco",
+    "951": "sanfrancisco",
+    "200": "washington",
+    "201": "washington",
+    "202": "washington",
+    "203": "washington",
+    "204": "washington",
+    "205": "washington",
+    "206": "washington",
+    "207": "washington",
+    "208": "washington",
+    "209": "washington",
+    "220": "washington",
+    "221": "washington",
+    "222": "washington",
+    "223": "washington",
+    "770": "houston",
+    "771": "houston",
+    "772": "houston",
+    "773": "houston",
+    "774": "houston",
+    "775": "houston",
+    "014": "boston",
+    "015": "boston",
+    "016": "boston",
+    "017": "boston",
+    "018": "boston",
+    "019": "boston",
+    "020": "boston",
+    "021": "boston",
+    "022": "boston",
+    "023": "boston",
+    "024": "boston",
+    "030": "boston",
+    "031": "boston",
+    "032": "boston",
+    "033": "boston",
+    "034": "boston",
+    "300": "atlanta",
+    "301": "atlanta",
+    "302": "atlanta",
+    "303": "atlanta",
+    "305": "atlanta",
+    "306": "atlanta",
+    "850": "phoenix",
+    "851": "phoenix",
+    "852": "phoenix",
+    "853": "phoenix",
+    "980": "seattle",
+    "981": "seattle",
+    "982": "seattle",
+    "983": "seattle",
+    "984": "seattle",
+    "335": "tampa",
+    "336": "tampa",
+    "337": "tampa",
+    "346": "tampa",
+    "480": "detroit",
+    "481": "detroit",
+    "482": "detroit",
+    "483": "detroit",
+    "550": "minneapolis",
+    "551": "minneapolis",
+    "553": "minneapolis",
+    "554": "minneapolis",
+    "800": "denver",
+    "801": "denver",
+    "802": "denver",
+    "803": "denver",
+    "804": "denver",
+    "805": "denver",
+    "330": "miami",
+    "331": "miami",
+    "332": "miami",
+    "333": "miami",
+    "440": "cleveland",
+    "441": "cleveland",
+    "442": "cleveland",
+    "443": "cleveland",
+    "280": "charlotte",
+    "281": "charlotte",
+    "282": "charlotte",
+    "150": "pittsburgh",
+    "151": "pittsburgh",
+    "152": "pittsburgh",
+    "153": "pittsburgh",
+    "154": "pittsburgh",
+    "156": "pittsburgh",
+    "260": "pittsburgh",
+    "210": "baltimore",
+    "211": "baltimore",
+    "212": "baltimore",
+    "214": "baltimore",
+    "460": "indianapolis",
+    "461": "indianapolis",
+    "462": "indianapolis",
+    "370": "nashville",
+    "371": "nashville",
+    "372": "nashville",
+    "640": "kansascity",
+    "641": "kansascity",
+    "660": "kansascity",
+    "661": "kansascity",
+    "662": "kansascity",
+    "450": "cincinnati",
+    "451": "cincinnati",
+    "452": "cincinnati",
+    "410": "cincinnati",
+    "541": "greenbay",
+    "542": "greenbay",
+    "543": "greenbay",
+    "549": "greenbay",
+    "530": "milwaukee",
+    "531": "milwaukee",
+    "532": "milwaukee",
+    "140": "buffalo",
+    "141": "buffalo",
+    "142": "buffalo",
+    "143": "buffalo",
+    "700": "neworleans",
+    "701": "neworleans",
+    "320": "jacksonville",
+    "321": "jacksonville",
+    "322": "jacksonville",
+    "889": "lasvegas",
+    "890": "lasvegas",
+    "891": "lasvegas",
+    "956": "sacramento",
+    "957": "sacramento",
+    "958": "sacramento",
+    "919": "sandiego",
+    "920": "sandiego",
+    "921": "sandiego",
+    "970": "portland",
+    "971": "portland",
+    "972": "portland",
+    "630": "stlouis",
+    "631": "stlouis",
+    "620": "stlouis",
+    "430": "columbus",
+    "431": "columbus",
+    "432": "columbus",
+    "840": "saltlake",
+    "841": "saltlake",
+    "327": "orlando",
+    "328": "orlando",
+    "060": "hartford",
+    "061": "hartford",
+    "062": "hartford",
+    "064": "hartford",
+    "065": "hartford",
+    "275": "raleigh",
+    "276": "raleigh",
+    "277": "raleigh",
+    "230": "richmond",
+    "231": "richmond",
+    "232": "richmond",
+    "233": "norfolk",
+    "234": "norfolk",
+    "235": "norfolk",
+    "236": "norfolk",
+    "350": "birmingham",
+    "351": "birmingham",
+    "352": "birmingham",
+    "380": "memphis",
+    "381": "memphis",
+    "730": "oklahomacity",
+    "731": "oklahomacity",
+    "786": "austin",
+    "787": "austin",
+    "780": "sanantonio",
+    "781": "sanantonio",
+    "782": "sanantonio",
+    "400": "louisville",
+    "401": "louisville",
+    "402": "louisville",
+    "120": "albany",
+    "121": "albany",
+    "122": "albany",
+    "123": "albany",
+    "170": "harrisburg",
+    "171": "harrisburg",
+    "173": "harrisburg",
+    "174": "harrisburg",
+    "175": "harrisburg",
+    "176": "harrisburg",
+    "680": "omaha",
+    "681": "omaha",
+    "500": "desmoines",
+    "501": "desmoines",
+    "502": "desmoines",
+    "503": "desmoines",
+    "028": "providence",
+    "029": "providence",
+    "027": "providence",
+    "444": "youngstown",
+    "445": "youngstown",
+    "334": "westpalm",
+    "349": "westpalm",
+    "339": "fortmyers",
+    "341": "fortmyers",
+    "342": "fortmyers",
+    "313": "savannah",
+    "314": "savannah",
+    "294": "charlestonsc",
+    "295": "myrtlebeach",
+    "293": "myrtlebeach",
+    "296": "greenvillesc",
+    "287": "greenvillesc",
+    "288": "greenvillesc",
+    "270": "greensboro",
+    "271": "greensboro",
+    "272": "greensboro",
+    "274": "greensboro",
+    "377": "knoxville",
+    "378": "knoxville",
+    "379": "knoxville",
+    "373": "chattanooga",
+    "374": "chattanooga",
+    "403": "lexington",
+    "404": "lexington",
+    "405": "lexington",
+    "453": "dayton",
+    "454": "dayton",
+    "434": "toledo",
+    "435": "toledo",
+    "436": "toledo",
+    "493": "grandrapids",
+    "494": "grandrapids",
+    "495": "grandrapids",
+    "535": "madison",
+    "537": "madison",
+    "740": "tulsa",
+    "741": "tulsa",
+    "744": "tulsa",
+    "720": "littlerock",
+    "721": "littlerock",
+    "722": "littlerock",
+    "707": "batonrouge",
+    "708": "batonrouge",
+    "365": "mobile",
+    "366": "mobile",
+    "325": "mobile",
+    "356": "birmingham2",
+    "357": "birmingham2",
+    "358": "birmingham2",
+    "856": "tucson",
+    "857": "tucson",
+    "870": "albuquerque",
+    "871": "albuquerque",
+    "874": "albuquerque",
+    "875": "albuquerque",
+    "798": "elpaso",
+    "799": "elpaso",
+    "885": "elpaso",
+    "836": "boise",
+    "837": "boise",
+    "990": "spokane",
+    "991": "spokane",
+    "992": "spokane",
+    "894": "reno",
+    "895": "reno",
+    "897": "reno",
+    "808": "coloradosprings",
+    "809": "coloradosprings",
+    "810": "coloradosprings",
+    "967": "honolulu",
+    "968": "honolulu",
+    "936": "fresno",
+    "937": "fresno",
+    "932": "fresno",
+    "933": "fresno",
+    "922": "palmsprings",
+    "130": "syracuse",
+    "131": "syracuse",
+    "132": "syracuse",
+    "144": "rochesterny",
+    "145": "rochesterny",
+    "146": "rochesterny",
+    "040": "portlandme",
+    "041": "portlandme",
+    "042": "portlandme",
+    "043": "portlandme",
+    "054": "burlington",
+    "056": "burlington",
+    "057": "burlington",
+    "184": "scranton",
+    "185": "scranton",
+    "186": "scranton",
+    "187": "scranton",
+    "240": "roanoke",
+    "241": "roanoke",
+    "245": "roanoke",
+    "250": "charlestonwv",
+    "251": "charlestonwv",
+    "255": "charlestonwv",
+    "257": "charlestonwv",
+    "656": "springfieldmo",
+    "657": "springfieldmo",
+    "658": "springfieldmo",
+    "670": "wichita",
+    "671": "wichita",
+    "672": "wichita",
+    "710": "shreveport",
+    "711": "shreveport"
   }
 }

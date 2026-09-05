@@ -76,15 +76,20 @@ final class ScheduleStore: ObservableObject {
 
     @discardableResult
     func apply(_ live: [Game], source: String) -> [ScheduleChange] {
+        let previousSource = self.source
         let delta = Self.diff(old: games, new: live)
         let liveKeys = Set(live.map(\.matchKey)), liveWeeks = Set(live.map(\.week))
         let kept = games.filter { !liveKeys.contains($0.matchKey) && !liveWeeks.contains($0.week) }
         games = (live + kept).sorted { $0.kickoff < $1.kickoff }
         self.source = source; lastSync = Date(); lastError = nil
-        let meaningful = delta.filter { [.time, .date, .network].contains($0.kind) }
-        changes.append(contentsOf: meaningful)
+        // Going from the bundled seed to the live feed is a data-source upgrade, not a schedule
+        // change; recording it would tell users games "moved" when nothing did.
+        let wasSeed = previousSource == "seed" && source != "seed"
+        if !wasSeed {
+            changes.append(contentsOf: delta.filter { [.time, .date, .network].contains($0.kind) })
+        }
         persist()
-        return delta
+        return wasSeed ? [] : delta
     }
 
     /// Dev helper mirroring the server's simulate-change endpoint.

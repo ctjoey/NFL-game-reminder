@@ -15,6 +15,10 @@ struct WeekView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 14, pinnedViews: []) {
+                    if state.user.isTraveling, let m = state.user.travelMarket,
+                       let name = state.catalog.markets[m]?.name {
+                        travelBanner(name)
+                    }
                     controlBar(cards: cards)
 
                     if state.schedule.source == "seed" {
@@ -85,6 +89,26 @@ struct WeekView: View {
         .padding(.bottom, 2)
     }
 
+    private func travelBanner(_ name: String) -> some View {
+        HStack(spacing: 9) {
+            Image(systemName: "airplane.departure").font(.footnote.weight(.bold)).foregroundStyle(Theme.bgTop)
+            VStack(alignment: .leading, spacing: 1) {
+                Text("Watching from \(name)").font(.caption.weight(.heavy)).foregroundStyle(Theme.bgTop)
+                Text("Channels and regional games are for this market")
+                    .font(.caption2).foregroundStyle(Theme.bgTop.opacity(0.75))
+            }
+            Spacer(minLength: 0)
+            Button("Back home") { state.user.travelMarket = nil }
+                .font(.caption.weight(.bold))
+                .padding(.horizontal, 10).padding(.vertical, 6)
+                .background(Theme.bgTop.opacity(0.18), in: Capsule())
+                .foregroundStyle(Theme.bgTop)
+                .buttonStyle(.plain)
+        }
+        .padding(11)
+        .background(Theme.accent, in: RoundedRectangle(cornerRadius: 13))
+    }
+
     private func statChip(_ value: String, _ label: String, _ color: Color) -> some View {
         HStack(spacing: 5) {
             Text(value).font(.system(size: 15, weight: .heavy, design: .rounded)).foregroundStyle(color)
@@ -137,6 +161,8 @@ struct ConfidenceBadge: View {
 struct GameCardView: View {
     @EnvironmentObject var state: AppState
     let card: GameCard
+    /// False inside the detail sheet, where a "Details" affordance would point at itself.
+    var showsDetailChevron: Bool = true
     let onToggleFollow: () -> Void
     private var tz: TimeZone { state.user.timeZone }
 
@@ -309,7 +335,19 @@ struct GameCardView: View {
     }
 
     @ViewBuilder private var footer: some View {
-        if card.followed, !card.plannedAlerts.isEmpty {
+        if !showsDetailChevron {
+            if card.followed, !card.plannedAlerts.isEmpty {
+                HStack(spacing: 5) {
+                    Image(systemName: "bell.badge.fill").font(.caption2).foregroundStyle(Theme.accent)
+                    Text("\(card.plannedAlerts.count) alert\(card.plannedAlerts.count == 1 ? "" : "s") set")
+                        .font(.caption2.weight(.semibold)).foregroundStyle(Theme.textDim)
+                    Spacer(minLength: 0)
+                }
+                .padding(.horizontal, 14).padding(.top, 8).padding(.bottom, 12)
+            } else {
+                Color.clear.frame(height: 12)
+            }
+        } else if card.followed, !card.plannedAlerts.isEmpty {
             HStack(spacing: 5) {
                 Image(systemName: "bell.badge.fill").font(.caption2).foregroundStyle(Theme.accent)
                 Text("\(card.plannedAlerts.count) alert\(card.plannedAlerts.count == 1 ? "" : "s") set")

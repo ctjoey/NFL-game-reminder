@@ -151,6 +151,9 @@ struct UserProfile: Codable, Equatable {
     var tz: String = TimeZone.current.identifier
     var zip: String = ""
     var market: String? = nil
+    /// Set while the user is away from home. Overrides `market` for every lookup but is kept
+    /// separate so returning home is one tap and the home market is never lost.
+    var travelMarket: String? = nil
     var provider: String? = nil
     var hasAntenna = false
     var services: [String] = []
@@ -161,6 +164,9 @@ struct UserProfile: Codable, Equatable {
     var maxPerDay = 12
     var onboarded = false
     var timeZone: TimeZone { TimeZone(identifier: tz) ?? .current }
+    /// The market every channel and coverage lookup should use.
+    var activeMarket: String? { travelMarket ?? market }
+    var isTraveling: Bool { travelMarket != nil && travelMarket != market }
 }
 
 // MARK: - Resolved card (what the UI and notifications render)

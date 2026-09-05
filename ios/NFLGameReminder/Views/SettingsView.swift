@@ -11,6 +11,7 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 LocationSection(draft: $draft, marketHint: $marketHint)
+                TravelSection(draft: $draft)
                 ChannelOverridesSection(draft: $draft)
                 FollowSection(draft: $draft)
                 AlertsSection(draft: $draft)
@@ -60,6 +61,30 @@ struct ChannelOverridesSection: View {
                     HStack { Text(n).frame(width: 60, alignment: .leading)
                         TextField("channel #", text: Binding(get: { draft.channelOverrides[n] ?? "" }, set: { draft.channelOverrides[n] = $0.trimmingCharacters(in: .whitespaces) })).keyboardType(.numbersAndPunctuation) }
                 }
+            }
+        }
+    }
+}
+
+
+/// Away from home? Point the app at whatever market you are actually in. The home market is
+/// remembered, so coming back is one tap.
+struct TravelSection: View {
+    @EnvironmentObject var state: AppState
+    @Binding var draft: UserProfile
+    var body: some View {
+        Section("Traveling") {
+            Text("In another city? Switch markets and the app shows that city's stations, channel numbers and regional games. Your home market is kept.")
+                .font(.caption).foregroundStyle(.secondary)
+            Picker("Watching from", selection: $draft.travelMarket) {
+                Text("Home\(draft.market.flatMap { state.catalog.markets[$0]?.name }.map { " (\($0))" } ?? "")")
+                    .tag(String?.none)
+                ForEach(state.catalog.marketList) { m in
+                    Text("\(m.name), \(m.state)").tag(String?.some(m.id))
+                }
+            }
+            if draft.travelMarket != nil, draft.travelMarket != draft.market {
+                Button("Back to my home market") { draft.travelMarket = nil }
             }
         }
     }

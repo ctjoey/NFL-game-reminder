@@ -11,7 +11,7 @@ struct GameDetailView: View {
             ScrollView {
                 if let card = state.card(cardId) {
                     VStack(alignment: .leading, spacing: 14) {
-                        GameCardView(card: card) { state.toggleFollow(card) }
+                        GameCardView(card: card, showsDetailChevron: false) { state.toggleFollow(card) }
                         section("Where to watch") { carriers(card) }
                         section("Can you watch it?") { access(card) }
                         section("Planned alerts") { alerts(card) }
@@ -137,7 +137,9 @@ struct GameDetailView: View {
     private func changes(_ card: GameCard) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             ForEach(card.changes) { c in
-                Text("\(c.at.formatted(date: .abbreviated, time: .shortened)): \(c.kind.rawValue) \(c.oldValue ?? "") → \(c.newValue ?? "")")
+                let from = (c.oldValue?.isEmpty == false) ? c.oldValue! : "none"
+                let to = (c.newValue?.isEmpty == false) ? c.newValue! : "none"
+                Text("\(c.at.formatted(date: .abbreviated, time: .shortened)): \(c.kind.rawValue) \(from) → \(to)")
                     .font(.caption).foregroundStyle(Theme.textDim)
                     .fixedSize(horizontal: false, vertical: true)
             }

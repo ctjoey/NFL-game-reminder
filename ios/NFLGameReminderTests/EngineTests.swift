@@ -74,6 +74,37 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(alerts[0].body.contains("WPXI (NBC) ch. 11"))
         XCTAssertTrue(alerts[0].body.contains("Was: Sun Sep 13, 1:00 pm EDT on FOX/FOX One"))
     }
+    func testTravelMarketOverridesHomeForChannelsAndCoverage() {
+        var u = pitUser                       // home: Pittsburgh
+        u.travelMarket = "westpalm"           // watching from West Palm Beach
+        XCTAssertTrue(u.isTraveling)
+        XCTAssertEqual(u.activeMarket, "westpalm")
+        let ch = catalog.channel(for: "CBS", user: u)
+        XCTAssertEqual(ch.stationCall, "WPEC")
+        // Pittsburgh's own game is no longer the guaranteed local one.
+        let r = CoverageEngine.gameInMarket(game("2026-W01-ATL-PIT"), marketKey: u.activeMarket, all: games, catalog: catalog)
+        XCTAssertNotEqual(r.reason, "Steelers game always airs in Pittsburgh")
+        u.travelMarket = nil
+        XCTAssertFalse(u.isTraveling)
+        XCTAssertEqual(catalog.channel(for: "CBS", user: u).stationCall, "KDKA")
+    }
+
+    func testSeedToLiveUpgradeIsNotAScheduleChange() async {
+        let store = await ScheduleStore(season: 2026, directory: FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString))
+        var moved = await store.games
+        guard let i = moved.firstIndex(where: { $0.id == "2026-W01-ATL-PIT" }) else { return XCTFail("seed game missing") }
+        moved[i].networks = ["NBC"]
+        // First application comes from the live feed while the store still holds the seed.
+        let delta = await store.apply(moved, source: "espn")
+        XCTAssertTrue(delta.isEmpty, "a seed-to-live upgrade must not report schedule changes")
+        XCTAssertTrue(await store.changes.isEmpty)
+        // A later live-to-live difference is a real change.
+        moved[i].networks = ["FOX"]
+        let second = await store.apply(moved, source: "espn")
+        XCTAssertTrue(second.contains { $0.kind == .network })
+    }
+
     func testESPNNormalization() throws {
         let json = """
         {"events":[{"id":"401","date":"2026-09-15T00:15Z","name":"Denver Broncos at Kansas City Chiefs","week":{"number":1},"status":{"type":{"state":"pre"}},"competitions":[{"competitors":[{"homeAway":"home","team":{"abbreviation":"KC"}},{"homeAway":"away","team":{"abbreviation":"DEN"}}],"broadcasts":[{"names":["ESPN","ABC"]}],"geoBroadcasts":[{"market":{"type":"National"},"media":{"shortName":"ESPN+"}}],"venue":{"fullName":"GEHA Field at Arrowhead Stadium","address":{"city":"Kansas City"}}}]}]}
