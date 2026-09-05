@@ -1,0 +1,599 @@
+++ find build/Build/Products -name NFLGameReminder.app -path '*iphonesimulator*'
+++ head -1
++ APP=build/Build/Products/Debug-iphonesimulator/NFLGameReminder.app
++ '[' -z build/Build/Products/Debug-iphonesimulator/NFLGameReminder.app ']'
+++ defaults read /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/build/Build/Products/Debug-iphonesimulator/NFLGameReminder.app/Info CFBundleIdentifier
++ BID=com.nfl-gtr.NFLGameReminder
+++ xcrun simctl list runtimes -j
+++ python3 -c 'import json,sys;print([r['\''identifier'\''] for r in json.load(sys.stdin)['\''runtimes'\''] if r['\''isAvailable'\''] and '\''iOS'\'' in r['\''name'\'']][-1])'
++ RUNTIME=com.apple.CoreSimulator.SimRuntime.iOS-26-5
+++ xcrun simctl list devicetypes -j
+++ python3 -c 'import json,re,sys;c=[x['\''identifier'\''] for x in json.load(sys.stdin)['\''devicetypes'\''] if '\''Pro-Max'\'' in x['\''identifier'\'']];print(sorted(c,key=lambda i:int(re.search(r'\''iPhone-(\d+)'\'',i).group(1)))[-1])'
++ DEVTYPE=com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max
+++ xcrun simctl create shots com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max com.apple.CoreSimulator.SimRuntime.iOS-26-5
++ UDID=F79D3AD6-CF47-4284-96E8-F74BE279E474
++ xcrun simctl boot F79D3AD6-CF47-4284-96E8-F74BE279E474
++ xcrun simctl bootstatus F79D3AD6-CF47-4284-96E8-F74BE279E474 -b
+Monitoring boot status for shots (F79D3AD6-CF47-4284-96E8-F74BE279E474).
+[2026-09-05 20:47:46 +0000] Status=2, isTerminal=NO, Elapsed=02:28.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:02:17 seconds
+
+[2026-09-05 20:47:47 +0000] Status=2, isTerminal=NO, Elapsed=02:29.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:02:18 seconds
+
+[2026-09-05 20:47:48 +0000] Status=2, isTerminal=NO, Elapsed=02:31.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:02:19 seconds
+
+[2026-09-05 20:47:49 +0000] Status=2, isTerminal=NO, Elapsed=02:32.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:02:20 seconds
+
+[2026-09-05 20:47:50 +0000] Status=2, isTerminal=NO, Elapsed=02:33.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:02:21 seconds
+
+[2026-09-05 20:47:51 +0000] Status=2, isTerminal=NO, Elapsed=02:34.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:02:22 seconds
+
+[2026-09-05 20:47:52 +0000] Status=2, isTerminal=NO, Elapsed=02:34.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:02:23 seconds
+
+[2026-09-05 20:47:53 +0000] Status=2, isTerminal=NO, Elapsed=02:36.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:02:24 seconds
+
+[2026-09-05 20:48:04 +0000] Status=2, isTerminal=NO, Elapsed=02:46.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.securityd.KeychainMigrator (KeychainMigrator.migrator, user-agnostic)
+		Migration Elapsed:02:26 seconds
+
+[2026-09-05 20:48:05 +0000] Status=2, isTerminal=NO, Elapsed=02:48.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:02:35 seconds
+
+[2026-09-05 20:48:07 +0000] Status=2, isTerminal=NO, Elapsed=02:50.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:02:37 seconds
+
+[2026-09-05 20:48:08 +0000] Status=2, isTerminal=NO, Elapsed=02:51.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:02:39 seconds
+
+[2026-09-05 20:48:10 +0000] Status=2, isTerminal=NO, Elapsed=02:52.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:02:40 seconds
+
+[2026-09-05 20:48:10 +0000] Status=2, isTerminal=NO, Elapsed=02:53.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.MobileGestalt.MobileGestaltMigrator (MobileGestaltMigrator.migrator, user-agnostic)
+		Migration Elapsed:02:41 seconds
+
+[2026-09-05 20:48:11 +0000] Status=2, isTerminal=NO, Elapsed=02:53.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.addressbook.migrator (AddressBookLegacy.migrator)
+		Migration Elapsed:02:42 seconds
+
+[2026-09-05 20:48:12 +0000] Status=2, isTerminal=NO, Elapsed=02:54.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.MobileSafari.migrator (MobileSafari.migrator)
+		Migration Elapsed:02:42 seconds
+
+[2026-09-05 20:48:12 +0000] Status=2, isTerminal=NO, Elapsed=02:55.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:02:43 seconds
+
+[2026-09-05 20:48:13 +0000] Status=2, isTerminal=NO, Elapsed=02:56.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:02:44 seconds
+
+[2026-09-05 20:48:14 +0000] Status=2, isTerminal=NO, Elapsed=02:57.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:02:45 seconds
+
+[2026-09-05 20:48:17 +0000] Status=2, isTerminal=NO, Elapsed=03:00.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:02:46 seconds
+
+[2026-09-05 20:48:20 +0000] Status=2, isTerminal=NO, Elapsed=03:02.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:02:49 seconds
+
+[2026-09-05 20:48:24 +0000] Status=2, isTerminal=NO, Elapsed=03:07.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:02:51 seconds
+
+[2026-09-05 20:48:26 +0000] Status=2, isTerminal=NO, Elapsed=03:09.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:02:55 seconds
+
+[2026-09-05 20:48:28 +0000] Status=2, isTerminal=NO, Elapsed=03:11.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:02:58 seconds
+
+[2026-09-05 20:48:29 +0000] Status=2, isTerminal=NO, Elapsed=03:12.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:00 seconds
+
+[2026-09-05 20:48:31 +0000] Status=2, isTerminal=NO, Elapsed=03:14.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:00 seconds
+
+[2026-09-05 20:48:38 +0000] Status=2, isTerminal=NO, Elapsed=03:21.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:03 seconds
+
+[2026-09-05 20:48:42 +0000] Status=2, isTerminal=NO, Elapsed=03:25.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:09 seconds
+
+[2026-09-05 20:48:42 +0000] Status=2, isTerminal=NO, Elapsed=03:25.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:14 seconds
+
+[2026-09-05 20:48:43 +0000] Status=2, isTerminal=NO, Elapsed=03:26.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:14 seconds
+
+[2026-09-05 20:48:44 +0000] Status=2, isTerminal=NO, Elapsed=03:27.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:15 seconds
+
+[2026-09-05 20:48:46 +0000] Status=2, isTerminal=NO, Elapsed=03:29.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:16 seconds
+
+[2026-09-05 20:48:47 +0000] Status=2, isTerminal=NO, Elapsed=03:30.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:18 seconds
+
+[2026-09-05 20:48:48 +0000] Status=2, isTerminal=NO, Elapsed=03:31.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:19 seconds
+
+[2026-09-05 20:48:50 +0000] Status=2, isTerminal=NO, Elapsed=03:33.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:20 seconds
+
+[2026-09-05 20:48:52 +0000] Status=2, isTerminal=NO, Elapsed=03:34.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:21 seconds
+
+[2026-09-05 20:48:55 +0000] Status=2, isTerminal=NO, Elapsed=03:38.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:23 seconds
+
+[2026-09-05 20:48:56 +0000] Status=2, isTerminal=NO, Elapsed=03:39.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:26 seconds
+
+[2026-09-05 20:48:57 +0000] Status=2, isTerminal=NO, Elapsed=03:40.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:28 seconds
+
+[2026-09-05 20:48:58 +0000] Status=2, isTerminal=NO, Elapsed=03:41.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:29 seconds
+
+[2026-09-05 20:48:58 +0000] Status=2, isTerminal=NO, Elapsed=03:41.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:29 seconds
+
+[2026-09-05 20:49:01 +0000] Status=2, isTerminal=NO, Elapsed=03:44.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:30 seconds
+
+[2026-09-05 20:49:01 +0000] Status=2, isTerminal=NO, Elapsed=03:44.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:33 seconds
+
+[2026-09-05 20:49:02 +0000] Status=2, isTerminal=NO, Elapsed=03:45.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:33 seconds
+
+[2026-09-05 20:49:03 +0000] Status=2, isTerminal=NO, Elapsed=03:46.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:34 seconds
+
+[2026-09-05 20:49:04 +0000] Status=2, isTerminal=NO, Elapsed=03:47.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:35 seconds
+
+[2026-09-05 20:49:05 +0000] Status=2, isTerminal=NO, Elapsed=03:48.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:36 seconds
+
+[2026-09-05 20:49:06 +0000] Status=2, isTerminal=NO, Elapsed=03:49.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:37 seconds
+
+[2026-09-05 20:49:07 +0000] Status=2, isTerminal=NO, Elapsed=03:50.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:38 seconds
+
+[2026-09-05 20:49:08 +0000] Status=2, isTerminal=NO, Elapsed=03:51.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:39 seconds
+
+[2026-09-05 20:49:09 +0000] Status=2, isTerminal=NO, Elapsed=03:51.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:40 seconds
+
+[2026-09-05 20:49:10 +0000] Status=2, isTerminal=NO, Elapsed=03:52.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:41 seconds
+
+[2026-09-05 20:49:11 +0000] Status=2, isTerminal=NO, Elapsed=03:53.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:42 seconds
+
+[2026-09-05 20:49:12 +0000] Status=2, isTerminal=NO, Elapsed=03:54.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:43 seconds
+
+[2026-09-05 20:49:13 +0000] Status=2, isTerminal=NO, Elapsed=03:55.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:44 seconds
+
+[2026-09-05 20:49:14 +0000] Status=2, isTerminal=NO, Elapsed=03:56.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:45 seconds
+
+[2026-09-05 20:49:15 +0000] Status=2, isTerminal=NO, Elapsed=03:57.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:46 seconds
+
+[2026-09-05 20:49:16 +0000] Status=2, isTerminal=NO, Elapsed=03:58.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:47 seconds
+
+[2026-09-05 20:49:17 +0000] Status=2, isTerminal=NO, Elapsed=03:59.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:48 seconds
+
+[2026-09-05 20:49:18 +0000] Status=2, isTerminal=NO, Elapsed=04:00.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:49 seconds
+
+[2026-09-05 20:49:19 +0000] Status=2, isTerminal=NO, Elapsed=04:01.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:50 seconds
+
+[2026-09-05 20:49:20 +0000] Status=2, isTerminal=NO, Elapsed=04:03.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:51 seconds
+
+[2026-09-05 20:49:21 +0000] Status=2, isTerminal=NO, Elapsed=04:03.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:52 seconds
+
+[2026-09-05 20:49:22 +0000] Status=2, isTerminal=NO, Elapsed=04:05.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:53 seconds
+
+[2026-09-05 20:49:23 +0000] Status=2, isTerminal=NO, Elapsed=04:05.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:54 seconds
+
+[2026-09-05 20:49:24 +0000] Status=2, isTerminal=NO, Elapsed=04:06.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:55 seconds
+
+[2026-09-05 20:49:25 +0000] Status=2, isTerminal=NO, Elapsed=04:07.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:56 seconds
+
+[2026-09-05 20:49:26 +0000] Status=2, isTerminal=NO, Elapsed=04:08.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:57 seconds
+
+[2026-09-05 20:49:31 +0000] Status=2, isTerminal=NO, Elapsed=04:14.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:03:59 seconds
+
+[2026-09-05 20:49:33 +0000] Status=2, isTerminal=NO, Elapsed=04:16.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+		Migration Elapsed:04:03 seconds
+
+[2026-09-05 20:49:35 +0000] Status=2, isTerminal=NO, Elapsed=04:18.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.mdm.migrator (MCMDM.migrator)
+		Migration Elapsed:04:05 seconds
+
+[2026-09-05 20:49:36 +0000] Status=2, isTerminal=NO, Elapsed=04:19.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.CloudTabsMigrator.migrator (CloudTabsMigrator.migrator)
+		Migration Elapsed:04:07 seconds
+
+[2026-09-05 20:49:37 +0000] Status=2, isTerminal=NO, Elapsed=04:19.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.keyboards.uimigrator (KeyboardUIMigrator.migrator)
+		Migration Elapsed:04:08 seconds
+
+[2026-09-05 20:49:39 +0000] Status=2, isTerminal=NO, Elapsed=04:22.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.PreferencesMigrator (PreferencesMigrator.migrator)
+		Migration Elapsed:04:08 seconds
+
+[2026-09-05 20:49:42 +0000] Status=4, isTerminal=NO, Elapsed=04:25.
+	Waiting on System App
+
+[2026-09-05 20:49:44 +0000] Status=4, isTerminal=NO, Elapsed=04:27.
+	Waiting on System App
+
+[2026-09-05 20:49:45 +0000] Status=4, isTerminal=NO, Elapsed=04:28.
+	Waiting on System App
+
+[2026-09-05 20:49:46 +0000] Status=4, isTerminal=NO, Elapsed=04:29.
+	Waiting on System App
+
+[2026-09-05 20:49:46 +0000] Status=4, isTerminal=NO, Elapsed=04:29.
+	Waiting on System App
+
+[2026-09-05 20:49:47 +0000] Status=4, isTerminal=NO, Elapsed=04:30.
+	Waiting on System App
+
+[2026-09-05 20:49:48 +0000] Status=4, isTerminal=NO, Elapsed=04:31.
+	Waiting on System App
+
+[2026-09-05 20:49:49 +0000] Status=4, isTerminal=NO, Elapsed=04:32.
+	Waiting on System App
+
+[2026-09-05 20:49:50 +0000] Status=4, isTerminal=NO, Elapsed=04:32.
+	Waiting on System App
+
+[2026-09-05 20:49:57 +0000] Status=4, isTerminal=NO, Elapsed=04:39.
+	Waiting on System App
+
+[2026-09-05 20:49:57 +0000] Status=4294967295, isTerminal=YES, Elapsed=04:40.
+	Finished
+
++ xcrun simctl status_bar F79D3AD6-CF47-4284-96E8-F74BE279E474 override --time 2026-09-13T09:41:00+00:00 --cellularBars 4 --wifiBars 3 --batteryState charged --batteryLevel 100
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=22):
+Simulator device failed to complete the requested operation.
+Invalid argument
+Underlying error (domain=NSPOSIXErrorDomain, code=22):
+	Invalid, non-ISO date/time string
+	Invalid argument
++ echo 'status bar override refused; continuing with the default bar'
+status bar override refused; continuing with the default bar
++ xcrun simctl install F79D3AD6-CF47-4284-96E8-F74BE279E474 build/Build/Products/Debug-iphonesimulator/NFLGameReminder.app
++ mkdir -p screenshots/raw
++ shoot week 01-this-week
++ xcrun simctl terminate F79D3AD6-CF47-4284-96E8-F74BE279E474 com.nfl-gtr.NFLGameReminder
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.nfl-gtr.NFLGameReminder.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.nfl-gtr.NFLGameReminder" failed. found nothing to terminate
+	found nothing to terminate
++ true
++ SIMCTL_CHILD_SCREENSHOT=week
++ xcrun simctl launch F79D3AD6-CF47-4284-96E8-F74BE279E474 com.nfl-gtr.NFLGameReminder
+com.nfl-gtr.NFLGameReminder: 19983
++ sleep 8
++ xcrun simctl io F79D3AD6-CF47-4284-96E8-F74BE279E474 screenshot screenshots/raw/01-this-week.png
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 6CE7C48F-D36D-441E-85D9-6391F5E59228 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/01-this-week.png
++ shoot detail 02-game-details
++ xcrun simctl terminate F79D3AD6-CF47-4284-96E8-F74BE279E474 com.nfl-gtr.NFLGameReminder
++ SIMCTL_CHILD_SCREENSHOT=detail
++ xcrun simctl launch F79D3AD6-CF47-4284-96E8-F74BE279E474 com.nfl-gtr.NFLGameReminder
+com.nfl-gtr.NFLGameReminder: 20223
++ sleep 8
++ xcrun simctl io F79D3AD6-CF47-4284-96E8-F74BE279E474 screenshot screenshots/raw/02-game-details.png
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 6CE7C48F-D36D-441E-85D9-6391F5E59228 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/02-game-details.png
++ shoot alerts 03-alerts
++ xcrun simctl terminate F79D3AD6-CF47-4284-96E8-F74BE279E474 com.nfl-gtr.NFLGameReminder
++ SIMCTL_CHILD_SCREENSHOT=alerts
++ xcrun simctl launch F79D3AD6-CF47-4284-96E8-F74BE279E474 com.nfl-gtr.NFLGameReminder
+com.nfl-gtr.NFLGameReminder: 21807
++ sleep 8
++ xcrun simctl io F79D3AD6-CF47-4284-96E8-F74BE279E474 screenshot screenshots/raw/03-alerts.png
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 6CE7C48F-D36D-441E-85D9-6391F5E59228 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/03-alerts.png
++ shoot settings 04-settings
++ xcrun simctl terminate F79D3AD6-CF47-4284-96E8-F74BE279E474 com.nfl-gtr.NFLGameReminder
++ SIMCTL_CHILD_SCREENSHOT=settings
++ xcrun simctl launch F79D3AD6-CF47-4284-96E8-F74BE279E474 com.nfl-gtr.NFLGameReminder
+com.nfl-gtr.NFLGameReminder: 22228
++ sleep 8
++ xcrun simctl io F79D3AD6-CF47-4284-96E8-F74BE279E474 screenshot screenshots/raw/04-settings.png
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 6CE7C48F-D36D-441E-85D9-6391F5E59228 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/04-settings.png
++ shoot weekall 05-every-game
++ xcrun simctl terminate F79D3AD6-CF47-4284-96E8-F74BE279E474 com.nfl-gtr.NFLGameReminder
++ SIMCTL_CHILD_SCREENSHOT=weekall
++ xcrun simctl launch F79D3AD6-CF47-4284-96E8-F74BE279E474 com.nfl-gtr.NFLGameReminder
+com.nfl-gtr.NFLGameReminder: 23071
++ sleep 8
++ xcrun simctl io F79D3AD6-CF47-4284-96E8-F74BE279E474 screenshot screenshots/raw/05-every-game.png
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 6CE7C48F-D36D-441E-85D9-6391F5E59228 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/05-every-game.png
++ xcrun simctl shutdown F79D3AD6-CF47-4284-96E8-F74BE279E474
++ xcrun simctl delete F79D3AD6-CF47-4284-96E8-F74BE279E474
++ ls -l screenshots/raw
+total 9872
+-rw-r--r--@ 1 runner  staff  1149448 Sep  5 20:53 01-this-week.png
+-rw-r--r--@ 1 runner  staff  1148851 Sep  5 20:54 02-game-details.png
+-rw-r--r--@ 1 runner  staff   778632 Sep  5 20:55 03-alerts.png
+-rw-r--r--@ 1 runner  staff   699768 Sep  5 20:55 04-settings.png
+-rw-r--r--@ 1 runner  staff  1266775 Sep  5 20:56 05-every-game.png
++ for size in '"1290x2796:6.9-inch"' '"1284x2778:6.5-inch"'
++ px=1290x2796
++ dir=screenshots/6.9-inch
++ mkdir -p screenshots/6.9-inch
++ for f in 'screenshots/raw/*.png'
+++ basename screenshots/raw/01-this-week.png
++ sips -s format png --resampleHeightWidth 2796 1290 screenshots/raw/01-this-week.png --out screenshots/6.9-inch/01-this-week.png
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/01-this-week.png
+  /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.9-inch/01-this-week.png
++ for f in 'screenshots/raw/*.png'
+++ basename screenshots/raw/02-game-details.png
++ sips -s format png --resampleHeightWidth 2796 1290 screenshots/raw/02-game-details.png --out screenshots/6.9-inch/02-game-details.png
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/02-game-details.png
+  /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.9-inch/02-game-details.png
++ for f in 'screenshots/raw/*.png'
+++ basename screenshots/raw/03-alerts.png
++ sips -s format png --resampleHeightWidth 2796 1290 screenshots/raw/03-alerts.png --out screenshots/6.9-inch/03-alerts.png
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/03-alerts.png
+  /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.9-inch/03-alerts.png
++ for f in 'screenshots/raw/*.png'
+++ basename screenshots/raw/04-settings.png
++ sips -s format png --resampleHeightWidth 2796 1290 screenshots/raw/04-settings.png --out screenshots/6.9-inch/04-settings.png
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/04-settings.png
+  /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.9-inch/04-settings.png
++ for f in 'screenshots/raw/*.png'
+++ basename screenshots/raw/05-every-game.png
++ sips -s format png --resampleHeightWidth 2796 1290 screenshots/raw/05-every-game.png --out screenshots/6.9-inch/05-every-game.png
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/05-every-game.png
+  /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.9-inch/05-every-game.png
++ for size in '"1290x2796:6.9-inch"' '"1284x2778:6.5-inch"'
++ px=1284x2778
++ dir=screenshots/6.5-inch
++ mkdir -p screenshots/6.5-inch
++ for f in 'screenshots/raw/*.png'
+++ basename screenshots/raw/01-this-week.png
++ sips -s format png --resampleHeightWidth 2778 1284 screenshots/raw/01-this-week.png --out screenshots/6.5-inch/01-this-week.png
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/01-this-week.png
+  /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.5-inch/01-this-week.png
++ for f in 'screenshots/raw/*.png'
+++ basename screenshots/raw/02-game-details.png
++ sips -s format png --resampleHeightWidth 2778 1284 screenshots/raw/02-game-details.png --out screenshots/6.5-inch/02-game-details.png
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/02-game-details.png
+  /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.5-inch/02-game-details.png
++ for f in 'screenshots/raw/*.png'
+++ basename screenshots/raw/03-alerts.png
++ sips -s format png --resampleHeightWidth 2778 1284 screenshots/raw/03-alerts.png --out screenshots/6.5-inch/03-alerts.png
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/03-alerts.png
+  /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.5-inch/03-alerts.png
++ for f in 'screenshots/raw/*.png'
+++ basename screenshots/raw/04-settings.png
++ sips -s format png --resampleHeightWidth 2778 1284 screenshots/raw/04-settings.png --out screenshots/6.5-inch/04-settings.png
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/04-settings.png
+  /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.5-inch/04-settings.png
++ for f in 'screenshots/raw/*.png'
+++ basename screenshots/raw/05-every-game.png
++ sips -s format png --resampleHeightWidth 2778 1284 screenshots/raw/05-every-game.png --out screenshots/6.5-inch/05-every-game.png
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/raw/05-every-game.png
+  /Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.5-inch/05-every-game.png
++ rm -rf screenshots/raw
++ find screenshots -name '*.png'
++ sort
+screenshots/6.5-inch/01-this-week.png
+screenshots/6.5-inch/02-game-details.png
+screenshots/6.5-inch/03-alerts.png
+screenshots/6.5-inch/04-settings.png
+screenshots/6.5-inch/05-every-game.png
+screenshots/6.9-inch/01-this-week.png
+screenshots/6.9-inch/02-game-details.png
+screenshots/6.9-inch/03-alerts.png
+screenshots/6.9-inch/04-settings.png
+screenshots/6.9-inch/05-every-game.png
++ find screenshots -name '*.png' -exec sips -g pixelWidth -g pixelHeight '{}' +
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.9-inch/05-every-game.png
+  pixelWidth: 1290
+  pixelHeight: 2796
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.9-inch/01-this-week.png
+  pixelWidth: 1290
+  pixelHeight: 2796
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.9-inch/03-alerts.png
+  pixelWidth: 1290
+  pixelHeight: 2796
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.9-inch/04-settings.png
+  pixelWidth: 1290
+  pixelHeight: 2796
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.9-inch/02-game-details.png
+  pixelWidth: 1290
+  pixelHeight: 2796
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.5-inch/05-every-game.png
+  pixelWidth: 1284
+  pixelHeight: 2778
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.5-inch/01-this-week.png
+  pixelWidth: 1284
+  pixelHeight: 2778
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.5-inch/03-alerts.png
+  pixelWidth: 1284
+  pixelHeight: 2778
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.5-inch/04-settings.png
+  pixelWidth: 1284
+  pixelHeight: 2778
+/Users/runner/work/NFL-game-reminder/NFL-game-reminder/ios/screenshots/6.5-inch/02-game-details.png
+  pixelWidth: 1284
+  pixelHeight: 2778
