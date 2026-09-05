@@ -76,7 +76,8 @@ final class NotificationManager: ObservableObject {
     func sendTest(user: UserProfile) async {
         let content = UNMutableNotificationContent()
         content.title = "Game Time Reminder is set up"
-        content.body = "Alerts will arrive on this device in \(TimeFormat.abbr(user.timeZone, at: Date())). No ads, no news, only the games you picked."
+        // A banner shows about two lines. Put the answer first so a truncated one still works.
+        content.body = "Notifications work. Times show in \(TimeFormat.abbr(user.timeZone, at: Date())). Only the games you follow."
         content.sound = .default
         try? await center.add(UNNotificationRequest(identifier: "test", content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)))
     }

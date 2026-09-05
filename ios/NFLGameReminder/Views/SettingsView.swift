@@ -19,6 +19,8 @@ struct SettingsView: View {
                     HStack { Text("Notifications"); Spacer(); Text(state.notifications.authorized ? "Allowed" : "Not allowed").foregroundStyle(state.notifications.authorized ? .green : .red) }
                     if !state.notifications.authorized { Button("Allow notifications") { Task { await state.notifications.requestAuthorization(); await state.replan() } } }
                     Button("Send test alert") { Task { await state.notifications.sendTest(user: state.user); message = "Test alert arrives in 2 seconds." } }
+                    Text("A banner only stays a few seconds — that is iOS, not the app. Pull down on one to read it in full, or find it later in Notification Center. To make banners wait for you, open iOS Settings → Notifications → Game Time Reminder and set Banner Style to Persistent.")
+                        .font(.caption).foregroundStyle(.secondary)
                     Button("Add my games to Calendar") {
                         Task {
                             guard await calendar.requestAccess() else { message = "Calendar access was not granted."; return }
