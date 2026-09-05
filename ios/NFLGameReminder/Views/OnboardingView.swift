@@ -81,7 +81,8 @@ struct FollowSection: View {
                 Text("Only games I pick").tag(FollowSettings.Mode.games)
             }.pickerStyle(.segmented)
             if draft.follow.mode != .games {
-                ChipGrid(items: Teams.ids.map { ($0, Teams.short($0)) }, selected: Set(draft.follow.teams)) { id in
+                ChipGrid(items: Teams.ids.map { ($0, Teams.short($0)) }, selected: Set(draft.follow.teams),
+                         colorFor: { Theme.team($0) }) { id in
                     if let i = draft.follow.teams.firstIndex(of: id) { draft.follow.teams.remove(at: i) } else { draft.follow.teams.append(id) }
                 }
             } else {
@@ -136,15 +137,21 @@ private extension String { func pair(_ id: String) -> (String, String) { (id, se
 struct ChipGrid: View {
     let items: [(String, String)]
     let selected: Set<String>
+    var colorFor: ((String) -> Color)? = nil
     let toggle: (String) -> Void
     var body: some View {
-        FlowLayout(spacing: 6) {
+        FlowLayout(spacing: 7) {
             ForEach(items, id: \.0) { item in
                 let (id, label) = item
+                let on = selected.contains(id)
+                let tint = colorFor?(id) ?? Theme.accent
                 Button { toggle(id) } label: {
-                    Text(label).font(.caption).padding(.horizontal, 10).padding(.vertical, 6)
-                        .background(selected.contains(id) ? Color.accentColor.opacity(0.2) : Color(.secondarySystemFill), in: Capsule())
-                        .overlay(Capsule().stroke(selected.contains(id) ? Color.accentColor : .clear))
+                    Text(label)
+                        .font(.system(size: 13, weight: on ? .bold : .medium, design: .rounded))
+                        .padding(.horizontal, 12).padding(.vertical, 7)
+                        .background(on ? tint.opacity(0.26) : Color(.secondarySystemFill), in: Capsule())
+                        .overlay(Capsule().stroke(on ? tint : Color.clear, lineWidth: 1.5))
+                        .foregroundStyle(on ? tint : Color.primary)
                 }.buttonStyle(.plain)
             }
         }

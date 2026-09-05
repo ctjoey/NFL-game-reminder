@@ -50,8 +50,10 @@ struct RootView: View {
                 AlertsView().tabItem { Label("Alerts", systemImage: "bell.badge") }
                 SettingsView().tabItem { Label("Settings", systemImage: "gearshape") }
             }
+            .tint(Theme.accent)
+            .preferredColorScheme(.dark)
         } else {
-            OnboardingView()
+            OnboardingView().tint(Theme.accent).preferredColorScheme(.dark)
         }
     }
 }

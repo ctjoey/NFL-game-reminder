@@ -29,7 +29,7 @@ targets:
     info:
       path: NFLGameReminder/Info.plist
       properties:
-        CFBundleDisplayName: Game Time Reminder
+        CFBundleDisplayName: Game Time
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleShortVersionString: $(MARKETING_VERSION)
         UILaunchScreen: {}

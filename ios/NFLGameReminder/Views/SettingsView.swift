@@ -37,7 +37,10 @@ struct SettingsView: View {
                     Text("No ads. No account. Data stays on this device.").font(.caption).foregroundStyle(.secondary)
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background { Theme.background.ignoresSafeArea() }
             .navigationTitle("Settings")
+            .toolbarBackground(Theme.bgTop, for: .navigationBar)
             .onAppear { draft = state.user }
             .alert(message ?? "", isPresented: Binding(get: { message != nil }, set: { if !$0 { message = nil } })) { Button("OK") {} }
         }
