@@ -1,35 +1,489 @@
 {
   "note": "TV providers and streaming services. 'localsMatchOta' means the provider carries local stations on the same channel number as their over-the-air virtual channel (true for DirecTV and Dish in nearly every market). 'national' gives channel numbers for national sports channels on that provider. Streaming services have no channel numbers; 'guideHint' tells the user how to find the station. 'carries' lists which network feeds a service delivers, used for the access check.",
   "providers": {
-    "ota":          { "name": "Antenna (over the air)", "kind": "ota", "localsMatchOta": true, "national": {}, "carries": ["CBS", "FOX", "NBC", "ABC"] },
-    "directv":      { "name": "DirecTV (satellite)", "kind": "satellite", "localsMatchOta": true, "national": { "ESPN": 206, "ESPN2": 209, "NFLN": 212, "RedZone": 213 }, "carries": ["CBS", "FOX", "NBC", "ABC", "ESPN", "NFLN"] },
-    "dish":         { "name": "DISH", "kind": "satellite", "localsMatchOta": true, "national": { "ESPN": 140, "ESPN2": 143, "NFLN": 154, "RedZone": 155 }, "carries": ["CBS", "FOX", "NBC", "ABC", "ESPN", "NFLN"] },
-    "xfinity":      { "name": "Xfinity (Comcast)", "kind": "cable", "localsMatchOta": false, "national": {}, "carries": ["CBS", "FOX", "NBC", "ABC", "ESPN", "NFLN"], "guideHint": "Cable channel numbers differ by city. Set yours once below; the app remembers them." },
-    "spectrum":     { "name": "Spectrum", "kind": "cable", "localsMatchOta": false, "national": {}, "carries": ["CBS", "FOX", "NBC", "ABC", "ESPN", "NFLN"], "guideHint": "Cable channel numbers differ by city. Set yours once below; the app remembers them." },
-    "cox":          { "name": "Cox", "kind": "cable", "localsMatchOta": false, "national": {}, "carries": ["CBS", "FOX", "NBC", "ABC", "ESPN", "NFLN"], "guideHint": "Cable channel numbers differ by city. Set yours once below." },
-    "optimum":      { "name": "Optimum / Altice", "kind": "cable", "localsMatchOta": false, "national": {}, "carries": ["CBS", "FOX", "NBC", "ABC", "ESPN", "NFLN"], "guideHint": "Cable channel numbers differ by city. Set yours once below." },
-    "verizonfios":  { "name": "Verizon Fios", "kind": "cable", "localsMatchOta": false, "national": { "ESPN": 70, "ESPN2": 74, "NFLN": 88, "RedZone": 89 }, "carries": ["CBS", "FOX", "NBC", "ABC", "ESPN", "NFLN"], "guideHint": "Fios uses the same national numbers everywhere; local station numbers vary." },
-    "youtubetv":    { "name": "YouTube TV", "kind": "stream", "localsMatchOta": false, "national": {}, "carries": ["CBS", "FOX", "NBC", "ABC", "ESPN", "NFLN"], "guideHint": "No channel numbers. Search for the station call sign or network name in the guide." },
-    "hululive":     { "name": "Hulu + Live TV", "kind": "stream", "localsMatchOta": false, "national": {}, "carries": ["CBS", "FOX", "NBC", "ABC", "ESPN", "NFLN"], "guideHint": "No channel numbers. Search for the station call sign or network name in Live TV." },
-    "fubo":         { "name": "Fubo", "kind": "stream", "localsMatchOta": false, "national": {}, "carries": ["CBS", "FOX", "ABC", "ESPN", "NFLN"], "carriageNotes": "Fubo has not carried NBC (Sunday Night Football) since 21 Nov 2025. Verify before relying on it for NBC games.", "guideHint": "No channel numbers. Search for the station call sign or network name in the guide." },
-    "sling":        { "name": "Sling TV", "kind": "stream", "localsMatchOta": false, "national": {}, "carries": ["FOX", "NBC", "ABC", "ESPN"], "carriageNotes": "Locals only in some markets (FOX/NBC/ABC); CBS is not on Sling. NFL Network and RedZone need the Sports Extra add-on.", "guideHint": "No channel numbers. Search the network name." },
-    "directvstream":{ "name": "DirecTV Stream", "kind": "stream", "localsMatchOta": false, "national": {}, "carries": ["CBS", "FOX", "NBC", "ABC", "ESPN", "NFLN"], "guideHint": "No channel numbers. Search for the station call sign or network name in the guide." }
+    "ota": {
+      "name": "Antenna (over the air)",
+      "kind": "ota",
+      "localsMatchOta": true,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC"
+      ]
+    },
+    "directv": {
+      "name": "DirecTV (satellite)",
+      "kind": "satellite",
+      "localsMatchOta": true,
+      "national": {
+        "ESPN": 206,
+        "ESPN2": 209,
+        "NFLN": 212,
+        "RedZone": 213
+      },
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ]
+    },
+    "dish": {
+      "name": "DISH",
+      "kind": "satellite",
+      "localsMatchOta": true,
+      "national": {
+        "ESPN": 140,
+        "ESPN2": 143,
+        "NFLN": 154,
+        "RedZone": 155
+      },
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ]
+    },
+    "xfinity": {
+      "name": "Xfinity (Comcast)",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them."
+    },
+    "spectrum": {
+      "name": "Spectrum",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them."
+    },
+    "cox": {
+      "name": "Cox Communications",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them."
+    },
+    "optimum": {
+      "name": "Optimum / Altice",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them."
+    },
+    "verizonfios": {
+      "name": "Verizon Fios",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {
+        "ESPN": 70,
+        "ESPN2": 74,
+        "NFLN": 88,
+        "RedZone": 89
+      },
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Fios uses the same national numbers everywhere; local station numbers vary."
+    },
+    "youtubetv": {
+      "name": "YouTube TV",
+      "kind": "stream",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "No channel numbers. Search for the station call sign or network name in the guide."
+    },
+    "hululive": {
+      "name": "Hulu + Live TV",
+      "kind": "stream",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "No channel numbers. Search for the station call sign or network name in Live TV."
+    },
+    "fubo": {
+      "name": "Fubo",
+      "kind": "stream",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "carriageNotes": "Fubo has not carried NBC (Sunday Night Football) since 21 Nov 2025. Verify before relying on it for NBC games.",
+      "guideHint": "No channel numbers. Search for the station call sign or network name in the guide."
+    },
+    "sling": {
+      "name": "Sling TV",
+      "kind": "stream",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN"
+      ],
+      "carriageNotes": "Locals only in some markets (FOX/NBC/ABC); CBS is not on Sling. NFL Network and RedZone need the Sports Extra add-on.",
+      "guideHint": "No channel numbers. Search the network name."
+    },
+    "directvstream": {
+      "name": "DirecTV Stream",
+      "kind": "stream",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "No channel numbers. Search for the station call sign or network name in the guide."
+    },
+    "attuverse": {
+      "name": "AT&T U-verse",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
+      "carriageNotes": "NFL Network is often on a sports tier — check your package."
+    },
+    "mediacom": {
+      "name": "Mediacom",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
+      "carriageNotes": "NFL Network is often on a sports tier — check your package."
+    },
+    "wow": {
+      "name": "WOW! (WideOpenWest)",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
+      "carriageNotes": "NFL Network is often on a sports tier — check your package."
+    },
+    "astound": {
+      "name": "Astound Broadband (RCN · Grande · Wave)",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
+      "carriageNotes": "NFL Network is often on a sports tier — check your package."
+    },
+    "breezeline": {
+      "name": "Breezeline",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
+      "carriageNotes": "NFL Network is often on a sports tier — check your package."
+    },
+    "armstrong": {
+      "name": "Armstrong",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
+      "carriageNotes": "NFL Network is often on a sports tier — check your package."
+    },
+    "sparklight": {
+      "name": "Sparklight (Cable One)",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
+      "carriageNotes": "NFL Network is often on a sports tier — check your package."
+    },
+    "frontier": {
+      "name": "Frontier",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
+      "carriageNotes": "NFL Network is often on a sports tier — check your package."
+    },
+    "kinetic": {
+      "name": "Kinetic by Windstream",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
+      "carriageNotes": "NFL Network is often on a sports tier — check your package."
+    },
+    "vidgo": {
+      "name": "Vidgo",
+      "kind": "stream",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "FOX",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Streaming guides have no channel numbers — search the station or network name.",
+      "carriageNotes": "Vidgo carries no CBS or NBC, so Sunday CBS games and Sunday Night Football are not on it."
+    },
+    "other": {
+      "name": "Other TV provider",
+      "kind": "cable",
+      "localsMatchOta": false,
+      "national": {},
+      "carries": [
+        "CBS",
+        "FOX",
+        "NBC",
+        "ABC",
+        "ESPN",
+        "NFLN"
+      ],
+      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
+      "carriageNotes": "We do not have this provider's lineup, so channel numbers and carriage are not verified. Set the numbers you use and check your package."
+    }
   },
   "services": {
-    "Prime":      { "name": "Prime Video", "carries": ["Prime"], "note": "Thursday Night Football, Black Friday game, one Wild Card game.", "cost": "Included with Amazon Prime" },
-    "Netflix":    { "name": "Netflix", "carries": ["Netflix"], "note": "2026: Week 1 Melbourne game, Thanksgiving Eve, Christmas Day doubleheader, a Week 18 Saturday game.", "cost": "Any Netflix plan" },
-    "Peacock":    { "name": "Peacock", "carries": ["NBC", "Peacock"], "note": "Simulcasts every NBC game; one Peacock-exclusive game in Week 17.", "cost": "Peacock Premium" },
-    "ESPN+":      { "name": "ESPN+ / ESPN app", "carries": ["ESPN", "ESPN+"], "note": "Streams Monday Night Football with the ESPN/ABC broadcast.", "cost": "ESPN+ or ESPN unlimited" },
-    "Disney+":    { "name": "Disney+", "carries": ["ESPN", "Disney+"], "note": "Monday Night Football streams inside Disney+ with the ESPN tile.", "cost": "Disney+ bundle" },
-    "Paramount+": { "name": "Paramount+", "carries": ["CBS", "Paramount+"], "note": "Streams your local CBS station's NFL game live (the same game your CBS affiliate airs).", "cost": "Paramount+ Premium (with local CBS)" },
-    "FOX One":    { "name": "FOX One", "carries": ["FOX", "FOX One"], "note": "Streams your local FOX station's NFL game live.", "cost": "FOX One subscription" },
-    "NFL+":       { "name": "NFL+", "carries": ["NFL+"], "note": "Live local and primetime games on phone and tablet only; not on TV. Full replays after the game.", "cost": "NFL+ or NFL+ Premium" },
-    "SundayTicket": { "name": "NFL Sunday Ticket (YouTube)", "carries": ["SundayTicket"], "note": "Out-of-market Sunday afternoon CBS/FOX games only. Your local games and all primetime games are NOT on Sunday Ticket.", "cost": "Sunday Ticket on YouTube / YouTube TV" },
-    "YouTube":    { "name": "YouTube (free)", "carries": ["YouTube"], "note": "Occasional free exclusive games (e.g. a Week 1 international game in 2025).", "cost": "Free" }
+    "Prime": {
+      "name": "Prime Video",
+      "carries": [
+        "Prime"
+      ],
+      "note": "Thursday Night Football, Black Friday game, one Wild Card game.",
+      "cost": "Included with Amazon Prime"
+    },
+    "Netflix": {
+      "name": "Netflix",
+      "carries": [
+        "Netflix"
+      ],
+      "note": "2026: Week 1 Melbourne game, Thanksgiving Eve, Christmas Day doubleheader, a Week 18 Saturday game.",
+      "cost": "Any Netflix plan"
+    },
+    "Peacock": {
+      "name": "Peacock",
+      "carries": [
+        "NBC",
+        "Peacock"
+      ],
+      "note": "Simulcasts every NBC game; one Peacock-exclusive game in Week 17.",
+      "cost": "Peacock Premium"
+    },
+    "ESPN+": {
+      "name": "ESPN+ / ESPN app",
+      "carries": [
+        "ESPN",
+        "ESPN+"
+      ],
+      "note": "Streams Monday Night Football with the ESPN/ABC broadcast.",
+      "cost": "ESPN+ or ESPN unlimited"
+    },
+    "Disney+": {
+      "name": "Disney+",
+      "carries": [
+        "ESPN",
+        "Disney+"
+      ],
+      "note": "Monday Night Football streams inside Disney+ with the ESPN tile.",
+      "cost": "Disney+ bundle"
+    },
+    "Paramount+": {
+      "name": "Paramount+",
+      "carries": [
+        "CBS",
+        "Paramount+"
+      ],
+      "note": "Streams your local CBS station's NFL game live (the same game your CBS affiliate airs).",
+      "cost": "Paramount+ Premium (with local CBS)"
+    },
+    "FOX One": {
+      "name": "FOX One",
+      "carries": [
+        "FOX",
+        "FOX One"
+      ],
+      "note": "Streams your local FOX station's NFL game live.",
+      "cost": "FOX One subscription"
+    },
+    "NFL+": {
+      "name": "NFL+",
+      "carries": [
+        "NFL+"
+      ],
+      "note": "Live local and primetime games on phone and tablet only; not on TV. Full replays after the game.",
+      "cost": "NFL+ or NFL+ Premium"
+    },
+    "SundayTicket": {
+      "name": "NFL Sunday Ticket (YouTube)",
+      "carries": [
+        "SundayTicket"
+      ],
+      "note": "Out-of-market Sunday afternoon CBS/FOX games only. Your local games and all primetime games are NOT on Sunday Ticket.",
+      "cost": "Sunday Ticket on YouTube / YouTube TV"
+    },
+    "YouTube": {
+      "name": "YouTube (free)",
+      "carries": [
+        "YouTube"
+      ],
+      "note": "Occasional free exclusive games (e.g. a Week 1 international game in 2025).",
+      "cost": "Free"
+    }
   },
   "networkLabels": {
-    "CBS": "CBS", "FOX": "FOX", "NBC": "NBC", "ABC": "ABC", "ESPN": "ESPN", "ESPN2": "ESPN2", "NFLN": "NFL Network",
-    "Prime": "Prime Video", "Netflix": "Netflix", "Peacock": "Peacock", "ESPN+": "ESPN+", "Disney+": "Disney+",
-    "Paramount+": "Paramount+", "FOX One": "FOX One", "NFL+": "NFL+", "YouTube": "YouTube", "SundayTicket": "NFL Sunday Ticket"
+    "CBS": "CBS",
+    "FOX": "FOX",
+    "NBC": "NBC",
+    "ABC": "ABC",
+    "ESPN": "ESPN",
+    "ESPN2": "ESPN2",
+    "NFLN": "NFL Network",
+    "Prime": "Prime Video",
+    "Netflix": "Netflix",
+    "Peacock": "Peacock",
+    "ESPN+": "ESPN+",
+    "Disney+": "Disney+",
+    "Paramount+": "Paramount+",
+    "FOX One": "FOX One",
+    "NFL+": "NFL+",
+    "YouTube": "YouTube",
+    "SundayTicket": "NFL Sunday Ticket"
   }
 }

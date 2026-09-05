@@ -5,7 +5,6 @@ struct SettingsView: View {
     @State private var draft = UserProfile()
     @State private var marketHint = ""
     @State private var message: String?
-    @State private var loaded = false
     @State private var saveTask: Task<Void, Never>?
     private let calendar = CalendarService()
 
@@ -30,7 +29,7 @@ struct SettingsView: View {
                     Button("Sync schedule now") { Task { await state.syncAndReplan(); message = state.schedule.lastError ?? "Synced \(state.schedule.games.count) games from \(state.schedule.source)." } }
                 }
                 Section {
-                    Button("Delete my data", role: .destructive) { draft = UserProfile(); commit(); loaded = false }
+                    Button("Delete my data", role: .destructive) { draft = UserProfile(); commit() }
                 }
                 Section("About") {
                     Text("Whether you're home or on the road, you can find out what games are showing and where to find them in your area.")
@@ -52,7 +51,10 @@ struct SettingsView: View {
             .background { Theme.background.ignoresSafeArea() }
             .navigationTitle("Settings")
             .toolbarBackground(Theme.bgTop, for: .navigationBar)
-            .onAppear { if !loaded { draft = state.user; loaded = true } }
+            // Re-read on every visit, not just the first: following a game from the week screen
+            // changes the profile while this screen is off-screen and not receiving updates, and
+            // a stale draft would write that pick straight back out.
+            .onAppear { if saveTask == nil { draft = state.user } }
             .onChange(of: draft) { _, _ in scheduleSave() }
             // Something else changed the profile (following a game from the week screen);
             // take it, as long as an edit of ours is not still in flight.
@@ -108,14 +110,15 @@ struct ChannelNumbersSection: View {
 
     var body: some View {
         if let provider, provider.kind != "stream" {
-            Section("Channel numbers on \(provider.name)") {
+            let place = draft.market.flatMap { state.catalog.markets[$0]?.name }
+            Section(place.map { "\(provider.name) channels in \($0)" } ?? "Channel numbers on \(provider.name)") {
                 // Only what this provider actually carries: an antenna has no ESPN to number.
                 let carried = provider.carries.isEmpty ? nets : nets.filter { provider.carries.contains($0) }
                 let rows = carried.map { state.catalog.channel(for: $0, user: draft) }
                 let unknown = rows.filter { $0.number == nil }
                 Text(unknown.isEmpty
                      ? "Filled in from your market and provider."
-                     : "Filled in where we can be sure. \(provider.name) renumbers channels city by city, so the rest are yours to set once.")
+                     : "Filled in where we can be sure. \(provider.name) renumbers channels city by city, so the rest are yours to fill in. Numbers are kept per market, so changing markets never shows you the wrong ones.")
                     .font(.caption).foregroundStyle(.secondary)
                 ForEach(rows, id: \.network) { row in
                     HStack(spacing: 10) {
@@ -129,8 +132,8 @@ struct ChannelNumbersSection: View {
                             }
                         } else {
                             TextField("channel #", text: Binding(
-                                get: { draft.channelOverrides[row.network] ?? "" },
-                                set: { draft.channelOverrides[row.network] = $0.trimmingCharacters(in: .whitespaces) }))
+                                get: { draft.channelOverride(row.network) ?? "" },
+                                set: { draft.setChannelOverride(row.network, $0.trimmingCharacters(in: .whitespaces)) }))
                                 .keyboardType(.numbersAndPunctuation)
                         }
                         Spacer(minLength: 0)

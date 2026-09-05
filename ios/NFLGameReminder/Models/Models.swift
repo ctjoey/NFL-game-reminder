@@ -178,6 +178,9 @@ struct UserProfile: Codable, Equatable {
     var provider: String? = nil
     var hasAntenna = false
     var services: [String] = []
+    /// Channel numbers the user typed in, keyed "<market>|<network>". Cable renumbers city by
+    /// city, so a number set at home is wrong the moment the market changes; keeping them per
+    /// market means the ones you set in each place are still there when you go back.
     var channelOverrides: [String: String] = [:]
     var follow = FollowSettings()
     var alerts = AlertSettings()
@@ -185,6 +188,18 @@ struct UserProfile: Codable, Equatable {
     var maxPerDay = 12
     var onboarded = false
     var timeZone: TimeZone { TimeZone(identifier: tz) ?? .current }
+
+    private func overrideKey(_ network: String, market: String?) -> String {
+        "\(market ?? "-")|\(network)"
+    }
+    func channelOverride(_ network: String, market: String? = nil) -> String? {
+        let v = channelOverrides[overrideKey(network, market: market ?? self.market)]
+        return (v?.isEmpty == false) ? v : nil
+    }
+    mutating func setChannelOverride(_ network: String, _ value: String, market: String? = nil) {
+        let key = overrideKey(network, market: market ?? self.market)
+        if value.isEmpty { channelOverrides.removeValue(forKey: key) } else { channelOverrides[key] = value }
+    }
 }
 
 // MARK: - Resolved card (what the UI and notifications render)

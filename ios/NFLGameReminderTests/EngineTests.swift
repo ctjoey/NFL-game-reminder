@@ -31,7 +31,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(catalog.market(forZip: "15201")?.id, "pittsburgh")
         let ch = catalog.channel(for: "CBS", user: pitUser)
         XCTAssertEqual(ch.stationCall, "KDKA"); XCTAssertEqual(ch.number, "2"); XCTAssertEqual(ch.confidence, .likely)
-        var u = pitUser; u.provider = "xfinity"; u.channelOverrides = ["CBS": "1002"]
+        var u = pitUser; u.provider = "xfinity"; u.setChannelOverride("CBS", "1002")
         XCTAssertEqual(catalog.channel(for: "CBS", user: u).number, "1002")
         var yt = pitUser; yt.provider = "youtubetv"
         XCTAssertNil(catalog.channel(for: "FOX", user: yt).number); XCTAssertTrue(catalog.channel(for: "FOX", user: yt).hint?.contains("WPGH") == true)
@@ -74,6 +74,20 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(alerts[0].body.contains("WPXI (NBC) ch. 11"))
         XCTAssertTrue(alerts[0].body.contains("Was: Sun Sep 13, 1:00 pm EDT on FOX/FOX One"))
     }
+    /// Cable renumbers city by city, so a number set at home must not follow you somewhere else.
+    func testChannelOverridesAreKeptPerMarket() {
+        var u = pitUser
+        u.provider = "spectrum"
+        u.setChannelOverride("CBS", "1201")
+        XCTAssertEqual(catalog.channel(for: "CBS", user: u).number, "1201")
+        u.market = "westpalm"
+        XCTAssertNil(catalog.channel(for: "CBS", user: u).number, "a Pittsburgh number must not show in West Palm Beach")
+        u.setChannelOverride("CBS", "12")
+        XCTAssertEqual(catalog.channel(for: "CBS", user: u).number, "12")
+        u.market = "pittsburgh"
+        XCTAssertEqual(catalog.channel(for: "CBS", user: u).number, "1201", "going home restores the number set there")
+    }
+
     /// Changing the market is the whole travel story: one control, and every lookup follows it.
     func testChangingMarketMovesChannelsAndCoverage() {
         var u = pitUser                       // Pittsburgh

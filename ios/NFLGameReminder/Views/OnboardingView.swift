@@ -85,14 +85,30 @@ struct FollowSection: View {
                 Text("Every game").tag(FollowSettings.Mode.all)
                 Text("Only games I pick").tag(FollowSettings.Mode.games)
             }.pickerStyle(.segmented)
+            Text(modeExplainer).font(.caption).foregroundStyle(.secondary)
             if draft.follow.mode != .games {
                 ChipGrid(items: Teams.ids.map { ($0, Teams.short($0)) }, selected: Set(draft.follow.teams),
                          colorFor: { Theme.team($0) }) { id in
                     if let i = draft.follow.teams.firstIndex(of: id) { draft.follow.teams.remove(at: i) } else { draft.follow.teams.append(id) }
                 }
-            } else {
-                Text("Pick games with “Remind me” on each game card.").font(.caption).foregroundStyle(.secondary)
+            } else if !draft.follow.games.isEmpty {
+                HStack(spacing: 8) {
+                    Text("\(draft.follow.games.count) game\(draft.follow.games.count == 1 ? "" : "s") picked")
+                        .font(.caption.weight(.semibold)).foregroundStyle(Theme.accent)
+                    Spacer(minLength: 0)
+                    Button("Clear") { draft.follow.games.removeAll() }.font(.caption)
+                }
             }
+        }
+    }
+
+    /// None of the three modes said what it actually does, and "Only games I pick" looked broken
+    /// because it starts empty by design.
+    private var modeExplainer: String {
+        switch draft.follow.mode {
+        case .teams: return "Every game your teams play. Tap your teams below."
+        case .all:   return "All 272 games of the season. Expect a lot of alerts."
+        case .games: return "Starts empty on purpose. Open This Week’s Games, switch to All, and tap the bell on any game to add it."
         }
     }
 }

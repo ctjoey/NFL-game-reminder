@@ -36,7 +36,13 @@ final class Catalog {
     }
 
     var marketList: [Market] { markets.values.sorted { $0.name < $1.name } }
-    var providerList: [Provider] { providers.values.sorted { $0.name < $1.name } }
+    /// Alphabetical, except "Other" belongs at the bottom of the list where a fallback belongs.
+    var providerList: [Provider] {
+        providers.values.sorted { a, b in
+            if (a.id == "other") != (b.id == "other") { return b.id == "other" }
+            return a.name < b.name
+        }
+    }
     var serviceList: [StreamingService] { services.values.sorted { $0.name < $1.name } }
     func label(_ network: String) -> String { networkLabels[network] ?? network }
 
@@ -54,7 +60,7 @@ final class Catalog {
         if Catalog.localNetworks.contains(network) {
             let aff = market?.affiliates[network]
             out.stationCall = aff?.call; out.stationOta = aff?.ota
-            if let o = user.channelOverrides[network], !o.isEmpty {
+            if let o = user.channelOverride(network) {
                 out.number = o; out.source = "you set this"; out.confidence = .confirmed
             } else if provider?.kind == "ota", let a = aff {
                 out.number = String(a.ota); out.source = "over-the-air channel"; out.confidence = .confirmed
@@ -67,7 +73,7 @@ final class Catalog {
                 out.confidence = .unknown; out.source = p.name; out.hint = p.guideHint ?? "Set your channel number once in Settings."
             } else if let a = aff { out.hint = "Over the air: channel \(a.ota)." }
         } else {
-            if let o = user.channelOverrides[network], !o.isEmpty {
+            if let o = user.channelOverride(network) {
                 out.number = o; out.source = "you set this"; out.confidence = .confirmed
             } else if let n = provider?.national[network] {
                 out.number = String(n); out.source = "\(provider!.name) standard lineup"; out.confidence = .confirmed
