@@ -44,9 +44,15 @@ enum Theme {
 
     static func team(_ id: String) -> Color { Color(hex: Teams.accentHex(id)) }
 
+    /// A saturated two-team bar for a card's leading edge, where colour reads without
+    /// sitting behind text.
+    static func matchupEdge(away: String, home: String) -> LinearGradient {
+        LinearGradient(colors: [team(away), team(home)], startPoint: .top, endPoint: .bottom)
+    }
+
     /// A soft two-team wash used behind a game card's header.
     static func matchupGradient(away: String, home: String) -> LinearGradient {
-        LinearGradient(colors: [team(away).opacity(0.30), team(home).opacity(0.30)],
+        LinearGradient(colors: [team(away).opacity(0.17), team(home).opacity(0.17)],
                        startPoint: .leading, endPoint: .trailing)
     }
 }

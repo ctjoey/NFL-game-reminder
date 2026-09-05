@@ -176,9 +176,14 @@ struct GameCardView: View {
             footer
         }
         .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18))
+        .overlay(alignment: .leading) {
+            Theme.matchupEdge(away: card.game.away, home: card.game.home)
+                .frame(width: 5)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 18))
         .overlay(
             RoundedRectangle(cornerRadius: 18)
-                .stroke(card.followed ? Theme.team(card.game.home).opacity(0.55) : Theme.hairline,
+                .stroke(card.followed ? Theme.team(card.game.home).opacity(0.5) : Theme.hairline,
                         lineWidth: card.followed ? 1.5 : 1)
         )
         .opacity(card.followed ? 1 : 0.82)
@@ -210,28 +215,45 @@ struct GameCardView: View {
                 teamName(Teams.short(card.game.home), card.game.home)
             }
             .lineLimit(1)
-            .minimumScaleFactor(0.65)
+            .minimumScaleFactor(0.6)
             if let label = card.game.label {
                 Text(label).font(.caption2.weight(.semibold)).foregroundStyle(Theme.accent)
             }
         }
-        .padding(.horizontal, 14).padding(.top, 12).padding(.bottom, 12)
+        .padding(.leading, 17).padding(.trailing, 14).padding(.top, 12).padding(.bottom, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Theme.matchupGradient(away: card.game.away, home: card.game.home))
     }
 
     private func teamName(_ name: String, _ id: String) -> some View {
-        Text(name)
-            .font(.system(size: 21, weight: .heavy, design: .rounded))
-            .foregroundStyle(Theme.text)
-            .shadow(color: Theme.team(id).opacity(0.7), radius: 0, x: 0, y: 2)
+        HStack(spacing: 6) {
+            RoundedRectangle(cornerRadius: 2)
+                .fill(Theme.team(id))
+                .frame(width: 4, height: 19)
+            Text(name)
+                .font(.system(size: 21, weight: .heavy, design: .rounded))
+                .foregroundStyle(Theme.text)
+        }
     }
 
     private var clocks: some View {
-        HStack(spacing: 0) {
-            clock("COVERAGE", card.coverage.start, sub: card.coverage.show, tint: Theme.ok)
-            Rectangle().fill(Theme.hairline).frame(width: 1, height: 44)
-            clock("KICKOFF", card.game.kickoff, sub: etSuffix, tint: Theme.accent)
+        VStack(alignment: .leading, spacing: 9) {
+            HStack(spacing: 0) {
+                clock("COVERAGE", card.coverage.start, suffix: "", tint: Theme.ok)
+                Rectangle().fill(Theme.hairline).frame(width: 1, height: 38)
+                clock("KICKOFF", card.game.kickoff, suffix: etSuffix, tint: Theme.accent)
+            }
+            HStack(alignment: .top, spacing: 6) {
+                Text("PREGAME")
+                    .font(.system(size: 10, weight: .heavy, design: .rounded)).tracking(0.6)
+                    .foregroundStyle(Theme.textDim)
+                    .padding(.top, 1)
+                Text(card.coverage.show)
+                    .font(.caption).foregroundStyle(Theme.textDim)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+            }
+            .padding(.leading, 17).padding(.trailing, 14)
         }
         .padding(.vertical, 12)
     }
@@ -243,7 +265,7 @@ struct GameCardView: View {
         return local == et ? "" : "\(et) ET"
     }
 
-    private func clock(_ title: String, _ date: Date, sub: String, tint: Color) -> some View {
+    private func clock(_ title: String, _ date: Date, suffix: String, tint: Color) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(title)
                 .font(.system(size: 10, weight: .heavy, design: .rounded)).tracking(0.8)
@@ -257,12 +279,12 @@ struct GameCardView: View {
                     .foregroundStyle(Theme.textDim)
             }
             .lineLimit(1).minimumScaleFactor(0.7)
-            if !sub.isEmpty {
-                Text(sub).font(.caption2).foregroundStyle(Theme.textDim).lineLimit(2)
+            if !suffix.isEmpty {
+                Text(suffix).font(.caption2).foregroundStyle(Theme.textDim)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 14)
+        .padding(.leading, 17).padding(.trailing, 14)
     }
 
     private var watchRow: some View {
@@ -296,7 +318,7 @@ struct GameCardView: View {
                 Text(hint).font(.caption2).foregroundStyle(Theme.textDim).fixedSize(horizontal: false, vertical: true)
             }
         }
-        .padding(.horizontal, 14).padding(.bottom, 10)
+        .padding(.leading, 17).padding(.trailing, 14).padding(.bottom, 10)
     }
 
     @ViewBuilder private var notes: some View {
@@ -320,7 +342,7 @@ struct GameCardView: View {
                      Theme.accent, "arrow.triangle.2.circlepath")
             }
         }
-        .padding(.horizontal, 14)
+        .padding(.leading, 17).padding(.trailing, 14)
     }
 
     private func note(_ text: String, _ color: Color, _ icon: String) -> some View {
@@ -343,7 +365,7 @@ struct GameCardView: View {
                         .font(.caption2.weight(.semibold)).foregroundStyle(Theme.textDim)
                     Spacer(minLength: 0)
                 }
-                .padding(.horizontal, 14).padding(.top, 8).padding(.bottom, 12)
+                .padding(.leading, 17).padding(.trailing, 14).padding(.top, 8).padding(.bottom, 12)
             } else {
                 Color.clear.frame(height: 12)
             }
@@ -356,14 +378,14 @@ struct GameCardView: View {
                 Text("Details").font(.caption2.weight(.bold)).foregroundStyle(Theme.accent)
                 Image(systemName: "chevron.right").font(.system(size: 9, weight: .bold)).foregroundStyle(Theme.accent)
             }
-            .padding(.horizontal, 14).padding(.top, 8).padding(.bottom, 12)
+            .padding(.leading, 17).padding(.trailing, 14).padding(.top, 8).padding(.bottom, 12)
         } else {
             HStack {
                 Spacer(minLength: 0)
                 Text("Details").font(.caption2.weight(.bold)).foregroundStyle(Theme.accent)
                 Image(systemName: "chevron.right").font(.system(size: 9, weight: .bold)).foregroundStyle(Theme.accent)
             }
-            .padding(.horizontal, 14).padding(.top, 6).padding(.bottom, 12)
+            .padding(.leading, 17).padding(.trailing, 14).padding(.top, 6).padding(.bottom, 12)
         }
     }
 }
