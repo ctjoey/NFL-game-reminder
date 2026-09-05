@@ -33,6 +33,14 @@ struct SettingsView: View {
                     Button("Delete my data", role: .destructive) { draft = UserProfile(); commit(); loaded = false }
                 }
                 Section("About") {
+                    Text("Whether you're home or on the road, you can find out what games are showing and where to find them in your area.")
+                        .font(.subheadline)
+                    VStack(alignment: .leading, spacing: 6) {
+                        step(1, "Select your market and your TV provider.")
+                        step(2, "Pick the teams you want to follow.")
+                        step(3, "Set alerts to remind you when pregame coverage or kickoff starts.")
+                    }
+                    .padding(.vertical, 2)
                     Text("Changes save as you make them.").font(.caption).foregroundStyle(.secondary)
                     Text("Schedule: \(state.schedule.games.count) games from \(state.schedule.source)\(state.schedule.lastSync.map { ", synced \($0.formatted(date: .abbreviated, time: .shortened))" } ?? "")").font(.caption)
                     if let e = state.schedule.lastError { Text("Last sync error: \(e)").font(.caption).foregroundStyle(.orange) }
@@ -51,6 +59,19 @@ struct SettingsView: View {
             .onChange(of: state.user) { _, new in if saveTask == nil, new != draft { draft = new } }
             .onDisappear { commit() }
             .alert(message ?? "", isPresented: Binding(get: { message != nil }, set: { if !$0 { message = nil } })) { Button("OK") {} }
+        }
+    }
+
+    private func step(_ n: Int, _ text: String) -> some View {
+        HStack(alignment: .top, spacing: 9) {
+            Text("\(n)")
+                .font(.system(size: 12, weight: .heavy, design: .rounded))
+                .foregroundStyle(Theme.bgTop)
+                .frame(width: 20, height: 20)
+                .background(Theme.accent, in: Circle())
+            Text(text).font(.subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
         }
     }
 

@@ -123,16 +123,13 @@ struct AlertsSection: View {
             if draft.alerts.weekly {
                 Text("One message listing the week's games and the channel for each, sent ahead of that week's first kickoff.")
                     .font(.caption).foregroundStyle(.secondary)
-                HStack(spacing: 6) {
-                    Text("Send it")
-                    Picker("", selection: $draft.alerts.weeklyDay) {
-                        ForEach(1...7, id: \.self) { Text(Calendar.current.weekdaySymbols[$0 - 1]).tag($0) }
-                    }.labelsHidden()
-                    Text("at")
-                    Picker("", selection: $draft.alerts.weeklyHour) {
-                        ForEach(0..<24, id: \.self) { h in Text("\((h + 11) % 12 + 1) \(h < 12 ? "am" : "pm")").tag(h) }
-                    }.labelsHidden()
-                    Spacer(minLength: 0)
+                // Two pickers sharing one row squeezed "Friday" down to "F...y", so each gets
+                // its own full-width row.
+                WidePicker(title: "Send it on", selection: $draft.alerts.weeklyDay) {
+                    ForEach(1...7, id: \.self) { Text(Calendar.current.weekdaySymbols[$0 - 1]).tag($0) }
+                }
+                WidePicker(title: "Send it at", selection: $draft.alerts.weeklyHour) {
+                    ForEach(0..<24, id: \.self) { h in Text("\((h + 11) % 12 + 1) \(h < 12 ? "am" : "pm")").tag(h) }
                 }
                 if let next = nextRundown {
                     Text("Next one: \(next.formatted(date: .abbreviated, time: .shortened))")
