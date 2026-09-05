@@ -48,7 +48,7 @@ final class Catalog {
 
     // MARK: channel resolution
     func channel(for network: String, user: UserProfile) -> ChannelInfo {
-        let market = user.activeMarket.flatMap { markets[$0] }
+        let market = user.market.flatMap { markets[$0] }
         let provider = user.provider.flatMap { providers[$0] }
         var out = ChannelInfo(network: network, label: label(network), stationCall: nil, stationOta: nil, number: nil, source: nil, confidence: .unknown, hint: nil)
         if Catalog.localNetworks.contains(network) {
@@ -110,7 +110,7 @@ final class Catalog {
                 ways.append(.init(kind: "stream", network: have, label: "\(svc.name) (streams \(label(n)))", channel: nil))
             }
         }
-        let local = [game.home, game.away].contains { Teams.market($0) == user.activeMarket }
+        let local = [game.home, game.away].contains { Teams.market($0) == user.market }
         if owned.contains("SundayTicket"), ["SUN_EARLY", "SUN_LATE"].contains(game.window) {
             if local { notes.append("Sunday Ticket does not carry your local game. Use your CBS/FOX station.") }
             else { ways.append(.init(kind: "stream", network: "SundayTicket", label: "NFL Sunday Ticket (out-of-market)", channel: nil)) }

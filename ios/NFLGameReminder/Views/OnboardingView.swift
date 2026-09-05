@@ -98,8 +98,16 @@ struct FollowSection: View {
 }
 
 struct AlertsSection: View {
+    @EnvironmentObject var state: AppState
     @Binding var draft: UserProfile
     private let leads = [15, 30, 60, 120, 1440]
+
+    /// The rundown goes out before the week's first kickoff, so a day late in the week can land
+    /// in the past and send nothing. Showing the real next send time saves the guesswork.
+    private var nextRundown: Date? {
+        state.plan.filter { $0.kind == .weekly && $0.fireAt > Date() }.map(\.fireAt).min()
+    }
+
     var body: some View {
         Section("Alerts") {
             Text("Only these, only for games you follow, never anything else.").font(.caption).foregroundStyle(.secondary)
@@ -113,8 +121,26 @@ struct AlertsSection: View {
             Toggle("When a game is moved or changes network", isOn: $draft.alerts.changes)
             Toggle("Weekly rundown with channels", isOn: $draft.alerts.weekly)
             if draft.alerts.weekly {
-                Picker("Rundown day", selection: $draft.alerts.weeklyDay) { ForEach(1...7, id: \.self) { Text(Calendar.current.shortWeekdaySymbols[$0 - 1]).tag($0) } }
-                Picker("Rundown hour", selection: $draft.alerts.weeklyHour) { ForEach(0..<24, id: \.self) { h in Text("\((h + 11) % 12 + 1) \(h < 12 ? "am" : "pm")").tag(h) } }
+                Text("One message listing the week's games and the channel for each, sent ahead of that week's first kickoff.")
+                    .font(.caption).foregroundStyle(.secondary)
+                HStack(spacing: 6) {
+                    Text("Send it")
+                    Picker("", selection: $draft.alerts.weeklyDay) {
+                        ForEach(1...7, id: \.self) { Text(Calendar.current.weekdaySymbols[$0 - 1]).tag($0) }
+                    }.labelsHidden()
+                    Text("at")
+                    Picker("", selection: $draft.alerts.weeklyHour) {
+                        ForEach(0..<24, id: \.self) { h in Text("\((h + 11) % 12 + 1) \(h < 12 ? "am" : "pm")").tag(h) }
+                    }.labelsHidden()
+                    Spacer(minLength: 0)
+                }
+                if let next = nextRundown {
+                    Text("Next one: \(next.formatted(date: .abbreviated, time: .shortened))")
+                        .font(.caption).foregroundStyle(Theme.accent)
+                } else {
+                    Text("Nothing scheduled: that day falls after the next week's first game. Pick a day earlier in the week.")
+                        .font(.caption).foregroundStyle(Theme.warn)
+                }
             }
             Stepper("Max alerts per day: \(draft.maxPerDay)", value: $draft.maxPerDay, in: 1...50)
             QuietHoursRow(quiet: $draft.quiet)

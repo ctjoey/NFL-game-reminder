@@ -74,19 +74,15 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(alerts[0].body.contains("WPXI (NBC) ch. 11"))
         XCTAssertTrue(alerts[0].body.contains("Was: Sun Sep 13, 1:00 pm EDT on FOX/FOX One"))
     }
-    func testTravelMarketOverridesHomeForChannelsAndCoverage() {
-        var u = pitUser                       // home: Pittsburgh
-        u.travelMarket = "westpalm"           // watching from West Palm Beach
-        XCTAssertTrue(u.isTraveling)
-        XCTAssertEqual(u.activeMarket, "westpalm")
-        let ch = catalog.channel(for: "CBS", user: u)
-        XCTAssertEqual(ch.stationCall, "WPEC")
-        // Pittsburgh's own game is no longer the guaranteed local one.
-        let r = CoverageEngine.gameInMarket(game("2026-W01-ATL-PIT"), marketKey: u.activeMarket, all: games, catalog: catalog)
-        XCTAssertNotEqual(r.reason, "Steelers game always airs in Pittsburgh")
-        u.travelMarket = nil
-        XCTAssertFalse(u.isTraveling)
+    /// Changing the market is the whole travel story: one control, and every lookup follows it.
+    func testChangingMarketMovesChannelsAndCoverage() {
+        var u = pitUser                       // Pittsburgh
         XCTAssertEqual(catalog.channel(for: "CBS", user: u).stationCall, "KDKA")
+        u.market = "westpalm"                 // now watching from West Palm Beach
+        XCTAssertEqual(catalog.channel(for: "CBS", user: u).stationCall, "WPEC")
+        // Pittsburgh's own game is no longer the guaranteed local one.
+        let r = CoverageEngine.gameInMarket(game("2026-W01-ATL-PIT"), marketKey: u.market, all: games, catalog: catalog)
+        XCTAssertNotEqual(r.reason, "Steelers game always airs in Pittsburgh")
     }
 
     func testSeedToLiveUpgradeIsNotAScheduleChange() async {
