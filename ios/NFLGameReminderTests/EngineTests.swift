@@ -98,7 +98,8 @@ final class EngineTests: XCTestCase {
         // First application comes from the live feed while the store still holds the seed.
         let delta = await store.apply(moved, source: "espn")
         XCTAssertTrue(delta.isEmpty, "a seed-to-live upgrade must not report schedule changes")
-        XCTAssertTrue(await store.changes.isEmpty)
+        let loggedChanges = await store.changes
+        XCTAssertTrue(loggedChanges.isEmpty)
         // A later live-to-live difference is a real change.
         moved[i].networks = ["FOX"]
         let second = await store.apply(moved, source: "espn")
