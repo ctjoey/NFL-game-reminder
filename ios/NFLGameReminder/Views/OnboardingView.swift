@@ -124,6 +124,22 @@ struct AlertsSection: View {
         state.plan.filter { $0.kind == .weekly && $0.fireAt > Date() }.map(\.fireAt).min()
     }
 
+    private var followedCount: Int {
+        state.schedule.games.filter { CardBuilder.isFollowed($0, user: draft).0 }.count
+    }
+
+    /// There are two very different reasons a rundown never arrives, and blaming the day when the
+    /// real cause is an empty follow list sends people to fix the wrong thing.
+    private var rundownStatus: (String, Color) {
+        if followedCount == 0 {
+            return ("No games followed yet, so there is nothing to list. Pick your teams or some games under \u{201C}Which games\u{201D} above.", Theme.warn)
+        }
+        if let next = nextRundown {
+            return ("Next one: \(next.formatted(date: .abbreviated, time: .shortened))", Theme.accent)
+        }
+        return ("Every rundown for the games you follow is already in the past. It goes out before each week's first kickoff, so pick a day earlier in the week.", Theme.warn)
+    }
+
     var body: some View {
         Section("Alerts") {
             Text("Only these, only for games you follow, never anything else.").font(.caption).foregroundStyle(.secondary)
@@ -147,13 +163,9 @@ struct AlertsSection: View {
                 WidePicker(title: "Send it at", selection: $draft.alerts.weeklyHour) {
                     ForEach(0..<24, id: \.self) { h in Text("\((h + 11) % 12 + 1) \(h < 12 ? "am" : "pm")").tag(h) }
                 }
-                if let next = nextRundown {
-                    Text("Next one: \(next.formatted(date: .abbreviated, time: .shortened))")
-                        .font(.caption).foregroundStyle(Theme.accent)
-                } else {
-                    Text("Nothing scheduled: that day falls after the next week's first game. Pick a day earlier in the week.")
-                        .font(.caption).foregroundStyle(Theme.warn)
-                }
+                let status = rundownStatus
+                Text(status.0).font(.caption).foregroundStyle(status.1)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             Stepper("Max alerts per day: \(draft.maxPerDay)", value: $draft.maxPerDay, in: 1...50)
             QuietHoursRow(quiet: $draft.quiet)
