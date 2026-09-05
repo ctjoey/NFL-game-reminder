@@ -43,17 +43,31 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
 
 struct RootView: View {
     @EnvironmentObject var state: AppState
+    @State private var tab = 0
+
     var body: some View {
         if state.user.onboarded {
-            TabView {
-                WeekView().tabItem { Label("This week", systemImage: "calendar") }
-                AlertsView().tabItem { Label("Alerts", systemImage: "bell.badge") }
-                SettingsView().tabItem { Label("Settings", systemImage: "gearshape") }
+            TabView(selection: $tab) {
+                WeekView().tabItem { Label("This week", systemImage: "calendar") }.tag(0)
+                AlertsView().tabItem { Label("Alerts", systemImage: "bell.badge") }.tag(1)
+                SettingsView().tabItem { Label("Settings", systemImage: "gearshape") }.tag(2)
             }
             .tint(Theme.accent)
             .preferredColorScheme(.dark)
+            .onAppear(perform: applyScreenshotMode)
         } else {
             OnboardingView().tint(Theme.accent).preferredColorScheme(.dark)
+        }
+    }
+
+    /// Store-listing capture: open straight to the screen being photographed.
+    private func applyScreenshotMode() {
+        switch ScreenshotMode.screen {
+        case .alerts: tab = 1
+        case .settings: tab = 2
+        case .detail: state.deepLinkGameId = "2026-W01-DAL-NYG"
+        case .weekall: state.showAllGames = true
+        case .week, .none: break
         }
     }
 }

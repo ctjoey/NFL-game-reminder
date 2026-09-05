@@ -76,20 +76,56 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
             | tee test.log | grep -E "error:|Test Case.*(passed|failed)|Executed|TEST (SUCCEEDED|FAILED)" || true
           grep -q "TEST SUCCEEDED" test.log
-      - name: Simulator screenshots (for the App Store listing)
+      - name: App Store screenshots
         if: always()
         continue-on-error: true
         working-directory: ios
         run: |
           APP=$(find build/Build/Products -name "NFLGameReminder.app" -path "*iphonesimulator*" | head -1)
           [ -n "$APP" ] || exit 0
-          UDID=${{ steps.sim.outputs.udid }}
-          xcrun simctl install "$UDID" "$APP"
           BID=$(defaults read "$PWD/$APP/Info" CFBundleIdentifier)
-          # The install is asynchronous; retry the launch until SpringBoard accepts it.
-          for i in $(seq 1 12); do xcrun simctl launch "$UDID" "$BID" && break; sleep 5; done
-          sleep 8
-          mkdir -p screenshots && xcrun simctl io "$UDID" screenshot screenshots/01-onboarding.png || true
+          # Capture on a Pro Max: its native frame is already an App Store size, so the only
+          # resampling is the small one into the 6.5" slot.
+          RUNTIME=$(xcrun simctl list runtimes -j | python3 -c "import json,sys;print([r['identifier'] for r in json.load(sys.stdin)['runtimes'] if r['isAvailable'] and 'iOS' in r['name']][-1])")
+          DEVTYPE=$(xcrun simctl list devicetypes -j | python3 -c "import json,sys;d=json.load(sys.stdin)['devicetypes'];c=[x['identifier'] for x in d if 'Pro-Max' in x['identifier']];print(c[-1])")
+          echo "capturing on $DEVTYPE / $RUNTIME"
+          UDID=$(xcrun simctl create shots "$DEVTYPE" "$RUNTIME")
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time "1:00" --cellularBars 4 --wifiBars 3 --batteryState charged --batteryLevel 100
+          xcrun simctl install "$UDID" "$APP"
+          mkdir -p screenshots/raw
+          shoot () {   # <screen> <output name>
+            xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
+            xcrun simctl launch "$UDID" "$BID" -screenshot "$1"
+            sleep 7
+            xcrun simctl io "$UDID" screenshot "screenshots/raw/$2.png"
+          }
+          shoot week     01-this-week
+          shoot detail   02-game-details
+          shoot alerts   03-alerts
+          shoot settings 04-settings
+          shoot weekall  05-every-game
+          xcrun simctl shutdown "$UDID" || true
+          # Apple accepts only exact pixel sizes, and rejects anything else outright.
+          for size in "1290x2796:6.9-inch" "1284x2778:6.5-inch"; do
+            px=${size%%:*}; dir=screenshots/${size##*:}
+            mkdir -p "$dir"
+            for f in screenshots/raw/*.png; do
+              sips -s format png --resampleHeightWidth "${px#*x}" "${px%x*}" "$f" --out "$dir/$(basename "$f")" >/dev/null
+            done
+          done
+          rm -rf screenshots/raw
+          cd screenshots && zip -qr ../app-store-screenshots.zip . && cd ..
+          find screenshots -name '*.png' -exec sips -g pixelWidth -g pixelHeight {} \; | grep -E 'png|pixel'
+      - name: Upload the App Store screenshot set on its own
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-store-screenshots-${{ github.run_number }}
+          path: ios/screenshots
+          if-no-files-found: ignore
       - name: Upload logs, app and screenshots
         if: always()
         uses: actions/upload-artifact@v4

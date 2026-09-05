@@ -20,11 +20,20 @@ final class AppState: ObservableObject {
         self.catalog = catalog
         let s = schedule ?? ScheduleStore()
         self.schedule = s
-        if let data = UserDefaults.standard.data(forKey: Self.userKey), let u = try? JSONDecoder().decode(UserProfile.self, from: data) { user = u } else { user = UserProfile() }
+        if ScreenshotMode.isActive {
+            user = ScreenshotMode.demoProfile
+        } else if let data = UserDefaults.standard.data(forKey: Self.userKey), let u = try? JSONDecoder().decode(UserProfile.self, from: data) {
+            user = u
+        } else {
+            user = UserProfile()
+        }
         selectedWeek = s.currentWeek()
     }
 
-    private func persistUser() { if let d = try? JSONEncoder().encode(user) { UserDefaults.standard.set(d, forKey: Self.userKey) } }
+    private func persistUser() {
+        guard !ScreenshotMode.isActive else { return }
+        if let d = try? JSONEncoder().encode(user) { UserDefaults.standard.set(d, forKey: Self.userKey) }
+    }
 
     func cards(week: Int) -> [GameCard] {
         schedule.week(week).map { CardBuilder.build($0, user: user, all: schedule.games, changes: schedule.changes, planned: plan, catalog: catalog) }
