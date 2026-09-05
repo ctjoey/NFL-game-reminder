@@ -19,6 +19,10 @@ on:
         type: boolean
         default: false
 
+# The capture step publishes its trace to a branch; that needs write, and the default is read.
+permissions:
+  contents: write
+
 concurrency:
   group: ios-${{ github.ref }}
   cancel-in-progress: true
@@ -134,7 +138,7 @@ jobs:
           git init -q && git checkout -qb ci-screenshot-log
           git -c user.email=ci@example.com -c user.name=CI add _capture.log
           git -c user.email=ci@example.com -c user.name=CI commit -qm "capture log for run ${{ github.run_number }}"
-          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-screenshot-log
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-screenshot-log && echo "LOG BRANCH PUSHED" || echo "LOG BRANCH PUSH FAILED"
       - name: Upload the App Store screenshot set on its own
         if: always()
         continue-on-error: true
