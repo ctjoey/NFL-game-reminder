@@ -4,7 +4,7 @@ Verifying the 94 markets' affiliate call signs and over-the-air channel numbers.
 Source is web search against station pages and trade press; anything uncertain is
 marked for a human spot-check rather than guessed.
 
-**Status: 18 markets fully verified, 10 more spot-checked. 9 errors found and fixed.**
+**Status: 22 markets fully verified, 20 more spot-checked. 13 errors found and fixed.**
 
 ## Two findings that change the shape of this job
 
@@ -41,6 +41,10 @@ cannot be recorded.
 | St. Louis, MO | ABC | KDNL 30 | **KMOV 32.1** | KDNL disaffiliated 1 Sep 2026, six days ago |
 | Columbus, OH | FOX | WTTE 28 | **WSYX 6.3** | WTTE is now TBD; Sinclair moved FOX to its ABC station |
 | Dayton, OH | FOX | WRGT 45 | **WKEF 22.2** | WRGT is now independent; same Sinclair consolidation |
+| Charleston-Huntington, WV | FOX | WVAH 11 | **WCHS 8.2** | WVAH lost FOX in **2021**; five years wrong |
+| Portland-Auburn, ME | FOX | WPFO 23 | **WGME 13.2** | WPFO lost FOX in 2025; now carries Roar |
+| Charleston, SC | ABC | WCIV 4 | **WCIV 36.2** | Right station, wrong number — 36.1 is MyNetworkTV |
+| Syracuse, NY | CBS | WTVH 5 | **WKOF 15** | CBS moved to a new station 1 Dec 2025 |
 
 Every one of these sends a viewer to the wrong network for CBS or FOX games —
 the Sunday afternoon windows, which is most of the season.
@@ -64,7 +68,8 @@ the Sunday afternoon windows, which is most of the season.
 
 At least one network confirmed against a current source, the rest still to do:
 Chicago, Detroit, Indianapolis, Cincinnati, Pittsburgh, Baltimore, Seattle,
-Denver, Phoenix, Las Vegas.
+Denver, Phoenix, Las Vegas, Buffalo, San Antonio, El Paso, Savannah,
+Rochester, Syracuse, Charleston SC, Portland ME, Charleston WV, Green Bay.
 
 ## Patterns, not typos
 
@@ -76,8 +81,9 @@ single one is a station that changed networks:
 - **ABC consolidations** — Miami (Aug 2025) and St. Louis (1 Sep 2026), both
   moving ABC onto a subchannel of a station that already carries another network.
 - **Sinclair FOX consolidation** — Columbus and Dayton both moved FOX off its own
-  station onto a subchannel of Sinclair's ABC station. This is a repeating
-  pattern and other Sinclair markets should be checked for it specifically.
+  station onto a subchannel of Sinclair's ABC station. Chasing this pattern
+  deliberately found three more: Charleston WV, Portland ME and Charleston SC.
+  It is now the single most productive thing to check. See below.
 
 The implication for the product: the data is not wrong because it was researched
 carelessly. It is wrong because **broadcast affiliations churn faster than a
@@ -99,6 +105,44 @@ affiliates in big markets, and both moved.
 That is the triage rule for the remaining sweep: check group-owned affiliates
 first, treat O&Os as low-risk confirmations.
 
+## The Sinclair subchannel collapse is the dominant failure mode
+
+Sinclair is systematically pulling its second network off its own station and
+onto a subchannel of the station it already owns in that market, then filling
+the emptied signal with its own multicast network — TBD, now rebranded **Roar**.
+A standalone station suddenly airing Roar is the tell that its network moved.
+
+Predicting from the pattern rather than checking markets alphabetically found
+three of the four errors this round. The rule: **wherever Sinclair operates two
+stations in one market, expect the weaker network on a subchannel.**
+
+Confirmed instances, ours in bold: **Columbus**, **Dayton**, **Chattanooga**,
+**Charleston WV**, **Portland ME**, **Charleston SC**, plus Eureka,
+Chico-Redding, Beaumont and Tri-Cities TN, which are outside our 94.
+
+Checked against the pattern and still standalone — all larger markets:
+San Antonio (KABB 29), El Paso (KFOX 14), Savannah (WTGS 28),
+Rochester (WUHF 31), Charleston SC FOX (WTAT 24), Baltimore (WBFF 45),
+Pittsburgh (WPGH 53), Nashville (WZTV 17). Size appears to be the dividing
+line: Sinclair keeps FOX standalone where the market can support two sales
+teams and collapses it where it cannot.
+
+## 2026's churn is now fully accounted for
+
+The master list of this year's affiliation switches is short, and we have all
+of it:
+
+- **The six CBS markets** (1 Aug 2026) — Albuquerque, Jackson MS, Bismarck,
+  Birmingham, Greenville SC, Rapid City. **Three are ours and all three are
+  fixed**; the other three are not among our 94. This closes the question of
+  whether other CBS stations moved — no others did.
+- **St. Louis ABC** (1 Sep 2026), Sinclair to Gray. Fixed.
+
+Which reframes the remaining risk: it is **not** this year's news. It is old
+changes we never had right in the first place. Charleston WV has been wrong
+since 2021, Charleston SC since a 2014 station swap, Miami since 2025. The
+sweep is archaeology, not headline-watching.
+
 ## What to watch for
 
 1. **Virtual vs RF channel.** Virtual is what appears on the TV (WVLT = 8); RF is
@@ -119,7 +163,7 @@ first, treat O&Os as low-risk confirmations.
 
 ## Remaining
 
-76 markets not yet fully verified. The original 54 cannot be assumed good — five
+72 markets not yet fully verified. The original 54 cannot be assumed good — five
 of the nine errors so far are in that set.
 
 Sinclair and FOX renewed all FOX affiliations nationwide, so the Columbus and

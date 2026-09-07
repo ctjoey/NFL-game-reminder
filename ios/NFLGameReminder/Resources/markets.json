@@ -1708,7 +1708,7 @@
         },
         "ABC": {
           "call": "WCIV",
-          "ota": "4"
+          "ota": "36.2"
         }
       }
     },
@@ -2470,8 +2470,8 @@
       ],
       "affiliates": {
         "CBS": {
-          "call": "WTVH",
-          "ota": "5"
+          "call": "WKOF",
+          "ota": "15"
         },
         "FOX": {
           "call": "WSYT",
@@ -2530,8 +2530,8 @@
           "ota": "13"
         },
         "FOX": {
-          "call": "WPFO",
-          "ota": "23"
+          "call": "WGME",
+          "ota": "13.2"
         },
         "NBC": {
           "call": "WCSH",
@@ -2647,8 +2647,8 @@
           "ota": "13"
         },
         "FOX": {
-          "call": "WVAH",
-          "ota": "11"
+          "call": "WCHS",
+          "ota": "8.2"
         },
         "NBC": {
           "call": "WSAZ",
