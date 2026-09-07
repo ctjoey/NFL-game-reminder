@@ -192,6 +192,18 @@ struct UserProfile: Codable, Equatable {
     var onboarded = false
     var timeZone: TimeZone { TimeZone(identifier: tz) ?? .current }
 
+    /// Providers we dropped because naming them promised knowledge we did not have: picking one
+    /// produced the same answer as picking "Other". Anyone who had chosen one keeps a working
+    /// setting rather than silently falling back to no provider at all.
+    private static let retiredProviders: [String: String] = [
+        "attuverse": "other", "mediacom": "other", "wow": "other", "astound": "other",
+        "breezeline": "other", "armstrong": "other", "sparklight": "other",
+        "frontier": "other", "kinetic": "other", "vidgo": "otherstream",
+    ]
+    mutating func migrateRetiredProvider() {
+        if let p = provider, let replacement = Self.retiredProviders[p] { provider = replacement }
+    }
+
     private func overrideKey(_ network: String, market: String?) -> String {
         "\(market ?? "-")|\(network)"
     }

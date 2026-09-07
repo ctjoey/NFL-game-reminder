@@ -22,7 +22,8 @@ final class AppState: ObservableObject {
         self.schedule = s
         if ScreenshotMode.isActive {
             user = ScreenshotMode.demoProfile
-        } else if let data = UserDefaults.standard.data(forKey: Self.userKey), let u = try? JSONDecoder().decode(UserProfile.self, from: data) {
+        } else if let data = UserDefaults.standard.data(forKey: Self.userKey), var u = try? JSONDecoder().decode(UserProfile.self, from: data) {
+            u.migrateRetiredProvider()
             user = u
         } else {
             user = UserProfile()

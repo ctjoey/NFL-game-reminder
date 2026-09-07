@@ -74,6 +74,25 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(alerts[0].body.contains("WPXI (NBC) ch. 11"))
         XCTAssertTrue(alerts[0].body.contains("Was: Sun Sep 13, 1:00 pm EDT on FOX/FOX One"))
     }
+    /// A provider entry has to earn its place by changing the answer. Ten did not, and anyone
+    /// who had picked one should land on a fallback that still works.
+    func testRetiredProvidersMigrateToAFallbackThatMatchesTheirKind() {
+        var cable = pitUser; cable.provider = "armstrong"
+        cable.migrateRetiredProvider()
+        XCTAssertEqual(cable.provider, "other")
+        XCTAssertEqual(catalog.providers["other"]?.kind, "cable")
+
+        var stream = pitUser; stream.provider = "vidgo"
+        stream.migrateRetiredProvider()
+        XCTAssertEqual(stream.provider, "otherstream", "a streaming service must not fall back to cable")
+        XCTAssertEqual(catalog.channel(for: "CBS", user: stream).confidence, .na,
+                       "streaming has no channel numbers, so we should not ask for one")
+
+        var kept = pitUser; kept.provider = "directv"
+        kept.migrateRetiredProvider()
+        XCTAssertEqual(kept.provider, "directv")
+    }
+
     /// Networks often sit on a subchannel — WTVC 9.2 for FOX, WYFF 4.3 for CBS after the August
     /// 2026 affiliation moves. A whole-number channel would send viewers to the wrong network.
     func testSubchannelAffiliatesSurviveToTheChannelReadout() {

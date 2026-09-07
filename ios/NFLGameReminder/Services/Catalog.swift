@@ -36,10 +36,12 @@ final class Catalog {
     }
 
     var marketList: [Market] { markets.values.sorted { $0.name < $1.name } }
-    /// Alphabetical, except "Other" belongs at the bottom of the list where a fallback belongs.
+    /// Alphabetical, except the two fallbacks belong at the bottom where fallbacks belong.
+    static let fallbackProviders: Set<String> = ["other", "otherstream"]
     var providerList: [Provider] {
         providers.values.sorted { a, b in
-            if (a.id == "other") != (b.id == "other") { return b.id == "other" }
+            let af = Catalog.fallbackProviders.contains(a.id), bf = Catalog.fallbackProviders.contains(b.id)
+            if af != bf { return bf }
             return a.name < b.name
         }
     }

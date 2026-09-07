@@ -205,8 +205,8 @@
       ],
       "guideHint": "No channel numbers. Search for the station call sign or network name in the guide."
     },
-    "attuverse": {
-      "name": "AT&T U-verse",
+    "other": {
+      "name": "Other cable or satellite",
       "kind": "cable",
       "localsMatchOta": false,
       "national": {},
@@ -218,166 +218,24 @@
         "ESPN",
         "NFLN"
       ],
-      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
-      "carriageNotes": "NFL Network is often on a sports tier — check your package."
+      "guideHint": "We show the station; cable renumbers city by city, so set your numbers once in Settings.",
+      "carriageNotes": "We do not have this provider’s lineup, so carriage is not verified. Check your package."
     },
-    "mediacom": {
-      "name": "Mediacom",
-      "kind": "cable",
-      "localsMatchOta": false,
-      "national": {},
-      "carries": [
-        "CBS",
-        "FOX",
-        "NBC",
-        "ABC",
-        "ESPN",
-        "NFLN"
-      ],
-      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
-      "carriageNotes": "NFL Network is often on a sports tier — check your package."
-    },
-    "wow": {
-      "name": "WOW! (WideOpenWest)",
-      "kind": "cable",
-      "localsMatchOta": false,
-      "national": {},
-      "carries": [
-        "CBS",
-        "FOX",
-        "NBC",
-        "ABC",
-        "ESPN",
-        "NFLN"
-      ],
-      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
-      "carriageNotes": "NFL Network is often on a sports tier — check your package."
-    },
-    "astound": {
-      "name": "Astound Broadband (RCN · Grande · Wave)",
-      "kind": "cable",
-      "localsMatchOta": false,
-      "national": {},
-      "carries": [
-        "CBS",
-        "FOX",
-        "NBC",
-        "ABC",
-        "ESPN",
-        "NFLN"
-      ],
-      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
-      "carriageNotes": "NFL Network is often on a sports tier — check your package."
-    },
-    "breezeline": {
-      "name": "Breezeline",
-      "kind": "cable",
-      "localsMatchOta": false,
-      "national": {},
-      "carries": [
-        "CBS",
-        "FOX",
-        "NBC",
-        "ABC",
-        "ESPN",
-        "NFLN"
-      ],
-      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
-      "carriageNotes": "NFL Network is often on a sports tier — check your package."
-    },
-    "armstrong": {
-      "name": "Armstrong",
-      "kind": "cable",
-      "localsMatchOta": false,
-      "national": {},
-      "carries": [
-        "CBS",
-        "FOX",
-        "NBC",
-        "ABC",
-        "ESPN",
-        "NFLN"
-      ],
-      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
-      "carriageNotes": "NFL Network is often on a sports tier — check your package."
-    },
-    "sparklight": {
-      "name": "Sparklight (Cable One)",
-      "kind": "cable",
-      "localsMatchOta": false,
-      "national": {},
-      "carries": [
-        "CBS",
-        "FOX",
-        "NBC",
-        "ABC",
-        "ESPN",
-        "NFLN"
-      ],
-      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
-      "carriageNotes": "NFL Network is often on a sports tier — check your package."
-    },
-    "frontier": {
-      "name": "Frontier",
-      "kind": "cable",
-      "localsMatchOta": false,
-      "national": {},
-      "carries": [
-        "CBS",
-        "FOX",
-        "NBC",
-        "ABC",
-        "ESPN",
-        "NFLN"
-      ],
-      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
-      "carriageNotes": "NFL Network is often on a sports tier — check your package."
-    },
-    "kinetic": {
-      "name": "Kinetic by Windstream",
-      "kind": "cable",
-      "localsMatchOta": false,
-      "national": {},
-      "carries": [
-        "CBS",
-        "FOX",
-        "NBC",
-        "ABC",
-        "ESPN",
-        "NFLN"
-      ],
-      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
-      "carriageNotes": "NFL Network is often on a sports tier — check your package."
-    },
-    "vidgo": {
-      "name": "Vidgo",
+    "otherstream": {
+      "name": "Other streaming service",
       "kind": "stream",
       "localsMatchOta": false,
       "national": {},
       "carries": [
+        "CBS",
         "FOX",
+        "NBC",
         "ABC",
         "ESPN",
         "NFLN"
       ],
       "guideHint": "Streaming guides have no channel numbers — search the station or network name.",
-      "carriageNotes": "Vidgo carries no CBS or NBC, so Sunday CBS games and Sunday Night Football are not on it."
-    },
-    "other": {
-      "name": "Other TV provider",
-      "kind": "cable",
-      "localsMatchOta": false,
-      "national": {},
-      "carries": [
-        "CBS",
-        "FOX",
-        "NBC",
-        "ABC",
-        "ESPN",
-        "NFLN"
-      ],
-      "guideHint": "Cable channel numbers differ by city. Set yours in Settings and the app remembers them.",
-      "carriageNotes": "We do not have this provider's lineup, so channel numbers and carriage are not verified. Set the numbers you use and check your package."
+      "carriageNotes": "We do not have this service’s channel list, so carriage is not verified. Check what your plan includes."
     }
   },
   "services": {
