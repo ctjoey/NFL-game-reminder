@@ -4,7 +4,7 @@ Verifying the 94 markets' affiliate call signs and over-the-air channel numbers.
 Source is web search against station pages and trade press; anything uncertain is
 marked for a human spot-check rather than guessed.
 
-**Status: 15 of 94 checked. 9 errors found and fixed.**
+**Status: 18 markets fully verified, 10 more spot-checked. 9 errors found and fixed.**
 
 ## Two findings that change the shape of this job
 
@@ -55,6 +55,16 @@ the Sunday afternoon windows, which is most of the season.
 | Toledo, OH | WTOL 11 | WUPW 36 | WNWO 24 | WTVG 13 |
 | Cleveland-Akron, OH | WOIO 19 | WJW 8 | WKYC 3 | WEWS 5 |
 | Youngstown, OH | WKBN 27 | WYFX 62 | WFMJ 21 | WYTV 33 |
+| New York, NY | WCBS 2 | WNYW 5 | WNBC 4 | WABC 7 |
+| Philadelphia, PA | KYW 3 | WTXF 29 | WCAU 10 | WPVI 6 |
+| Boston, MA | WBZ 4 | WFXT 25 | WBTS 10 | WCVB 5 |
+| Washington, DC | WUSA 9 | WTTG 5 | WRC 4 | WJLA 7 |
+
+### Spot-checked, not yet complete
+
+At least one network confirmed against a current source, the rest still to do:
+Chicago, Detroit, Indianapolis, Cincinnati, Pittsburgh, Baltimore, Seattle,
+Denver, Phoenix, Las Vegas.
 
 ## Patterns, not typos
 
@@ -73,6 +83,21 @@ The implication for the product: the data is not wrong because it was researched
 carelessly. It is wrong because **broadcast affiliations churn faster than a
 static table can track**. Anything that ships this data needs a refresh before
 each season and a way for viewers to report drift the moment they see it.
+
+## A shortcut worth knowing: O&Os do not churn
+
+Every error so far is at a station a *group* owns — Nexstar, Sinclair, Gray,
+Hearst. None are at a network **owned-and-operated** station, and that is not
+luck: CBS owns WCBS and WBBM, NBC owns WNBC and WMAQ, FOX owns WNYW and WFLD.
+A network does not disaffiliate from itself.
+
+So the top markets, which are mostly O&Os, are the *stable* ones, and the risk
+concentrates in mid-size markets where a group owns the affiliate and can move it.
+Miami and St. Louis are the exceptions that prove it — both were group-owned
+affiliates in big markets, and both moved.
+
+That is the triage rule for the remaining sweep: check group-owned affiliates
+first, treat O&Os as low-risk confirmations.
 
 ## What to watch for
 
@@ -94,8 +119,12 @@ each season and a way for viewers to report drift the moment they see it.
 
 ## Remaining
 
-79 markets unchecked. The original 54 cannot be assumed good — five of the nine
-errors so far are in that set.
+76 markets not yet fully verified. The original 54 cannot be assumed good — five
+of the nine errors so far are in that set.
+
+Sinclair and FOX renewed all FOX affiliations nationwide, so the Columbus and
+Dayton consolidations were local decisions rather than a spreading pattern. That
+bounds the FOX risk considerably.
 
 A structural scan of all 94 has been run and found no *other* markets where one
 call sign is listed against two networks, so the remaining subchannel cases are
