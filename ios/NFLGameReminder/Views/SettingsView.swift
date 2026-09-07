@@ -140,6 +140,7 @@ struct ChannelNumbersSection: View {
                         }
                         Spacer(minLength: 0)
                     }
+                    ChannelReportLink(channel: row)
                 }
             }
         }

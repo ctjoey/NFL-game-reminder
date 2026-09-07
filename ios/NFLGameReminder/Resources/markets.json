@@ -16,19 +16,19 @@
       "affiliates": {
         "CBS": {
           "call": "WCBS",
-          "ota": 2
+          "ota": "2"
         },
         "FOX": {
           "call": "WNYW",
-          "ota": 5
+          "ota": "5"
         },
         "NBC": {
           "call": "WNBC",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "WABC",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -47,19 +47,19 @@
       "affiliates": {
         "CBS": {
           "call": "KCBS",
-          "ota": 2
+          "ota": "2"
         },
         "FOX": {
           "call": "KTTV",
-          "ota": 11
+          "ota": "11"
         },
         "NBC": {
           "call": "KNBC",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "KABC",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -77,19 +77,19 @@
       "affiliates": {
         "CBS": {
           "call": "WBBM",
-          "ota": 2
+          "ota": "2"
         },
         "FOX": {
           "call": "WFLD",
-          "ota": 32
+          "ota": "32"
         },
         "NBC": {
           "call": "WMAQ",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "WLS",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -108,19 +108,19 @@
       "affiliates": {
         "CBS": {
           "call": "KYW",
-          "ota": 3
+          "ota": "3"
         },
         "FOX": {
           "call": "WTXF",
-          "ota": 29
+          "ota": "29"
         },
         "NBC": {
           "call": "WCAU",
-          "ota": 10
+          "ota": "10"
         },
         "ABC": {
           "call": "WPVI",
-          "ota": 6
+          "ota": "6"
         }
       }
     },
@@ -137,19 +137,19 @@
       "affiliates": {
         "CBS": {
           "call": "KTVT",
-          "ota": 11
+          "ota": "11"
         },
         "FOX": {
           "call": "KDFW",
-          "ota": 4
+          "ota": "4"
         },
         "NBC": {
           "call": "KXAS",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "WFAA",
-          "ota": 8
+          "ota": "8"
         }
       }
     },
@@ -168,19 +168,19 @@
       "affiliates": {
         "CBS": {
           "call": "KPIX",
-          "ota": 5
+          "ota": "5"
         },
         "FOX": {
           "call": "KTVU",
-          "ota": 2
+          "ota": "2"
         },
         "NBC": {
           "call": "KNTV",
-          "ota": 11
+          "ota": "11"
         },
         "ABC": {
           "call": "KGO",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -198,19 +198,19 @@
       "affiliates": {
         "CBS": {
           "call": "WUSA",
-          "ota": 9
+          "ota": "9"
         },
         "FOX": {
           "call": "WTTG",
-          "ota": 5
+          "ota": "5"
         },
         "NBC": {
           "call": "WRC",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "WJLA",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -227,19 +227,19 @@
       "affiliates": {
         "CBS": {
           "call": "KHOU",
-          "ota": 11
+          "ota": "11"
         },
         "FOX": {
           "call": "KRIV",
-          "ota": 26
+          "ota": "26"
         },
         "NBC": {
           "call": "KPRC",
-          "ota": 2
+          "ota": "2"
         },
         "ABC": {
           "call": "KTRK",
-          "ota": 13
+          "ota": "13"
         }
       }
     },
@@ -257,19 +257,19 @@
       "affiliates": {
         "CBS": {
           "call": "WBZ",
-          "ota": 4
+          "ota": "4"
         },
         "FOX": {
           "call": "WFXT",
-          "ota": 25
+          "ota": "25"
         },
         "NBC": {
           "call": "WBTS",
-          "ota": 10
+          "ota": "10"
         },
         "ABC": {
           "call": "WCVB",
-          "ota": 5
+          "ota": "5"
         }
       }
     },
@@ -288,19 +288,19 @@
       "affiliates": {
         "CBS": {
           "call": "WANF",
-          "ota": 46
+          "ota": "46"
         },
         "FOX": {
           "call": "WAGA",
-          "ota": 5
+          "ota": "5"
         },
         "NBC": {
           "call": "WXIA",
-          "ota": 11
+          "ota": "11"
         },
         "ABC": {
           "call": "WSB",
-          "ota": 2
+          "ota": "2"
         }
       }
     },
@@ -319,19 +319,19 @@
       "affiliates": {
         "CBS": {
           "call": "KPHO",
-          "ota": 5
+          "ota": "5"
         },
         "FOX": {
           "call": "KSAZ",
-          "ota": 10
+          "ota": "10"
         },
         "NBC": {
           "call": "KPNX",
-          "ota": 12
+          "ota": "12"
         },
         "ABC": {
           "call": "KNXV",
-          "ota": 15
+          "ota": "15"
         }
       }
     },
@@ -349,19 +349,19 @@
       "affiliates": {
         "CBS": {
           "call": "KIRO",
-          "ota": 7
+          "ota": "7"
         },
         "FOX": {
           "call": "KCPQ",
-          "ota": 13
+          "ota": "13"
         },
         "NBC": {
           "call": "KING",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "KOMO",
-          "ota": 4
+          "ota": "4"
         }
       }
     },
@@ -379,19 +379,19 @@
       "affiliates": {
         "CBS": {
           "call": "WTSP",
-          "ota": 10
+          "ota": "10"
         },
         "FOX": {
           "call": "WTVT",
-          "ota": 13
+          "ota": "13"
         },
         "NBC": {
           "call": "WFLA",
-          "ota": 8
+          "ota": "8"
         },
         "ABC": {
           "call": "WFTS",
-          "ota": 28
+          "ota": "28"
         }
       }
     },
@@ -409,19 +409,19 @@
       "affiliates": {
         "CBS": {
           "call": "WWJ",
-          "ota": 62
+          "ota": "62"
         },
         "FOX": {
           "call": "WJBK",
-          "ota": 2
+          "ota": "2"
         },
         "NBC": {
           "call": "WDIV",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "WXYZ",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -439,19 +439,19 @@
       "affiliates": {
         "CBS": {
           "call": "WCCO",
-          "ota": 4
+          "ota": "4"
         },
         "FOX": {
           "call": "KMSP",
-          "ota": 9
+          "ota": "9"
         },
         "NBC": {
           "call": "KARE",
-          "ota": 11
+          "ota": "11"
         },
         "ABC": {
           "call": "KSTP",
-          "ota": 5
+          "ota": "5"
         }
       }
     },
@@ -469,19 +469,19 @@
       "affiliates": {
         "CBS": {
           "call": "KCNC",
-          "ota": 4
+          "ota": "4"
         },
         "FOX": {
           "call": "KDVR",
-          "ota": 31
+          "ota": "31"
         },
         "NBC": {
           "call": "KUSA",
-          "ota": 9
+          "ota": "9"
         },
         "ABC": {
           "call": "KMGH",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -499,19 +499,19 @@
       "affiliates": {
         "CBS": {
           "call": "WFOR",
-          "ota": 4
+          "ota": "4"
         },
         "FOX": {
           "call": "WSVN",
-          "ota": 7
+          "ota": "7"
         },
         "NBC": {
           "call": "WTVJ",
-          "ota": 6
+          "ota": "6"
         },
         "ABC": {
           "call": "WPLG",
-          "ota": 10
+          "ota": "10"
         }
       }
     },
@@ -529,19 +529,19 @@
       "affiliates": {
         "CBS": {
           "call": "WOIO",
-          "ota": 19
+          "ota": "19"
         },
         "FOX": {
           "call": "WJW",
-          "ota": 8
+          "ota": "8"
         },
         "NBC": {
           "call": "WKYC",
-          "ota": 3
+          "ota": "3"
         },
         "ABC": {
           "call": "WEWS",
-          "ota": 5
+          "ota": "5"
         }
       }
     },
@@ -559,19 +559,19 @@
       "affiliates": {
         "CBS": {
           "call": "WBTV",
-          "ota": 3
+          "ota": "3"
         },
         "FOX": {
           "call": "WJZY",
-          "ota": 46
+          "ota": "46"
         },
         "NBC": {
           "call": "WCNC",
-          "ota": 36
+          "ota": "36"
         },
         "ABC": {
           "call": "WSOC",
-          "ota": 9
+          "ota": "9"
         }
       }
     },
@@ -590,19 +590,19 @@
       "affiliates": {
         "CBS": {
           "call": "KDKA",
-          "ota": 2
+          "ota": "2"
         },
         "FOX": {
           "call": "WPGH",
-          "ota": 53
+          "ota": "53"
         },
         "NBC": {
           "call": "WPXI",
-          "ota": 11
+          "ota": "11"
         },
         "ABC": {
           "call": "WTAE",
-          "ota": 4
+          "ota": "4"
         }
       }
     },
@@ -621,19 +621,19 @@
       "affiliates": {
         "CBS": {
           "call": "WJZ",
-          "ota": 13
+          "ota": "13"
         },
         "FOX": {
           "call": "WBFF",
-          "ota": 45
+          "ota": "45"
         },
         "NBC": {
           "call": "WBAL",
-          "ota": 11
+          "ota": "11"
         },
         "ABC": {
           "call": "WMAR",
-          "ota": 2
+          "ota": "2"
         }
       }
     },
@@ -651,19 +651,19 @@
       "affiliates": {
         "CBS": {
           "call": "WTTV",
-          "ota": 4
+          "ota": "4"
         },
         "FOX": {
           "call": "WXIN",
-          "ota": 59
+          "ota": "59"
         },
         "NBC": {
           "call": "WTHR",
-          "ota": 13
+          "ota": "13"
         },
         "ABC": {
           "call": "WRTV",
-          "ota": 6
+          "ota": "6"
         }
       }
     },
@@ -681,19 +681,19 @@
       "affiliates": {
         "CBS": {
           "call": "WTVF",
-          "ota": 5
+          "ota": "5"
         },
         "FOX": {
           "call": "WZTV",
-          "ota": 17
+          "ota": "17"
         },
         "NBC": {
           "call": "WSMV",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "WKRN",
-          "ota": 2
+          "ota": "2"
         }
       }
     },
@@ -711,19 +711,19 @@
       "affiliates": {
         "CBS": {
           "call": "KCTV",
-          "ota": 5
+          "ota": "5"
         },
         "FOX": {
           "call": "WDAF",
-          "ota": 4
+          "ota": "4"
         },
         "NBC": {
           "call": "KSHB",
-          "ota": 41
+          "ota": "41"
         },
         "ABC": {
           "call": "KMBC",
-          "ota": 9
+          "ota": "9"
         }
       }
     },
@@ -741,19 +741,19 @@
       "affiliates": {
         "CBS": {
           "call": "WKRC",
-          "ota": 12
+          "ota": "12"
         },
         "FOX": {
           "call": "WXIX",
-          "ota": 19
+          "ota": "19"
         },
         "NBC": {
           "call": "WLWT",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "WCPO",
-          "ota": 9
+          "ota": "9"
         }
       }
     },
@@ -771,19 +771,19 @@
       "affiliates": {
         "CBS": {
           "call": "WFRV",
-          "ota": 5
+          "ota": "5"
         },
         "FOX": {
           "call": "WLUK",
-          "ota": 11
+          "ota": "11"
         },
         "NBC": {
           "call": "WGBA",
-          "ota": 26
+          "ota": "26"
         },
         "ABC": {
           "call": "WBAY",
-          "ota": 2
+          "ota": "2"
         }
       }
     },
@@ -800,19 +800,19 @@
       "affiliates": {
         "CBS": {
           "call": "WDJT",
-          "ota": 58
+          "ota": "58"
         },
         "FOX": {
           "call": "WITI",
-          "ota": 6
+          "ota": "6"
         },
         "NBC": {
           "call": "WTMJ",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "WISN",
-          "ota": 12
+          "ota": "12"
         }
       }
     },
@@ -831,19 +831,19 @@
       "affiliates": {
         "CBS": {
           "call": "WIVB",
-          "ota": 4
+          "ota": "4"
         },
         "FOX": {
           "call": "WUTV",
-          "ota": 29
+          "ota": "29"
         },
         "NBC": {
           "call": "WGRZ",
-          "ota": 2
+          "ota": "2"
         },
         "ABC": {
           "call": "WKBW",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -861,19 +861,19 @@
       "affiliates": {
         "CBS": {
           "call": "WWL",
-          "ota": 4
+          "ota": "4"
         },
         "FOX": {
           "call": "WVUE",
-          "ota": 8
+          "ota": "8"
         },
         "NBC": {
           "call": "WDSU",
-          "ota": 6
+          "ota": "6"
         },
         "ABC": {
           "call": "WGNO",
-          "ota": 26
+          "ota": "26"
         }
       }
     },
@@ -892,19 +892,19 @@
       "affiliates": {
         "CBS": {
           "call": "WJAX",
-          "ota": 47
+          "ota": "47"
         },
         "FOX": {
           "call": "WFOX",
-          "ota": 30
+          "ota": "30"
         },
         "NBC": {
           "call": "WTLV",
-          "ota": 12
+          "ota": "12"
         },
         "ABC": {
           "call": "WJXX",
-          "ota": 25
+          "ota": "25"
         }
       }
     },
@@ -923,19 +923,19 @@
       "affiliates": {
         "CBS": {
           "call": "KLAS",
-          "ota": 8
+          "ota": "8"
         },
         "FOX": {
           "call": "KVVU",
-          "ota": 5
+          "ota": "5"
         },
         "NBC": {
           "call": "KSNV",
-          "ota": 3
+          "ota": "3"
         },
         "ABC": {
           "call": "KTNV",
-          "ota": 13
+          "ota": "13"
         }
       }
     },
@@ -952,19 +952,19 @@
       "affiliates": {
         "CBS": {
           "call": "KOVR",
-          "ota": 13
+          "ota": "13"
         },
         "FOX": {
           "call": "KTXL",
-          "ota": 40
+          "ota": "40"
         },
         "NBC": {
           "call": "KCRA",
-          "ota": 3
+          "ota": "3"
         },
         "ABC": {
           "call": "KXTV",
-          "ota": 10
+          "ota": "10"
         }
       }
     },
@@ -981,19 +981,19 @@
       "affiliates": {
         "CBS": {
           "call": "KFMB",
-          "ota": 8
+          "ota": "8"
         },
         "FOX": {
           "call": "KSWB",
-          "ota": 69
+          "ota": "69"
         },
         "NBC": {
           "call": "KNSD",
-          "ota": 39
+          "ota": "39"
         },
         "ABC": {
           "call": "KGTV",
-          "ota": 10
+          "ota": "10"
         }
       }
     },
@@ -1009,19 +1009,19 @@
       "affiliates": {
         "CBS": {
           "call": "KOIN",
-          "ota": 6
+          "ota": "6"
         },
         "FOX": {
           "call": "KPTV",
-          "ota": 12
+          "ota": "12"
         },
         "NBC": {
           "call": "KGW",
-          "ota": 8
+          "ota": "8"
         },
         "ABC": {
           "call": "KATU",
-          "ota": 2
+          "ota": "2"
         }
       }
     },
@@ -1037,19 +1037,19 @@
       "affiliates": {
         "CBS": {
           "call": "KMOV",
-          "ota": 4
+          "ota": "4"
         },
         "FOX": {
           "call": "KTVI",
-          "ota": 2
+          "ota": "2"
         },
         "NBC": {
           "call": "KSDK",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "KDNL",
-          "ota": 30
+          "ota": "30"
         }
       }
     },
@@ -1066,19 +1066,19 @@
       "affiliates": {
         "CBS": {
           "call": "WBNS",
-          "ota": 10
+          "ota": "10"
         },
         "FOX": {
           "call": "WTTE",
-          "ota": 28
+          "ota": "28"
         },
         "NBC": {
           "call": "WCMH",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "WSYX",
-          "ota": 6
+          "ota": "6"
         }
       }
     },
@@ -1095,19 +1095,19 @@
       "affiliates": {
         "CBS": {
           "call": "KUTV",
-          "ota": 2
+          "ota": "2"
         },
         "FOX": {
           "call": "KSTU",
-          "ota": 13
+          "ota": "13"
         },
         "NBC": {
           "call": "KSL",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "KTVX",
-          "ota": 4
+          "ota": "4"
         }
       }
     },
@@ -1124,19 +1124,19 @@
       "affiliates": {
         "CBS": {
           "call": "WKMG",
-          "ota": 6
+          "ota": "6"
         },
         "FOX": {
           "call": "WOFL",
-          "ota": 35
+          "ota": "35"
         },
         "NBC": {
           "call": "WESH",
-          "ota": 2
+          "ota": "2"
         },
         "ABC": {
           "call": "WFTV",
-          "ota": 9
+          "ota": "9"
         }
       }
     },
@@ -1153,19 +1153,19 @@
       "affiliates": {
         "CBS": {
           "call": "WFSB",
-          "ota": 3
+          "ota": "3"
         },
         "FOX": {
           "call": "WTIC",
-          "ota": 61
+          "ota": "61"
         },
         "NBC": {
           "call": "WVIT",
-          "ota": 30
+          "ota": "30"
         },
         "ABC": {
           "call": "WTNH",
-          "ota": 8
+          "ota": "8"
         }
       }
     },
@@ -1181,19 +1181,19 @@
       "affiliates": {
         "CBS": {
           "call": "WNCN",
-          "ota": 17
+          "ota": "17"
         },
         "FOX": {
           "call": "WRAZ",
-          "ota": 50
+          "ota": "50"
         },
         "NBC": {
           "call": "WRAL",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "WTVD",
-          "ota": 11
+          "ota": "11"
         }
       }
     },
@@ -1209,19 +1209,19 @@
       "affiliates": {
         "CBS": {
           "call": "WTVR",
-          "ota": 6
+          "ota": "6"
         },
         "FOX": {
           "call": "WRLH",
-          "ota": 35
+          "ota": "35"
         },
         "NBC": {
           "call": "WWBT",
-          "ota": 12
+          "ota": "12"
         },
         "ABC": {
           "call": "WRIC",
-          "ota": 8
+          "ota": "8"
         }
       }
     },
@@ -1237,19 +1237,19 @@
       "affiliates": {
         "CBS": {
           "call": "WTKR",
-          "ota": 3
+          "ota": "3"
         },
         "FOX": {
           "call": "WVBT",
-          "ota": 43
+          "ota": "43"
         },
         "NBC": {
           "call": "WAVY",
-          "ota": 10
+          "ota": "10"
         },
         "ABC": {
           "call": "WVEC",
-          "ota": 13
+          "ota": "13"
         }
       }
     },
@@ -1265,20 +1265,20 @@
       ],
       "affiliates": {
         "CBS": {
-          "call": "WIAT",
-          "ota": 42
+          "call": "WVTM",
+          "ota": "13.4"
         },
         "FOX": {
           "call": "WBRC",
-          "ota": 6
+          "ota": "6"
         },
         "NBC": {
           "call": "WVTM",
-          "ota": 13
+          "ota": "13"
         },
         "ABC": {
           "call": "WBMA",
-          "ota": 33
+          "ota": "33"
         }
       }
     },
@@ -1295,19 +1295,19 @@
       "affiliates": {
         "CBS": {
           "call": "WREG",
-          "ota": 3
+          "ota": "3"
         },
         "FOX": {
           "call": "WHBQ",
-          "ota": 13
+          "ota": "13"
         },
         "NBC": {
           "call": "WMC",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "WATN",
-          "ota": 24
+          "ota": "24"
         }
       }
     },
@@ -1323,19 +1323,19 @@
       "affiliates": {
         "CBS": {
           "call": "KWTV",
-          "ota": 9
+          "ota": "9"
         },
         "FOX": {
           "call": "KOKH",
-          "ota": 25
+          "ota": "25"
         },
         "NBC": {
           "call": "KFOR",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "KOCO",
-          "ota": 5
+          "ota": "5"
         }
       }
     },
@@ -1351,19 +1351,19 @@
       "affiliates": {
         "CBS": {
           "call": "KEYE",
-          "ota": 42
+          "ota": "42"
         },
         "FOX": {
           "call": "KTBC",
-          "ota": 7
+          "ota": "7"
         },
         "NBC": {
           "call": "KXAN",
-          "ota": 36
+          "ota": "36"
         },
         "ABC": {
           "call": "KVUE",
-          "ota": 24
+          "ota": "24"
         }
       }
     },
@@ -1379,19 +1379,19 @@
       "affiliates": {
         "CBS": {
           "call": "KENS",
-          "ota": 5
+          "ota": "5"
         },
         "FOX": {
           "call": "KABB",
-          "ota": 29
+          "ota": "29"
         },
         "NBC": {
           "call": "WOAI",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "KSAT",
-          "ota": 12
+          "ota": "12"
         }
       }
     },
@@ -1408,19 +1408,19 @@
       "affiliates": {
         "CBS": {
           "call": "WLKY",
-          "ota": 32
+          "ota": "32"
         },
         "FOX": {
           "call": "WDRB",
-          "ota": 41
+          "ota": "41"
         },
         "NBC": {
           "call": "WAVE",
-          "ota": 3
+          "ota": "3"
         },
         "ABC": {
           "call": "WHAS",
-          "ota": 11
+          "ota": "11"
         }
       }
     },
@@ -1437,19 +1437,19 @@
       "affiliates": {
         "CBS": {
           "call": "WRGB",
-          "ota": 6
+          "ota": "6"
         },
         "FOX": {
           "call": "WXXA",
-          "ota": 23
+          "ota": "23"
         },
         "NBC": {
           "call": "WNYT",
-          "ota": 13
+          "ota": "13"
         },
         "ABC": {
           "call": "WTEN",
-          "ota": 10
+          "ota": "10"
         }
       }
     },
@@ -1466,19 +1466,19 @@
       "affiliates": {
         "CBS": {
           "call": "WHP",
-          "ota": 21
+          "ota": "21"
         },
         "FOX": {
           "call": "WPMT",
-          "ota": 43
+          "ota": "43"
         },
         "NBC": {
           "call": "WGAL",
-          "ota": 8
+          "ota": "8"
         },
         "ABC": {
           "call": "WHTM",
-          "ota": 27
+          "ota": "27"
         }
       }
     },
@@ -1495,19 +1495,19 @@
       "affiliates": {
         "CBS": {
           "call": "KMTV",
-          "ota": 3
+          "ota": "3"
         },
         "FOX": {
           "call": "KPTM",
-          "ota": 42
+          "ota": "42"
         },
         "NBC": {
           "call": "WOWT",
-          "ota": 6
+          "ota": "6"
         },
         "ABC": {
           "call": "KETV",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -1524,19 +1524,19 @@
       "affiliates": {
         "CBS": {
           "call": "KCCI",
-          "ota": 8
+          "ota": "8"
         },
         "FOX": {
           "call": "KDSM",
-          "ota": 17
+          "ota": "17"
         },
         "NBC": {
           "call": "WHO",
-          "ota": 13
+          "ota": "13"
         },
         "ABC": {
           "call": "WOI",
-          "ota": 5
+          "ota": "5"
         }
       }
     },
@@ -1552,19 +1552,19 @@
       "affiliates": {
         "CBS": {
           "call": "WPRI",
-          "ota": 12
+          "ota": "12"
         },
         "FOX": {
           "call": "WNAC",
-          "ota": 64
+          "ota": "64"
         },
         "NBC": {
           "call": "WJAR",
-          "ota": 10
+          "ota": "10"
         },
         "ABC": {
           "call": "WLNE",
-          "ota": 6
+          "ota": "6"
         }
       }
     },
@@ -1580,19 +1580,19 @@
       "affiliates": {
         "CBS": {
           "call": "WKBN",
-          "ota": 27
+          "ota": "27"
         },
         "FOX": {
           "call": "WYFX",
-          "ota": 62
+          "ota": "62"
         },
         "NBC": {
           "call": "WFMJ",
-          "ota": 21
+          "ota": "21"
         },
         "ABC": {
           "call": "WYTV",
-          "ota": 33
+          "ota": "33"
         }
       }
     },
@@ -1609,19 +1609,19 @@
       "affiliates": {
         "CBS": {
           "call": "WPEC",
-          "ota": 12
+          "ota": "12"
         },
         "FOX": {
           "call": "WFLX",
-          "ota": 29
+          "ota": "29"
         },
         "NBC": {
           "call": "WPTV",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "WPBF",
-          "ota": 25
+          "ota": "25"
         }
       }
     },
@@ -1638,19 +1638,19 @@
       "affiliates": {
         "CBS": {
           "call": "WINK",
-          "ota": 11
+          "ota": "11"
         },
         "FOX": {
           "call": "WFTX",
-          "ota": 4
+          "ota": "4"
         },
         "NBC": {
           "call": "WBBH",
-          "ota": 20
+          "ota": "20"
         },
         "ABC": {
           "call": "WZVN",
-          "ota": 26
+          "ota": "26"
         }
       }
     },
@@ -1667,19 +1667,19 @@
       "affiliates": {
         "CBS": {
           "call": "WTOC",
-          "ota": 11
+          "ota": "11"
         },
         "FOX": {
           "call": "WTGS",
-          "ota": 28
+          "ota": "28"
         },
         "NBC": {
           "call": "WSAV",
-          "ota": 3
+          "ota": "3"
         },
         "ABC": {
           "call": "WJCL",
-          "ota": 22
+          "ota": "22"
         }
       }
     },
@@ -1696,19 +1696,19 @@
       "affiliates": {
         "CBS": {
           "call": "WCSC",
-          "ota": 5
+          "ota": "5"
         },
         "FOX": {
           "call": "WTAT",
-          "ota": 24
+          "ota": "24"
         },
         "NBC": {
           "call": "WCBD",
-          "ota": 2
+          "ota": "2"
         },
         "ABC": {
           "call": "WCIV",
-          "ota": 4
+          "ota": "4"
         }
       }
     },
@@ -1724,19 +1724,19 @@
       "affiliates": {
         "CBS": {
           "call": "WBTW",
-          "ota": 13
+          "ota": "13"
         },
         "FOX": {
           "call": "WFXB",
-          "ota": 43
+          "ota": "43"
         },
         "NBC": {
           "call": "WMBF",
-          "ota": 32
+          "ota": "32"
         },
         "ABC": {
           "call": "WPDE",
-          "ota": 15
+          "ota": "15"
         }
       }
     },
@@ -1752,20 +1752,20 @@
       ],
       "affiliates": {
         "CBS": {
-          "call": "WSPA",
-          "ota": 7
+          "call": "WYFF",
+          "ota": "4.3"
         },
         "FOX": {
           "call": "WHNS",
-          "ota": 21
+          "ota": "21"
         },
         "NBC": {
           "call": "WYFF",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "WLOS",
-          "ota": 13
+          "ota": "13"
         }
       }
     },
@@ -1781,19 +1781,19 @@
       "affiliates": {
         "CBS": {
           "call": "WFMY",
-          "ota": 2
+          "ota": "2"
         },
         "FOX": {
           "call": "WGHP",
-          "ota": 8
+          "ota": "8"
         },
         "NBC": {
           "call": "WXII",
-          "ota": 12
+          "ota": "12"
         },
         "ABC": {
           "call": "WXLV",
-          "ota": 45
+          "ota": "45"
         }
       }
     },
@@ -1810,19 +1810,19 @@
       "affiliates": {
         "CBS": {
           "call": "WVLT",
-          "ota": 8
+          "ota": "8"
         },
         "FOX": {
           "call": "WTNZ",
-          "ota": 43
+          "ota": "43"
         },
         "NBC": {
           "call": "WBIR",
-          "ota": 10
+          "ota": "10"
         },
         "ABC": {
           "call": "WATE",
-          "ota": 6
+          "ota": "6"
         }
       }
     },
@@ -1838,19 +1838,19 @@
       "affiliates": {
         "CBS": {
           "call": "WDEF",
-          "ota": 12
+          "ota": "12"
         },
         "FOX": {
           "call": "WTVC",
-          "ota": 9
+          "ota": "9.2"
         },
         "NBC": {
           "call": "WRCB",
-          "ota": 3
+          "ota": "3"
         },
         "ABC": {
           "call": "WTVC",
-          "ota": 9
+          "ota": "9"
         }
       }
     },
@@ -1867,19 +1867,19 @@
       "affiliates": {
         "CBS": {
           "call": "WKYT",
-          "ota": 27
+          "ota": "27"
         },
         "FOX": {
           "call": "WDKY",
-          "ota": 56
+          "ota": "56"
         },
         "NBC": {
           "call": "WLEX",
-          "ota": 18
+          "ota": "18"
         },
         "ABC": {
           "call": "WTVQ",
-          "ota": 36
+          "ota": "36"
         }
       }
     },
@@ -1896,19 +1896,19 @@
       "affiliates": {
         "CBS": {
           "call": "WHIO",
-          "ota": 7
+          "ota": "7"
         },
         "FOX": {
           "call": "WRGT",
-          "ota": 45
+          "ota": "45"
         },
         "NBC": {
           "call": "WDTN",
-          "ota": 2
+          "ota": "2"
         },
         "ABC": {
           "call": "WKEF",
-          "ota": 22
+          "ota": "22"
         }
       }
     },
@@ -1924,19 +1924,19 @@
       "affiliates": {
         "CBS": {
           "call": "WTOL",
-          "ota": 11
+          "ota": "11"
         },
         "FOX": {
           "call": "WUPW",
-          "ota": 36
+          "ota": "36"
         },
         "NBC": {
           "call": "WNWO",
-          "ota": 24
+          "ota": "24"
         },
         "ABC": {
           "call": "WTVG",
-          "ota": 13
+          "ota": "13"
         }
       }
     },
@@ -1953,19 +1953,19 @@
       "affiliates": {
         "CBS": {
           "call": "WWMT",
-          "ota": 3
+          "ota": "3"
         },
         "FOX": {
           "call": "WXMI",
-          "ota": 17
+          "ota": "17"
         },
         "NBC": {
           "call": "WOOD",
-          "ota": 8
+          "ota": "8"
         },
         "ABC": {
           "call": "WZZM",
-          "ota": 13
+          "ota": "13"
         }
       }
     },
@@ -1982,19 +1982,19 @@
       "affiliates": {
         "CBS": {
           "call": "WISC",
-          "ota": 3
+          "ota": "3"
         },
         "FOX": {
           "call": "WMSN",
-          "ota": 47
+          "ota": "47"
         },
         "NBC": {
           "call": "WMTV",
-          "ota": 15
+          "ota": "15"
         },
         "ABC": {
           "call": "WKOW",
-          "ota": 27
+          "ota": "27"
         }
       }
     },
@@ -2010,19 +2010,19 @@
       "affiliates": {
         "CBS": {
           "call": "KOTV",
-          "ota": 6
+          "ota": "6"
         },
         "FOX": {
           "call": "KOKI",
-          "ota": 23
+          "ota": "23"
         },
         "NBC": {
           "call": "KJRH",
-          "ota": 2
+          "ota": "2"
         },
         "ABC": {
           "call": "KTUL",
-          "ota": 8
+          "ota": "8"
         }
       }
     },
@@ -2039,19 +2039,19 @@
       "affiliates": {
         "CBS": {
           "call": "KTHV",
-          "ota": 11
+          "ota": "11"
         },
         "FOX": {
           "call": "KLRT",
-          "ota": 16
+          "ota": "16"
         },
         "NBC": {
           "call": "KARK",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "KATV",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -2068,19 +2068,19 @@
       "affiliates": {
         "CBS": {
           "call": "WAFB",
-          "ota": 9
+          "ota": "9"
         },
         "FOX": {
           "call": "WGMB",
-          "ota": 44
+          "ota": "44"
         },
         "NBC": {
           "call": "WVLA",
-          "ota": 33
+          "ota": "33"
         },
         "ABC": {
           "call": "WBRZ",
-          "ota": 2
+          "ota": "2"
         }
       }
     },
@@ -2097,19 +2097,19 @@
       "affiliates": {
         "CBS": {
           "call": "WKRG",
-          "ota": 5
+          "ota": "5"
         },
         "FOX": {
           "call": "WALA",
-          "ota": 10
+          "ota": "10"
         },
         "NBC": {
           "call": "WPMI",
-          "ota": 15
+          "ota": "15"
         },
         "ABC": {
           "call": "WEAR",
-          "ota": 3
+          "ota": "3"
         }
       }
     },
@@ -2125,19 +2125,19 @@
       "affiliates": {
         "CBS": {
           "call": "WHNT",
-          "ota": 19
+          "ota": "19"
         },
         "FOX": {
           "call": "WZDX",
-          "ota": 54
+          "ota": "54"
         },
         "NBC": {
           "call": "WAFF",
-          "ota": 48
+          "ota": "48"
         },
         "ABC": {
           "call": "WAAY",
-          "ota": 31
+          "ota": "31"
         }
       }
     },
@@ -2154,19 +2154,19 @@
       "affiliates": {
         "CBS": {
           "call": "KOLD",
-          "ota": 13
+          "ota": "13"
         },
         "FOX": {
           "call": "KMSB",
-          "ota": 11
+          "ota": "11"
         },
         "NBC": {
           "call": "KVOA",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "KGUN",
-          "ota": 9
+          "ota": "9"
         }
       }
     },
@@ -2182,20 +2182,20 @@
       ],
       "affiliates": {
         "CBS": {
-          "call": "KRQE",
-          "ota": 13
+          "call": "KOAT",
+          "ota": "7.4"
         },
         "FOX": {
-          "call": "KASA",
-          "ota": 2
+          "call": "KRQE",
+          "ota": "13"
         },
         "NBC": {
           "call": "KOB",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "KOAT",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -2212,19 +2212,19 @@
       "affiliates": {
         "CBS": {
           "call": "KDBC",
-          "ota": 4
+          "ota": "4"
         },
         "FOX": {
           "call": "KFOX",
-          "ota": 14
+          "ota": "14"
         },
         "NBC": {
           "call": "KTSM",
-          "ota": 9
+          "ota": "9"
         },
         "ABC": {
           "call": "KVIA",
-          "ota": 7
+          "ota": "7"
         }
       }
     },
@@ -2241,19 +2241,19 @@
       "affiliates": {
         "CBS": {
           "call": "KBOI",
-          "ota": 2
+          "ota": "2"
         },
         "FOX": {
           "call": "KNIN",
-          "ota": 9
+          "ota": "9"
         },
         "NBC": {
           "call": "KTVB",
-          "ota": 7
+          "ota": "7"
         },
         "ABC": {
           "call": "KIVI",
-          "ota": 6
+          "ota": "6"
         }
       }
     },
@@ -2269,19 +2269,19 @@
       "affiliates": {
         "CBS": {
           "call": "KREM",
-          "ota": 2
+          "ota": "2"
         },
         "FOX": {
           "call": "KAYU",
-          "ota": 28
+          "ota": "28"
         },
         "NBC": {
           "call": "KHQ",
-          "ota": 6
+          "ota": "6"
         },
         "ABC": {
           "call": "KXLY",
-          "ota": 4
+          "ota": "4"
         }
       }
     },
@@ -2298,19 +2298,19 @@
       "affiliates": {
         "CBS": {
           "call": "KTVN",
-          "ota": 2
+          "ota": "2"
         },
         "FOX": {
           "call": "KRXI",
-          "ota": 11
+          "ota": "11"
         },
         "NBC": {
           "call": "KRNV",
-          "ota": 4
+          "ota": "4"
         },
         "ABC": {
           "call": "KOLO",
-          "ota": 8
+          "ota": "8"
         }
       }
     },
@@ -2326,19 +2326,19 @@
       "affiliates": {
         "CBS": {
           "call": "KKTV",
-          "ota": 11
+          "ota": "11"
         },
         "FOX": {
           "call": "KXRM",
-          "ota": 21
+          "ota": "21"
         },
         "NBC": {
           "call": "KOAA",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "KRDO",
-          "ota": 13
+          "ota": "13"
         }
       }
     },
@@ -2355,19 +2355,19 @@
       "affiliates": {
         "CBS": {
           "call": "KGMB",
-          "ota": 5
+          "ota": "5"
         },
         "FOX": {
           "call": "KHON",
-          "ota": 2
+          "ota": "2"
         },
         "NBC": {
           "call": "KHNL",
-          "ota": 13
+          "ota": "13"
         },
         "ABC": {
           "call": "KITV",
-          "ota": 4
+          "ota": "4"
         }
       }
     },
@@ -2384,19 +2384,19 @@
       "affiliates": {
         "CBS": {
           "call": "KGPE",
-          "ota": 47
+          "ota": "47"
         },
         "FOX": {
           "call": "KMPH",
-          "ota": 26
+          "ota": "26"
         },
         "NBC": {
           "call": "KSEE",
-          "ota": 24
+          "ota": "24"
         },
         "ABC": {
           "call": "KFSN",
-          "ota": 30
+          "ota": "30"
         }
       }
     },
@@ -2413,19 +2413,19 @@
       "affiliates": {
         "CBS": {
           "call": "KBAK",
-          "ota": 29
+          "ota": "29"
         },
         "FOX": {
           "call": "KBFX",
-          "ota": 58
+          "ota": "58"
         },
         "NBC": {
           "call": "KGET",
-          "ota": 17
+          "ota": "17"
         },
         "ABC": {
           "call": "KERO",
-          "ota": 23
+          "ota": "23"
         }
       }
     },
@@ -2442,19 +2442,19 @@
       "affiliates": {
         "CBS": {
           "call": "KPSP",
-          "ota": 2
+          "ota": "2"
         },
         "FOX": {
           "call": "KDFX",
-          "ota": 11
+          "ota": "11"
         },
         "NBC": {
           "call": "KMIR",
-          "ota": 36
+          "ota": "36"
         },
         "ABC": {
           "call": "KESQ",
-          "ota": 3
+          "ota": "3"
         }
       }
     },
@@ -2471,19 +2471,19 @@
       "affiliates": {
         "CBS": {
           "call": "WTVH",
-          "ota": 5
+          "ota": "5"
         },
         "FOX": {
           "call": "WSYT",
-          "ota": 68
+          "ota": "68"
         },
         "NBC": {
           "call": "WSTM",
-          "ota": 3
+          "ota": "3"
         },
         "ABC": {
           "call": "WSYR",
-          "ota": 9
+          "ota": "9"
         }
       }
     },
@@ -2499,19 +2499,19 @@
       "affiliates": {
         "CBS": {
           "call": "WROC",
-          "ota": 8
+          "ota": "8"
         },
         "FOX": {
           "call": "WUHF",
-          "ota": 31
+          "ota": "31"
         },
         "NBC": {
           "call": "WHEC",
-          "ota": 10
+          "ota": "10"
         },
         "ABC": {
           "call": "WHAM",
-          "ota": 13
+          "ota": "13"
         }
       }
     },
@@ -2527,19 +2527,19 @@
       "affiliates": {
         "CBS": {
           "call": "WGME",
-          "ota": 13
+          "ota": "13"
         },
         "FOX": {
           "call": "WPFO",
-          "ota": 23
+          "ota": "23"
         },
         "NBC": {
           "call": "WCSH",
-          "ota": 6
+          "ota": "6"
         },
         "ABC": {
           "call": "WMTW",
-          "ota": 8
+          "ota": "8"
         }
       }
     },
@@ -2556,19 +2556,19 @@
       "affiliates": {
         "CBS": {
           "call": "WCAX",
-          "ota": 3
+          "ota": "3"
         },
         "FOX": {
           "call": "WFFF",
-          "ota": 44
+          "ota": "44"
         },
         "NBC": {
           "call": "WPTZ",
-          "ota": 5
+          "ota": "5"
         },
         "ABC": {
           "call": "WVNY",
-          "ota": 22
+          "ota": "22"
         }
       }
     },
@@ -2586,19 +2586,19 @@
       "affiliates": {
         "CBS": {
           "call": "WYOU",
-          "ota": 22
+          "ota": "22"
         },
         "FOX": {
           "call": "WOLF",
-          "ota": 56
+          "ota": "56"
         },
         "NBC": {
           "call": "WBRE",
-          "ota": 28
+          "ota": "28"
         },
         "ABC": {
           "call": "WNEP",
-          "ota": 16
+          "ota": "16"
         }
       }
     },
@@ -2614,19 +2614,19 @@
       "affiliates": {
         "CBS": {
           "call": "WDBJ",
-          "ota": 7
+          "ota": "7"
         },
         "FOX": {
           "call": "WFXR",
-          "ota": 27
+          "ota": "27"
         },
         "NBC": {
           "call": "WSLS",
-          "ota": 10
+          "ota": "10"
         },
         "ABC": {
           "call": "WSET",
-          "ota": 13
+          "ota": "13"
         }
       }
     },
@@ -2644,19 +2644,19 @@
       "affiliates": {
         "CBS": {
           "call": "WOWK",
-          "ota": 13
+          "ota": "13"
         },
         "FOX": {
           "call": "WVAH",
-          "ota": 11
+          "ota": "11"
         },
         "NBC": {
           "call": "WSAZ",
-          "ota": 3
+          "ota": "3"
         },
         "ABC": {
           "call": "WCHS",
-          "ota": 8
+          "ota": "8"
         }
       }
     },
@@ -2673,19 +2673,19 @@
       "affiliates": {
         "CBS": {
           "call": "KOLR",
-          "ota": 10
+          "ota": "10"
         },
         "FOX": {
           "call": "KRBK",
-          "ota": 49
+          "ota": "49"
         },
         "NBC": {
           "call": "KYTV",
-          "ota": 3
+          "ota": "3"
         },
         "ABC": {
           "call": "KSPR",
-          "ota": 33
+          "ota": "33"
         }
       }
     },
@@ -2702,19 +2702,19 @@
       "affiliates": {
         "CBS": {
           "call": "KWCH",
-          "ota": 12
+          "ota": "12"
         },
         "FOX": {
           "call": "KSAS",
-          "ota": 24
+          "ota": "24"
         },
         "NBC": {
           "call": "KSNW",
-          "ota": 3
+          "ota": "3"
         },
         "ABC": {
           "call": "KAKE",
-          "ota": 10
+          "ota": "10"
         }
       }
     },
@@ -2731,19 +2731,19 @@
       "affiliates": {
         "CBS": {
           "call": "KSLA",
-          "ota": 12
+          "ota": "12"
         },
         "FOX": {
           "call": "KMSS",
-          "ota": 33
+          "ota": "33"
         },
         "NBC": {
           "call": "KTAL",
-          "ota": 6
+          "ota": "6"
         },
         "ABC": {
           "call": "KTBS",
-          "ota": 3
+          "ota": "3"
         }
       }
     }

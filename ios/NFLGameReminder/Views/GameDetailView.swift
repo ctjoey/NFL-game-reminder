@@ -73,6 +73,9 @@ struct GameDetailView: View {
                         Text(hint).font(.caption).foregroundStyle(Theme.textDim)
                             .fixedSize(horizontal: false, vertical: true)
                     }
+                    if ch.confidence != .na {
+                        ChannelReportLink(channel: ch).padding(.top, 1)
+                    }
                 }
             }
             if !card.game.streams.isEmpty {

@@ -74,6 +74,23 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(alerts[0].body.contains("WPXI (NBC) ch. 11"))
         XCTAssertTrue(alerts[0].body.contains("Was: Sun Sep 13, 1:00 pm EDT on FOX/FOX One"))
     }
+    /// Networks often sit on a subchannel — WTVC 9.2 for FOX, WYFF 4.3 for CBS after the August
+    /// 2026 affiliation moves. A whole-number channel would send viewers to the wrong network.
+    func testSubchannelAffiliatesSurviveToTheChannelReadout() {
+        var u = pitUser
+        u.provider = "ota"
+        u.market = "chattanooga"
+        XCTAssertEqual(catalog.channel(for: "FOX", user: u).number, "9.2")
+        XCTAssertEqual(catalog.channel(for: "ABC", user: u).number, "9")
+        u.market = "greenvillesc"
+        let cbs = catalog.channel(for: "CBS", user: u)
+        XCTAssertEqual(cbs.stationCall, "WYFF")
+        XCTAssertEqual(cbs.number, "4.3", "CBS moved to a WYFF subchannel on 1 Aug 2026")
+        u.market = "albuquerque"
+        XCTAssertEqual(catalog.channel(for: "CBS", user: u).stationCall, "KOAT")
+        XCTAssertEqual(catalog.channel(for: "FOX", user: u).stationCall, "KRQE")
+    }
+
     /// Cable renumbers city by city, so a number set at home must not follow you somewhere else.
     func testChannelOverridesAreKeptPerMarket() {
         var u = pitUser

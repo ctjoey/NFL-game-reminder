@@ -54,9 +54,9 @@ export function resolveChannel(user, network) {
     if (overrides[network] != null && overrides[network] !== '') {
       out.number = String(overrides[network]); out.source = 'you set this'; out.confidence = 'confirmed';
     } else if (provider?.kind === 'ota' && aff) {
-      out.number = String(aff.ota); out.source = 'over-the-air channel'; out.confidence = 'confirmed';
+      out.number = aff.ota; out.source = 'over-the-air channel'; out.confidence = 'confirmed';
     } else if (provider?.localsMatchOta && aff) {
-      out.number = String(aff.ota); out.source = `${provider.name} carries locals on their over-the-air number`; out.confidence = 'likely';
+      out.number = aff.ota; out.source = `${provider.name} carries locals on their over-the-air number`; out.confidence = 'likely';
     } else if (provider?.kind === 'stream') {
       out.number = null; out.source = provider.name; out.confidence = 'n/a';
       out.hint = aff ? `Search "${aff.call}" or "${network}" in the ${provider.name} guide.` : (provider.guideHint || null);

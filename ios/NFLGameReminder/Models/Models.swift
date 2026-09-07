@@ -112,7 +112,10 @@ struct ScheduleChange: Codable, Identifiable, Equatable {
 
 // MARK: - Market / provider catalog
 
-struct Affiliate: Codable, Hashable { var call: String; var ota: Int }
+/// `ota` is the virtual channel as a person reads it off the TV, so it is a string: many
+/// markets carry a network on a subchannel (WTVC 9.2 for FOX, WYFF 4.3 for CBS) and an Int
+/// cannot express that.
+struct Affiliate: Codable, Hashable { var call: String; var ota: String }
 struct Market: Codable, Identifiable, Hashable {
     var id: String = ""
     var name: String
@@ -210,7 +213,7 @@ struct ChannelInfo: Equatable {
     var network: String
     var label: String
     var stationCall: String?
-    var stationOta: Int?
+    var stationOta: String?
     var number: String?
     var source: String?
     var confidence: Confidence

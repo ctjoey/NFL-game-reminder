@@ -63,9 +63,9 @@ final class Catalog {
             if let o = user.channelOverride(network) {
                 out.number = o; out.source = "you set this"; out.confidence = .confirmed
             } else if provider?.kind == "ota", let a = aff {
-                out.number = String(a.ota); out.source = "over-the-air channel"; out.confidence = .confirmed
+                out.number = a.ota; out.source = "over-the-air channel"; out.confidence = .confirmed
             } else if provider?.localsMatchOta == true, let a = aff {
-                out.number = String(a.ota); out.source = "\(provider!.name) carries locals on their over-the-air number"; out.confidence = .likely
+                out.number = a.ota; out.source = "\(provider!.name) carries locals on their over-the-air number"; out.confidence = .likely
             } else if provider?.kind == "stream" {
                 out.confidence = .na; out.source = provider?.name
                 out.hint = aff.map { "Search \"\($0.call)\" or \"\(network)\" in the \(provider!.name) guide." } ?? provider?.guideHint
