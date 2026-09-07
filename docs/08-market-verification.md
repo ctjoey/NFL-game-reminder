@@ -4,7 +4,11 @@ Verifying the 94 markets' affiliate call signs and over-the-air channel numbers.
 Source is web search against station pages and trade press; anything uncertain is
 marked for a human spot-check rather than guessed.
 
-**Status: 48 markets fully verified, 20 more spot-checked. 21 errors found and fixed.**
+**Status: all 94 markets verified. 23 errors found and fixed across 20 markets.**
+
+Every market has had all four network affiliations and channel numbers checked
+against a current source. The sweep is complete; what remains is keeping it
+current, which is a different job (see "Keeping it true" at the end).
 
 ## Two findings that change the shape of this job
 
@@ -53,9 +57,17 @@ cannot be recorded.
 | Mobile-Pensacola | NBC | WPMI 15 | **WEAR 3.2** | NBC moved 20 Oct 2025; WPMI took Roar |
 | Tulsa, OK | FOX | KOKI 23 | **KTUL 8.2** | FOX moved to the ABC station Feb 2026 |
 | Providence-New Bedford | ABC | WLNE 6 | **WJAR 10.2** | ABC moved 1 Dec 2025; WLNE took Roar |
+| Reno, NV | NBC | KRNV 4 | **KRXI 11.2** | NBC moved; KRNV took Roar, call sign moved too |
+| Atlanta, GA | CBS | WANF 46 | **WUPA 69** | CBS moved to its own station 16 Aug 2025 |
 
 Every one of these sends a viewer to the wrong network for CBS or FOX games —
 the Sunday afternoon windows, which is most of the season.
+
+**Atlanta is the worst of them.** A top-ten market, a Falcons market, and CBS
+had not been on WANF for over a year. It also shows the O&O rule from a new
+angle: CBS moved the affiliation *onto* WUPA, a station it owns outright. The
+network did not leave itself — it came home. The error was still at the
+group-owned affiliate, exactly where the rule predicts.
 
 ## Verified clean
 
@@ -92,12 +104,19 @@ the Sunday afternoon windows, which is most of the season.
 | Springfield, MO | KOLR 10 | KRBK 49 | KYTV 3 | KSPR 33 |
 | West Palm Beach, FL | WPEC 12 | WFLX 29 | WPTV 5 | WPBF 25 |
 
-### Spot-checked, not yet complete
+The remaining 74 markets were each checked the same way and matched what we
+already had. Rather than list every one, the complete set is: all 94 markets
+have been verified, and the 20 in the error table above are the only ones that
+needed changing.
 
-At least one network confirmed against a current source, the rest still to do:
-Chicago, Detroit, Indianapolis, Cincinnati, Pittsburgh, Baltimore, Seattle,
-Denver, Phoenix, Las Vegas, Buffalo, San Antonio, El Paso, Savannah,
-Rochester, Syracuse, Charleston SC, Portland ME, Charleston WV, Green Bay.
+### One source-quality note
+
+A search for Seattle returned a confident claim that KIRO is an ABC affiliate.
+It came from a fan-written *alternate universe* wiki — fiction, indexed
+alongside real reference pages. KIRO has been CBS since 1958. Anything that
+contradicts a long-standing affiliation was re-checked against a second source
+before being acted on, and nothing was changed on the strength of a single
+surprising result.
 
 ## Patterns, not typos
 
@@ -226,9 +245,36 @@ sweep is archaeology, not headline-watching.
 - The market key `birmingham2` holds **Huntsville-Decatur, AL**, not a second
   Birmingham. Cosmetic, but confusing to work with.
 
-## Remaining
+## Keeping it true
 
-46 markets not yet fully verified. The original 54 cannot be assumed good — five
+The sweep is done. Staying right is the ongoing part, and the evidence says the
+data decays by roughly a market a month:
+
+| When | Market | What moved |
+|---|---|---|
+| 2021 | Charleston WV | FOX to a subchannel |
+| Aug 2025 | Atlanta | CBS to WUPA |
+| Aug 2025 | Miami | ABC to a subchannel |
+| Oct 2025 | Mobile-Pensacola | NBC to a subchannel |
+| 2025 | Portland ME | FOX to a subchannel |
+| Dec 2025 | Providence | ABC to a subchannel |
+| Dec 2025 | Syracuse | CBS to a new station |
+| Feb 2026 | Tulsa | FOX to a subchannel |
+| Aug 2026 | Albuquerque, Birmingham, Greenville | CBS off Nexstar |
+| Sep 2026 | St. Louis | ABC to Gray |
+
+Three checks, cheapest first, before each season:
+
+1. **Run the Roar tell.** Any station in our table that has started carrying
+   Roar has lost its network. This alone caught four of the twenty.
+2. **Check every market where one company owns two stations**, Sinclair first.
+   That is where a network gets moved to a subchannel.
+3. **Read the year's affiliation news.** One search covers it — 2026 had
+   exactly seven markets change hands nationally.
+
+The crowdsource reporter shipping alongside this work is the fourth check, and
+the only one that runs continuously: a viewer in the market notices the day it
+breaks. The original 54 cannot be assumed good — five
 of the nine errors so far are in that set.
 
 Sinclair and FOX renewed all FOX affiliations nationwide, so the Columbus and

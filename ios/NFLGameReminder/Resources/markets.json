@@ -287,8 +287,8 @@
       ],
       "affiliates": {
         "CBS": {
-          "call": "WANF",
-          "ota": "46"
+          "call": "WUPA",
+          "ota": "69"
         },
         "FOX": {
           "call": "WAGA",
@@ -2305,8 +2305,8 @@
           "ota": "11"
         },
         "NBC": {
-          "call": "KRNV",
-          "ota": "4"
+          "call": "KRXI",
+          "ota": "11.2"
         },
         "ABC": {
           "call": "KOLO",
