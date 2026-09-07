@@ -1563,8 +1563,8 @@
           "ota": "10"
         },
         "ABC": {
-          "call": "WLNE",
-          "ota": "6"
+          "call": "WJAR",
+          "ota": "10.2"
         }
       }
     },
@@ -1642,7 +1642,7 @@
         },
         "FOX": {
           "call": "WFTX",
-          "ota": "4"
+          "ota": "36"
         },
         "NBC": {
           "call": "WBBH",
@@ -2013,8 +2013,8 @@
           "ota": "6"
         },
         "FOX": {
-          "call": "KOKI",
-          "ota": "23"
+          "call": "KTUL",
+          "ota": "8.2"
         },
         "NBC": {
           "call": "KJRH",
@@ -2104,8 +2104,8 @@
           "ota": "10"
         },
         "NBC": {
-          "call": "WPMI",
-          "ota": "15"
+          "call": "WEAR",
+          "ota": "3.2"
         },
         "ABC": {
           "call": "WEAR",
@@ -2442,11 +2442,11 @@
       "affiliates": {
         "CBS": {
           "call": "KPSP",
-          "ota": "2"
+          "ota": "38"
         },
         "FOX": {
           "call": "KDFX",
-          "ota": "11"
+          "ota": "33"
         },
         "NBC": {
           "call": "KMIR",
@@ -2454,7 +2454,7 @@
         },
         "ABC": {
           "call": "KESQ",
-          "ota": "3"
+          "ota": "42"
         }
       }
     },
@@ -2590,7 +2590,7 @@
         },
         "FOX": {
           "call": "WOLF",
-          "ota": "56"
+          "ota": "45"
         },
         "NBC": {
           "call": "WBRE",

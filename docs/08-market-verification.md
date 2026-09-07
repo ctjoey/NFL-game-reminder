@@ -4,7 +4,7 @@ Verifying the 94 markets' affiliate call signs and over-the-air channel numbers.
 Source is web search against station pages and trade press; anything uncertain is
 marked for a human spot-check rather than guessed.
 
-**Status: 22 markets fully verified, 20 more spot-checked. 13 errors found and fixed.**
+**Status: 48 markets fully verified, 20 more spot-checked. 21 errors found and fixed.**
 
 ## Two findings that change the shape of this job
 
@@ -45,6 +45,14 @@ cannot be recorded.
 | Portland-Auburn, ME | FOX | WPFO 23 | **WGME 13.2** | WPFO lost FOX in 2025; now carries Roar |
 | Charleston, SC | ABC | WCIV 4 | **WCIV 36.2** | Right station, wrong number — 36.1 is MyNetworkTV |
 | Syracuse, NY | CBS | WTVH 5 | **WKOF 15** | CBS moved to a new station 1 Dec 2025 |
+| Palm Springs, CA | CBS | KPSP 2 | **KPSP 38** | 2 is the cable position, not the antenna |
+| Palm Springs, CA | FOX | KDFX 11 | **KDFX 33** | same |
+| Palm Springs, CA | ABC | KESQ 3 | **KESQ 42** | brands as "News Channel 3" off its cable slot |
+| Fort Myers-Naples, FL | FOX | WFTX 4 | **WFTX 36** | 4 is the cable position |
+| Scranton-Wilkes-Barre, PA | FOX | WOLF 56 | **WOLF 45** | 56 is the RF channel, invisible to viewers |
+| Mobile-Pensacola | NBC | WPMI 15 | **WEAR 3.2** | NBC moved 20 Oct 2025; WPMI took Roar |
+| Tulsa, OK | FOX | KOKI 23 | **KTUL 8.2** | FOX moved to the ABC station Feb 2026 |
+| Providence-New Bedford | ABC | WLNE 6 | **WJAR 10.2** | ABC moved 1 Dec 2025; WLNE took Roar |
 
 Every one of these sends a viewer to the wrong network for CBS or FOX games —
 the Sunday afternoon windows, which is most of the season.
@@ -63,6 +71,26 @@ the Sunday afternoon windows, which is most of the season.
 | Philadelphia, PA | KYW 3 | WTXF 29 | WCAU 10 | WPVI 6 |
 | Boston, MA | WBZ 4 | WFXT 25 | WBTS 10 | WCVB 5 |
 | Washington, DC | WUSA 9 | WTTG 5 | WRC 4 | WJLA 7 |
+| Albany, NY | WRGB 6 | WXXA 23 | WNYT 13 | WTEN 10 |
+| Des Moines, IA | KCCI 8 | KDSM 17 | WHO 13 | WOI 5 |
+| Grand Rapids, MI | WWMT 3 | WXMI 17 | WOOD 8 | WZZM 13 |
+| Greensboro, NC | WFMY 2 | WGHP 8 | WXII 12 | WXLV 45 |
+| Harrisburg, PA | WHP 21 | WPMT 43 | WGAL 8 | WHTM 27 |
+| Hartford, CT | WFSB 3 | WTIC 61 | WVIT 30 | WTNH 8 |
+| Lexington, KY | WKYT 27 | WDKY 56 | WLEX 18 | WTVQ 36 |
+| Louisville, KY | WLKY 32 | WDRB 41 | WAVE 3 | WHAS 11 |
+| Madison, WI | WISC 3 | WMSN 47 | WMTV 15 | WKOW 27 |
+| Memphis, TN | WREG 3 | WHBQ 13 | WMC 5 | WATN 24 |
+| Myrtle Beach, SC | WBTW 13 | WFXB 43 | WMBF 32 | WPDE 15 |
+| Norfolk, VA | WTKR 3 | WVBT 43 | WAVY 10 | WVEC 13 |
+| Oklahoma City, OK | KWTV 9 | KOKH 25 | KFOR 4 | KOCO 5 |
+| Omaha, NE | KMTV 3 | KPTM 42 | WOWT 6 | KETV 7 |
+| Orlando, FL | WKMG 6 | WOFL 35 | WESH 2 | WFTV 9 |
+| Raleigh-Durham, NC | WNCN 17 | WRAZ 50 | WRAL 5 | WTVD 11 |
+| Richmond, VA | WTVR 6 | WRLH 35 | WWBT 12 | WRIC 8 |
+| Roanoke, VA | WDBJ 7 | WFXR 27 | WSLS 10 | WSET 13 |
+| Springfield, MO | KOLR 10 | KRBK 49 | KYTV 3 | KSPR 33 |
+| West Palm Beach, FL | WPEC 12 | WFLX 29 | WPTV 5 | WPBF 25 |
 
 ### Spot-checked, not yet complete
 
@@ -105,6 +133,38 @@ affiliates in big markets, and both moved.
 That is the triage rule for the remaining sweep: check group-owned affiliates
 first, treat O&Os as low-risk confirmations.
 
+## Three failure classes, not one
+
+The errors are not all the same mistake, and knowing which is which changes how
+to hunt for them.
+
+**1. The station changed networks.** The original nine, plus Mobile, Tulsa and
+Providence. Found by checking trade press, and by the Roar tell below.
+
+**2. We recorded the number the station calls itself.** Charleston SC, Palm
+Springs (three of its four) and Fort Myers. These stations brand off their
+*cable* position because cable penetration in their market is near-total —
+"News Channel 3", "CBS Local 2", "Fox 4" — while their antenna number is
+something else entirely. The call sign was right every time. Only the number
+was wrong, which makes this class invisible to any check that only asks
+"who is the CBS affiliate here?"
+
+**3. We recorded the RF channel instead of the virtual one.** Scranton's WOLF
+transmits on 56 and appears on TVs as 45. This is the exact trap listed under
+"What to watch for" below, and it was in our own data the whole time.
+
+Classes 2 and 3 are the dangerous ones: nothing about them looks wrong. A market
+can have the right four call signs and still send every viewer to the wrong
+place.
+
+## The Roar tell
+
+Sinclair fills an emptied signal with its own multicast network, rebranded from
+TBD to **Roar** in 2025. So: **a station suddenly airing Roar has just lost its
+network.** That single signal found Dayton, Portland ME, Mobile and Providence.
+It is the cheapest check available and it should be the first one run each
+season.
+
 ## The Sinclair subchannel collapse is the dominant failure mode
 
 Sinclair is systematically pulling its second network off its own station and
@@ -120,12 +180,17 @@ Confirmed instances, ours in bold: **Columbus**, **Dayton**, **Chattanooga**,
 **Charleston WV**, **Portland ME**, **Charleston SC**, plus Eureka,
 Chico-Redding, Beaumont and Tri-Cities TN, which are outside our 94.
 
+Confirmed instances now also include **Tulsa** (FOX to KTUL 8.2, Feb 2026),
+**Providence** (ABC to WJAR 10.2, Dec 2025) and **Mobile-Pensacola** (NBC to
+WEAR 3.2, Oct 2025) — note the last two are not FOX, so the pattern is not
+network-specific. It is whichever network Sinclair holds more cheaply.
+
 Checked against the pattern and still standalone — all larger markets:
 San Antonio (KABB 29), El Paso (KFOX 14), Savannah (WTGS 28),
 Rochester (WUHF 31), Charleston SC FOX (WTAT 24), Baltimore (WBFF 45),
 Pittsburgh (WPGH 53), Nashville (WZTV 17). Size appears to be the dividing
-line: Sinclair keeps FOX standalone where the market can support two sales
-teams and collapses it where it cannot.
+line: Sinclair keeps a network standalone where the market can support two
+sales teams and collapses it where it cannot.
 
 ## 2026's churn is now fully accounted for
 
@@ -163,7 +228,7 @@ sweep is archaeology, not headline-watching.
 
 ## Remaining
 
-72 markets not yet fully verified. The original 54 cannot be assumed good — five
+46 markets not yet fully verified. The original 54 cannot be assumed good — five
 of the nine errors so far are in that set.
 
 Sinclair and FOX renewed all FOX affiliations nationwide, so the Columbus and
