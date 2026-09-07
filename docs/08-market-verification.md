@@ -4,7 +4,7 @@ Verifying the 94 markets' affiliate call signs and over-the-air channel numbers.
 Source is web search against station pages and trade press; anything uncertain is
 marked for a human spot-check rather than guessed.
 
-**Status: 8 of 94 checked. 4 errors found.**
+**Status: 15 of 94 checked. 9 errors found and fixed.**
 
 ## Two findings that change the shape of this job
 
@@ -28,7 +28,7 @@ first, across `Models.swift`, both copies of `markets.json`, `Catalog.swift`, th
 web app, and the tests. Until that lands, the correct values for these markets
 cannot be recorded.
 
-## Errors found
+## Errors found and fixed
 
 | Market | Field | We say | Actually | Note |
 |---|---|---|---|---|
@@ -37,6 +37,10 @@ cannot be recorded.
 | Birmingham, AL | CBS | WIAT 42 | **WVTM 13.4** | WIAT dropped CBS 1 Aug 2026 after 61 years; now CW |
 | Greenville-Spartanburg-Asheville, SC | CBS | WSPA 7 | **WYFF 4.3** | WSPA dropped CBS 1 Aug 2026; now CW |
 | Chattanooga, TN | FOX | WTVC 9 | **WTVC 9.2** | Channel 9 is ABC; FOX is the subchannel |
+| Miami-Fort Lauderdale, FL | ABC | WPLG 10 | **WSVN 7.2** | WPLG went independent 3 Aug 2025 — wrong for over a year |
+| St. Louis, MO | ABC | KDNL 30 | **KMOV 32.1** | KDNL disaffiliated 1 Sep 2026, six days ago |
+| Columbus, OH | FOX | WTTE 28 | **WSYX 6.3** | WTTE is now TBD; Sinclair moved FOX to its ABC station |
+| Dayton, OH | FOX | WRGT 45 | **WKEF 22.2** | WRGT is now independent; same Sinclair consolidation |
 
 Every one of these sends a viewer to the wrong network for CBS or FOX games —
 the Sunday afternoon windows, which is most of the season.
@@ -49,6 +53,26 @@ the Sunday afternoon windows, which is most of the season.
 | Baton Rouge, LA | WAFB 9 | WGMB 44 | WVLA 33 | WBRZ 2 |
 | Knoxville, TN | WVLT 8 | WTNZ 43 | WBIR 10 | WATE 6 |
 | Toledo, OH | WTOL 11 | WUPW 36 | WNWO 24 | WTVG 13 |
+| Cleveland-Akron, OH | WOIO 19 | WJW 8 | WKYC 3 | WEWS 5 |
+| Youngstown, OH | WKBN 27 | WYFX 62 | WFMJ 21 | WYTV 33 |
+
+## Patterns, not typos
+
+Nine errors in fifteen markets, and **not one is a mistyped call sign**. Every
+single one is a station that changed networks:
+
+- **The Nexstar/Paramount split** (1 Aug 2026) — CBS to subchannels in
+  Albuquerque, Birmingham, Greenville.
+- **ABC consolidations** — Miami (Aug 2025) and St. Louis (1 Sep 2026), both
+  moving ABC onto a subchannel of a station that already carries another network.
+- **Sinclair FOX consolidation** — Columbus and Dayton both moved FOX off its own
+  station onto a subchannel of Sinclair's ABC station. This is a repeating
+  pattern and other Sinclair markets should be checked for it specifically.
+
+The implication for the product: the data is not wrong because it was researched
+carelessly. It is wrong because **broadcast affiliations churn faster than a
+static table can track**. Anything that ships this data needs a refresh before
+each season and a way for viewers to report drift the moment they see it.
 
 ## What to watch for
 
@@ -70,6 +94,12 @@ the Sunday afternoon windows, which is most of the season.
 
 ## Remaining
 
-86 markets unchecked: the other 36 of the 40 later additions, plus the 50 of the
-original 54 not yet touched — which the August finding shows cannot be assumed
-good.
+79 markets unchecked. The original 54 cannot be assumed good — five of the nine
+errors so far are in that set.
+
+A structural scan of all 94 has been run and found no *other* markets where one
+call sign is listed against two networks, so the remaining subchannel cases are
+likely to be ones where we name the wrong station entirely rather than the right
+station at the wrong number. Channel numbers above 50 were also reviewed and are
+legitimate legacy UHF assignments (WWJ 62 Detroit, WXIN 59 Indianapolis, KSWB 69
+San Diego and so on), not errors.

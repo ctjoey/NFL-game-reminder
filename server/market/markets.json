@@ -510,8 +510,8 @@
           "ota": "6"
         },
         "ABC": {
-          "call": "WPLG",
-          "ota": "10"
+          "call": "WSVN",
+          "ota": "7.2"
         }
       }
     },
@@ -1048,8 +1048,8 @@
           "ota": "5"
         },
         "ABC": {
-          "call": "KDNL",
-          "ota": "30"
+          "call": "KMOV",
+          "ota": "32.1"
         }
       }
     },
@@ -1069,8 +1069,8 @@
           "ota": "10"
         },
         "FOX": {
-          "call": "WTTE",
-          "ota": "28"
+          "call": "WSYX",
+          "ota": "6.3"
         },
         "NBC": {
           "call": "WCMH",
@@ -1899,8 +1899,8 @@
           "ota": "7"
         },
         "FOX": {
-          "call": "WRGT",
-          "ota": "45"
+          "call": "WKEF",
+          "ota": "22.2"
         },
         "NBC": {
           "call": "WDTN",
