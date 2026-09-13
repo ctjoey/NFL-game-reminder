@@ -141,6 +141,9 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(CoverageFeed.decode(Data("not json".utf8), season: 2026))
     }
 
+    /// CoverageFeed is @MainActor because it publishes to SwiftUI, so the test that builds one has
+    /// to be too. The engine itself takes the map as a plain value and stays actor-free.
+    @MainActor
     func testBundledFeedParsesAndIsUsable() {
         let feed = CoverageFeed(season: 2026, directory: FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString))
         XCTAssertFalse(feed.weeks.isEmpty, "a coverage-2026.json should ship in the bundle")
