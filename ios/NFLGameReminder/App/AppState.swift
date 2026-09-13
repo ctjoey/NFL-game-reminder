@@ -13,11 +13,13 @@ final class AppState: ObservableObject {
     let schedule: ScheduleStore
     let notifications = NotificationManager.shared
     let catalog: Catalog
+    let coverage: CoverageFeed
 
     private static let userKey = "userProfile.v1"
 
-    init(schedule: ScheduleStore? = nil, catalog: Catalog = .shared) {
+    init(schedule: ScheduleStore? = nil, catalog: Catalog = .shared, coverage: CoverageFeed = .shared) {
         self.catalog = catalog
+        self.coverage = coverage
         let s = schedule ?? ScheduleStore()
         self.schedule = s
         if ScreenshotMode.isActive {
@@ -37,10 +39,10 @@ final class AppState: ObservableObject {
     }
 
     func cards(week: Int) -> [GameCard] {
-        schedule.week(week).map { CardBuilder.build($0, user: user, all: schedule.games, changes: schedule.changes, planned: plan, catalog: catalog) }
+        schedule.week(week).map { CardBuilder.build($0, user: user, all: schedule.games, changes: schedule.changes, planned: plan, catalog: catalog, published: coverage.weeks) }
     }
     func card(_ id: String) -> GameCard? {
-        schedule.game(id).map { CardBuilder.build($0, user: user, all: schedule.games, changes: schedule.changes, planned: plan, catalog: catalog) }
+        schedule.game(id).map { CardBuilder.build($0, user: user, all: schedule.games, changes: schedule.changes, planned: plan, catalog: catalog, published: coverage.weeks) }
     }
 
     /// The alerts for one week. A season-wide count reads as an avalanche when what a person
@@ -58,7 +60,10 @@ final class AppState: ObservableObject {
     }
 
     /// Live sync, change alerts for followed games, then re-plan. Called on foreground and by background refresh.
+    /// The coverage map is refreshed alongside the schedule: a map published on Wednesday is worth
+    /// nothing if the app only reads the copy it shipped with.
     func syncAndReplan() async {
+        await coverage.refresh()
         let before = schedule.games
         let delta = await schedule.sync()
         if !delta.isEmpty {

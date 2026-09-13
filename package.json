@@ -10,9 +10,12 @@
     "dev": "node --watch server/index.js",
     "test": "node --test",
     "sync": "node server/schedule/sync-cli.js",
-    "vapid": "node server/notify/gen-vapid.js"
+    "vapid": "node server/notify/gen-vapid.js",
+    "coverage": "node server/coverage/feed-cli.js"
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "license": "MIT",
   "dependencies": {
     "express": "^4.21.2",

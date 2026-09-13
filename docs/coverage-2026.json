@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "season": 2026,
+  "generatedAt": "2026-09-13T15:39:56.805Z",
+  "weeks": {
+    "1": {
+      "source": "observed off-air, Hartford-New Haven DMA, 2026-09-13",
+      "publishedAt": "2026-09-13T15:39:56.804Z",
+      "markets": {
+        "hartford": {
+          "FOX": {
+            "SUN_EARLY": "2026-W01-ATL-PIT",
+            "SUN_LATE": "2026-W01-WAS-PHI"
+          }
+        }
+      }
+    }
+  }
+}

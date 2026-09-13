@@ -1,7 +1,9 @@
 // Regional coverage engine: which CBS/FOX Sunday-afternoon game does a market receive?
 //
 // Rules, in order (each returns a confidence so the UI can be honest):
-//   1. Editorial override for (week, market, network, window)          -> confirmed
+//   1. The coverage feed, or an editorial override, for (week, market, network, window)
+//      -> confirmed. See coverageFeed.js: the feed is the published map, refreshed weekly and
+//      fetched over the network so it reaches phones without an App Store release.
 //   2. A game involving the market's own team(s)                        -> confirmed
 //      (NFL rules require the home market to receive its team's game)
 //   3. Only one candidate game on that network in that window            -> confirmed
@@ -17,10 +19,28 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getMarket } from '../market/marketService.js';
 import { TEAMS } from '../schedule/teams.js';
+import { loadFeed, feedOverrides } from './coverageFeed.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 let OVERRIDES = {};
 try { OVERRIDES = JSON.parse(fs.readFileSync(path.join(here, 'overrides-2026.json'), 'utf8')).overrides || {}; } catch { OVERRIDES = {}; }
+
+// The published feed wins over the checked-in editorial file: it is the fresher of the two, and
+// the editorial file exists mainly as a floor for weeks the feed has not covered yet.
+function withFeed(overrides, season = 2026) {
+  const feed = feedOverrides(loadFeed(season));
+  const weeks = new Set([...Object.keys(overrides || {}), ...Object.keys(feed)]);
+  const out = {};
+  for (const w of weeks) {
+    out[w] = { ...(overrides?.[w] || {}) };
+    for (const [market, nets] of Object.entries(feed[w] || {})) {
+      out[w][market] = { ...(out[w][market] || {}) };
+      for (const [net, windows] of Object.entries(nets)) out[w][market][net] = { ...(out[w][market][net] || {}), ...windows };
+    }
+  }
+  return out;
+}
+OVERRIDES = withFeed(OVERRIDES);
 
 export const REGIONAL_NETWORKS = ['CBS', 'FOX'];
 export const REGIONAL_WINDOWS = ['SUN_EARLY', 'SUN_LATE'];

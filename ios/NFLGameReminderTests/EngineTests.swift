@@ -75,6 +75,62 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(r.instead?.id, "2026-W02-WAS-PHI")
     }
 
+    // The published coverage feed. Everything in it is read off a real map, so it is the one
+    // source allowed to turn an unresolved window into a confirmed answer.
+    private func map(_ market: String, _ network: String, _ window: String, _ gameId: String) -> [String: CoverageWeek] {
+        ["2": CoverageWeek(source: "test", publishedAt: nil, markets: [market: [network: [window: gameId]]])]
+    }
+
+    func testPublishedMapResolvesAWindowTheRulesCannot() {
+        let week2 = foxWeek2()
+        let unresolved = CoverageEngine.windowGame(games: week2, week: 2, marketKey: "hartford", network: "FOX", window: "SUN_EARLY", catalog: catalog)
+        XCTAssertNil(unresolved.game)
+
+        let published = map("hartford", "FOX", "SUN_EARLY", "2026-W02-ATL-PIT")
+        let r = CoverageEngine.windowGame(games: week2, week: 2, marketKey: "hartford", network: "FOX", window: "SUN_EARLY", catalog: catalog, published: published)
+        XCTAssertEqual(r.game?.id, "2026-W02-ATL-PIT")
+        XCTAssertEqual(r.confidence, .confirmed)
+    }
+
+    func testPublishedMapMakesTheNegativeSafeToState() {
+        let week2 = foxWeek2()
+        let published = map("hartford", "FOX", "SUN_EARLY", "2026-W02-ATL-PIT")
+        let other = CoverageEngine.gameInMarket(week2[1], marketKey: "hartford", all: week2, catalog: catalog, published: published)
+        XCTAssertEqual(other.airs, false)
+        XCTAssertEqual(other.confidence, .confirmed)
+        XCTAssertEqual(other.instead?.id, "2026-W02-ATL-PIT")
+    }
+
+    func testPublishedMapOutranksAnAffinityGuess() {
+        let k = Date(timeIntervalSince1970: 1_789_000_000)
+        var week2 = foxWeek2()
+        week2.append(Game(id: "2026-W02-NYJ-TEN", week: 2, kickoff: k, away: "NYJ", home: "TEN", networks: ["FOX"], window: "SUN_EARLY"))
+        let guess = CoverageEngine.windowGame(games: week2, week: 2, marketKey: "hartford", network: "FOX", window: "SUN_EARLY", catalog: catalog)
+        XCTAssertEqual(guess.game?.id, "2026-W02-NYJ-TEN")
+        let r = CoverageEngine.windowGame(games: week2, week: 2, marketKey: "hartford", network: "FOX", window: "SUN_EARLY", catalog: catalog,
+                                          published: map("hartford", "FOX", "SUN_EARLY", "2026-W02-ATL-PIT"))
+        XCTAssertEqual(r.game?.id, "2026-W02-ATL-PIT")
+        XCTAssertEqual(r.confidence, .confirmed)
+    }
+
+    func testFeedFromAnotherSeasonOrFormatIsIgnored() {
+        func data(version: Int, season: Int) -> Data {
+            Data("""
+            {"version": \(version), "season": \(season), "weeks": {"2": {"source": "x", "markets": {}}}}
+            """.utf8)
+        }
+        XCTAssertNotNil(CoverageFeed.decode(data(version: 1, season: 2026), season: 2026))
+        XCTAssertNil(CoverageFeed.decode(data(version: 2, season: 2026), season: 2026))
+        XCTAssertNil(CoverageFeed.decode(data(version: 1, season: 2027), season: 2026))
+        XCTAssertNil(CoverageFeed.decode(Data("not json".utf8), season: 2026))
+    }
+
+    func testBundledFeedParsesAndIsUsable() {
+        let feed = CoverageFeed(season: 2026, directory: FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString))
+        XCTAssertFalse(feed.weeks.isEmpty, "a coverage-2026.json should ship in the bundle")
+        for (_, week) in feed.weeks { XCTAssertFalse(week.source.isEmpty, "every published week must say where it came from") }
+    }
+
     func testOverrideWins() {
         let r = CoverageEngine.windowGame(games: games, week: 1, marketKey: "milwaukee", network: "CBS", window: "SUN_LATE", catalog: catalog)
         XCTAssertEqual(r.game?.id, "2026-W01-GB-MIN"); XCTAssertEqual(r.confidence, .confirmed)
