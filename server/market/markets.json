@@ -3,6 +3,7 @@
   "markets": {
     "newyork": {
       "name": "New York",
+      "rank": 1,
       "state": "NY",
       "tz": "America/New_York",
       "teams": [
@@ -34,6 +35,7 @@
     },
     "losangeles": {
       "name": "Los Angeles",
+      "rank": 2,
       "state": "CA",
       "tz": "America/Los_Angeles",
       "teams": [
@@ -65,6 +67,7 @@
     },
     "chicago": {
       "name": "Chicago",
+      "rank": 3,
       "state": "IL",
       "tz": "America/Chicago",
       "teams": [
@@ -95,6 +98,7 @@
     },
     "philadelphia": {
       "name": "Philadelphia",
+      "rank": 4,
       "state": "PA",
       "tz": "America/New_York",
       "teams": [
@@ -126,6 +130,7 @@
     },
     "dallas": {
       "name": "Dallas-Fort Worth",
+      "rank": 5,
       "state": "TX",
       "tz": "America/Chicago",
       "teams": [
@@ -155,6 +160,7 @@
     },
     "sanfrancisco": {
       "name": "San Francisco-Oakland-San Jose",
+      "rank": 6,
       "state": "CA",
       "tz": "America/Los_Angeles",
       "teams": [
@@ -186,6 +192,7 @@
     },
     "washington": {
       "name": "Washington, DC",
+      "rank": 7,
       "state": "DC",
       "tz": "America/New_York",
       "teams": [
@@ -216,6 +223,7 @@
     },
     "houston": {
       "name": "Houston",
+      "rank": 8,
       "state": "TX",
       "tz": "America/Chicago",
       "teams": [
@@ -245,6 +253,7 @@
     },
     "boston": {
       "name": "Boston",
+      "rank": 9,
       "state": "MA",
       "tz": "America/New_York",
       "teams": [
@@ -275,6 +284,7 @@
     },
     "atlanta": {
       "name": "Atlanta",
+      "rank": 10,
       "state": "GA",
       "tz": "America/New_York",
       "teams": [
@@ -306,6 +316,7 @@
     },
     "phoenix": {
       "name": "Phoenix",
+      "rank": 11,
       "state": "AZ",
       "tz": "America/Phoenix",
       "teams": [
@@ -337,6 +348,7 @@
     },
     "seattle": {
       "name": "Seattle-Tacoma",
+      "rank": 12,
       "state": "WA",
       "tz": "America/Los_Angeles",
       "teams": [
@@ -367,6 +379,7 @@
     },
     "tampa": {
       "name": "Tampa-St. Petersburg",
+      "rank": 13,
       "state": "FL",
       "tz": "America/New_York",
       "teams": [
@@ -397,6 +410,7 @@
     },
     "detroit": {
       "name": "Detroit",
+      "rank": 14,
       "state": "MI",
       "tz": "America/Detroit",
       "teams": [
@@ -427,6 +441,7 @@
     },
     "minneapolis": {
       "name": "Minneapolis-St. Paul",
+      "rank": 15,
       "state": "MN",
       "tz": "America/Chicago",
       "teams": [
@@ -457,6 +472,7 @@
     },
     "denver": {
       "name": "Denver",
+      "rank": 16,
       "state": "CO",
       "tz": "America/Denver",
       "teams": [
@@ -487,6 +503,7 @@
     },
     "miami": {
       "name": "Miami-Fort Lauderdale",
+      "rank": 17,
       "state": "FL",
       "tz": "America/New_York",
       "teams": [
@@ -517,6 +534,7 @@
     },
     "cleveland": {
       "name": "Cleveland-Akron",
+      "rank": 18,
       "state": "OH",
       "tz": "America/New_York",
       "teams": [
@@ -547,6 +565,7 @@
     },
     "charlotte": {
       "name": "Charlotte",
+      "rank": 19,
       "state": "NC",
       "tz": "America/New_York",
       "teams": [
@@ -577,6 +596,7 @@
     },
     "pittsburgh": {
       "name": "Pittsburgh",
+      "rank": 20,
       "state": "PA",
       "tz": "America/New_York",
       "teams": [
@@ -608,6 +628,7 @@
     },
     "baltimore": {
       "name": "Baltimore",
+      "rank": 21,
       "state": "MD",
       "tz": "America/New_York",
       "teams": [
@@ -639,6 +660,7 @@
     },
     "indianapolis": {
       "name": "Indianapolis",
+      "rank": 22,
       "state": "IN",
       "tz": "America/Indiana/Indianapolis",
       "teams": [
@@ -669,6 +691,7 @@
     },
     "nashville": {
       "name": "Nashville",
+      "rank": 23,
       "state": "TN",
       "tz": "America/Chicago",
       "teams": [
@@ -699,6 +722,7 @@
     },
     "kansascity": {
       "name": "Kansas City",
+      "rank": 24,
       "state": "MO",
       "tz": "America/Chicago",
       "teams": [
@@ -729,6 +753,7 @@
     },
     "cincinnati": {
       "name": "Cincinnati",
+      "rank": 25,
       "state": "OH",
       "tz": "America/New_York",
       "teams": [
@@ -759,6 +784,7 @@
     },
     "greenbay": {
       "name": "Green Bay-Appleton",
+      "rank": 26,
       "state": "WI",
       "tz": "America/Chicago",
       "teams": [
@@ -789,6 +815,7 @@
     },
     "milwaukee": {
       "name": "Milwaukee",
+      "rank": 27,
       "state": "WI",
       "tz": "America/Chicago",
       "teams": [],
@@ -818,6 +845,7 @@
     },
     "buffalo": {
       "name": "Buffalo",
+      "rank": 28,
       "state": "NY",
       "tz": "America/New_York",
       "teams": [
@@ -849,6 +877,7 @@
     },
     "neworleans": {
       "name": "New Orleans",
+      "rank": 29,
       "state": "LA",
       "tz": "America/Chicago",
       "teams": [
@@ -879,6 +908,7 @@
     },
     "jacksonville": {
       "name": "Jacksonville",
+      "rank": 30,
       "state": "FL",
       "tz": "America/New_York",
       "teams": [
@@ -910,6 +940,7 @@
     },
     "lasvegas": {
       "name": "Las Vegas",
+      "rank": 31,
       "state": "NV",
       "tz": "America/Los_Angeles",
       "teams": [
@@ -941,6 +972,7 @@
     },
     "sacramento": {
       "name": "Sacramento-Stockton-Modesto",
+      "rank": 32,
       "state": "CA",
       "tz": "America/Los_Angeles",
       "teams": [],
@@ -970,6 +1002,7 @@
     },
     "sandiego": {
       "name": "San Diego",
+      "rank": 33,
       "state": "CA",
       "tz": "America/Los_Angeles",
       "teams": [],
@@ -999,6 +1032,7 @@
     },
     "portland": {
       "name": "Portland, OR",
+      "rank": 34,
       "state": "OR",
       "tz": "America/Los_Angeles",
       "teams": [],
@@ -1027,6 +1061,7 @@
     },
     "stlouis": {
       "name": "St. Louis",
+      "rank": 35,
       "state": "MO",
       "tz": "America/Chicago",
       "teams": [],
@@ -1055,6 +1090,7 @@
     },
     "columbus": {
       "name": "Columbus, OH",
+      "rank": 36,
       "state": "OH",
       "tz": "America/New_York",
       "teams": [],
@@ -1084,6 +1120,7 @@
     },
     "saltlake": {
       "name": "Salt Lake City",
+      "rank": 37,
       "state": "UT",
       "tz": "America/Denver",
       "teams": [],
@@ -1113,6 +1150,7 @@
     },
     "orlando": {
       "name": "Orlando-Daytona Beach",
+      "rank": 38,
       "state": "FL",
       "tz": "America/New_York",
       "teams": [],
@@ -1142,6 +1180,7 @@
     },
     "hartford": {
       "name": "Hartford-New Haven",
+      "rank": 39,
       "state": "CT",
       "tz": "America/New_York",
       "teams": [],
@@ -1171,6 +1210,7 @@
     },
     "raleigh": {
       "name": "Raleigh-Durham",
+      "rank": 40,
       "state": "NC",
       "tz": "America/New_York",
       "teams": [],
@@ -1199,6 +1239,7 @@
     },
     "richmond": {
       "name": "Richmond-Petersburg",
+      "rank": 41,
       "state": "VA",
       "tz": "America/New_York",
       "teams": [],
@@ -1227,6 +1268,7 @@
     },
     "norfolk": {
       "name": "Norfolk-Virginia Beach",
+      "rank": 42,
       "state": "VA",
       "tz": "America/New_York",
       "teams": [],
@@ -1255,6 +1297,7 @@
     },
     "birmingham": {
       "name": "Birmingham",
+      "rank": 43,
       "state": "AL",
       "tz": "America/Chicago",
       "teams": [],
@@ -1284,6 +1327,7 @@
     },
     "memphis": {
       "name": "Memphis",
+      "rank": 44,
       "state": "TN",
       "tz": "America/Chicago",
       "teams": [],
@@ -1313,6 +1357,7 @@
     },
     "oklahomacity": {
       "name": "Oklahoma City",
+      "rank": 45,
       "state": "OK",
       "tz": "America/Chicago",
       "teams": [],
@@ -1341,6 +1386,7 @@
     },
     "austin": {
       "name": "Austin",
+      "rank": 46,
       "state": "TX",
       "tz": "America/Chicago",
       "teams": [],
@@ -1369,6 +1415,7 @@
     },
     "sanantonio": {
       "name": "San Antonio",
+      "rank": 47,
       "state": "TX",
       "tz": "America/Chicago",
       "teams": [],
@@ -1397,6 +1444,7 @@
     },
     "louisville": {
       "name": "Louisville",
+      "rank": 48,
       "state": "KY",
       "tz": "America/New_York",
       "teams": [],
@@ -1426,6 +1474,7 @@
     },
     "albany": {
       "name": "Albany-Schenectady-Troy",
+      "rank": 49,
       "state": "NY",
       "tz": "America/New_York",
       "teams": [],
@@ -1455,6 +1504,7 @@
     },
     "harrisburg": {
       "name": "Harrisburg-Lancaster-York",
+      "rank": 50,
       "state": "PA",
       "tz": "America/New_York",
       "teams": [],
@@ -1484,6 +1534,7 @@
     },
     "omaha": {
       "name": "Omaha",
+      "rank": 51,
       "state": "NE",
       "tz": "America/Chicago",
       "teams": [],
@@ -1513,6 +1564,7 @@
     },
     "desmoines": {
       "name": "Des Moines-Ames",
+      "rank": 52,
       "state": "IA",
       "tz": "America/Chicago",
       "teams": [],
@@ -1542,6 +1594,7 @@
     },
     "providence": {
       "name": "Providence-New Bedford",
+      "rank": 53,
       "state": "RI",
       "tz": "America/New_York",
       "teams": [],
@@ -1570,6 +1623,7 @@
     },
     "youngstown": {
       "name": "Youngstown",
+      "rank": 54,
       "state": "OH",
       "tz": "America/New_York",
       "teams": [],
@@ -1598,6 +1652,7 @@
     },
     "westpalm": {
       "name": "West Palm Beach-Fort Pierce",
+      "rank": 55,
       "state": "FL",
       "tz": "America/New_York",
       "teams": [],
@@ -1627,6 +1682,7 @@
     },
     "fortmyers": {
       "name": "Fort Myers-Naples",
+      "rank": 56,
       "state": "FL",
       "tz": "America/New_York",
       "teams": [],
@@ -1656,6 +1712,7 @@
     },
     "savannah": {
       "name": "Savannah",
+      "rank": 57,
       "state": "GA",
       "tz": "America/New_York",
       "teams": [],
@@ -1685,6 +1742,7 @@
     },
     "charlestonsc": {
       "name": "Charleston",
+      "rank": 58,
       "state": "SC",
       "tz": "America/New_York",
       "teams": [],
@@ -1714,6 +1772,7 @@
     },
     "myrtlebeach": {
       "name": "Myrtle Beach-Florence",
+      "rank": 59,
       "state": "SC",
       "tz": "America/New_York",
       "teams": [],
@@ -1742,6 +1801,7 @@
     },
     "greenvillesc": {
       "name": "Greenville-Spartanburg-Asheville",
+      "rank": 60,
       "state": "SC",
       "tz": "America/New_York",
       "teams": [],
@@ -1771,6 +1831,7 @@
     },
     "greensboro": {
       "name": "Greensboro-Winston-Salem",
+      "rank": 61,
       "state": "NC",
       "tz": "America/New_York",
       "teams": [],
@@ -1799,6 +1860,7 @@
     },
     "knoxville": {
       "name": "Knoxville",
+      "rank": 62,
       "state": "TN",
       "tz": "America/New_York",
       "teams": [],
@@ -1828,6 +1890,7 @@
     },
     "chattanooga": {
       "name": "Chattanooga",
+      "rank": 63,
       "state": "TN",
       "tz": "America/New_York",
       "teams": [],
@@ -1856,6 +1919,7 @@
     },
     "lexington": {
       "name": "Lexington",
+      "rank": 64,
       "state": "KY",
       "tz": "America/New_York",
       "teams": [],
@@ -1885,6 +1949,7 @@
     },
     "dayton": {
       "name": "Dayton",
+      "rank": 65,
       "state": "OH",
       "tz": "America/New_York",
       "teams": [],
@@ -1914,6 +1979,7 @@
     },
     "toledo": {
       "name": "Toledo",
+      "rank": 66,
       "state": "OH",
       "tz": "America/New_York",
       "teams": [],
@@ -1942,6 +2008,7 @@
     },
     "grandrapids": {
       "name": "Grand Rapids-Kalamazoo",
+      "rank": 67,
       "state": "MI",
       "tz": "America/Detroit",
       "teams": [],
@@ -1971,6 +2038,7 @@
     },
     "madison": {
       "name": "Madison",
+      "rank": 68,
       "state": "WI",
       "tz": "America/Chicago",
       "teams": [],
@@ -2000,6 +2068,7 @@
     },
     "tulsa": {
       "name": "Tulsa",
+      "rank": 69,
       "state": "OK",
       "tz": "America/Chicago",
       "teams": [],
@@ -2028,6 +2097,7 @@
     },
     "littlerock": {
       "name": "Little Rock",
+      "rank": 70,
       "state": "AR",
       "tz": "America/Chicago",
       "teams": [],
@@ -2057,6 +2127,7 @@
     },
     "batonrouge": {
       "name": "Baton Rouge",
+      "rank": 71,
       "state": "LA",
       "tz": "America/Chicago",
       "teams": [],
@@ -2086,6 +2157,7 @@
     },
     "mobile": {
       "name": "Mobile-Pensacola",
+      "rank": 72,
       "state": "AL",
       "tz": "America/Chicago",
       "teams": [],
@@ -2115,6 +2187,7 @@
     },
     "birmingham2": {
       "name": "Huntsville-Decatur",
+      "rank": 73,
       "state": "AL",
       "tz": "America/Chicago",
       "teams": [],
@@ -2143,6 +2216,7 @@
     },
     "tucson": {
       "name": "Tucson",
+      "rank": 74,
       "state": "AZ",
       "tz": "America/Phoenix",
       "teams": [],
@@ -2172,6 +2246,7 @@
     },
     "albuquerque": {
       "name": "Albuquerque-Santa Fe",
+      "rank": 75,
       "state": "NM",
       "tz": "America/Denver",
       "teams": [],
@@ -2201,6 +2276,7 @@
     },
     "elpaso": {
       "name": "El Paso",
+      "rank": 76,
       "state": "TX",
       "tz": "America/Denver",
       "teams": [],
@@ -2230,6 +2306,7 @@
     },
     "boise": {
       "name": "Boise",
+      "rank": 77,
       "state": "ID",
       "tz": "America/Denver",
       "teams": [],
@@ -2259,6 +2336,7 @@
     },
     "spokane": {
       "name": "Spokane",
+      "rank": 78,
       "state": "WA",
       "tz": "America/Los_Angeles",
       "teams": [],
@@ -2287,6 +2365,7 @@
     },
     "reno": {
       "name": "Reno",
+      "rank": 79,
       "state": "NV",
       "tz": "America/Los_Angeles",
       "teams": [],
@@ -2316,6 +2395,7 @@
     },
     "coloradosprings": {
       "name": "Colorado Springs-Pueblo",
+      "rank": 80,
       "state": "CO",
       "tz": "America/Denver",
       "teams": [],
@@ -2344,6 +2424,7 @@
     },
     "honolulu": {
       "name": "Honolulu",
+      "rank": 81,
       "state": "HI",
       "tz": "Pacific/Honolulu",
       "teams": [],
@@ -2373,6 +2454,7 @@
     },
     "fresno": {
       "name": "Fresno-Visalia",
+      "rank": 82,
       "state": "CA",
       "tz": "America/Los_Angeles",
       "teams": [],
@@ -2402,6 +2484,7 @@
     },
     "bakersfield": {
       "name": "Bakersfield",
+      "rank": 83,
       "state": "CA",
       "tz": "America/Los_Angeles",
       "teams": [],
@@ -2431,6 +2514,7 @@
     },
     "palmsprings": {
       "name": "Palm Springs",
+      "rank": 84,
       "state": "CA",
       "tz": "America/Los_Angeles",
       "teams": [],
@@ -2460,6 +2544,7 @@
     },
     "syracuse": {
       "name": "Syracuse",
+      "rank": 85,
       "state": "NY",
       "tz": "America/New_York",
       "teams": [],
@@ -2489,6 +2574,7 @@
     },
     "rochesterny": {
       "name": "Rochester",
+      "rank": 86,
       "state": "NY",
       "tz": "America/New_York",
       "teams": [],
@@ -2517,6 +2603,7 @@
     },
     "portlandme": {
       "name": "Portland-Auburn",
+      "rank": 87,
       "state": "ME",
       "tz": "America/New_York",
       "teams": [],
@@ -2545,6 +2632,7 @@
     },
     "burlington": {
       "name": "Burlington-Plattsburgh",
+      "rank": 88,
       "state": "VT",
       "tz": "America/New_York",
       "teams": [],
@@ -2574,6 +2662,7 @@
     },
     "scranton": {
       "name": "Scranton-Wilkes-Barre",
+      "rank": 89,
       "state": "PA",
       "tz": "America/New_York",
       "teams": [],
@@ -2604,6 +2693,7 @@
     },
     "roanoke": {
       "name": "Roanoke-Lynchburg",
+      "rank": 90,
       "state": "VA",
       "tz": "America/New_York",
       "teams": [],
@@ -2632,6 +2722,7 @@
     },
     "charlestonwv": {
       "name": "Charleston-Huntington",
+      "rank": 91,
       "state": "WV",
       "tz": "America/New_York",
       "teams": [],
@@ -2662,6 +2753,7 @@
     },
     "springfieldmo": {
       "name": "Springfield",
+      "rank": 92,
       "state": "MO",
       "tz": "America/Chicago",
       "teams": [],
@@ -2691,6 +2783,7 @@
     },
     "wichita": {
       "name": "Wichita-Hutchinson",
+      "rank": 93,
       "state": "KS",
       "tz": "America/Chicago",
       "teams": [],
@@ -2720,6 +2813,7 @@
     },
     "shreveport": {
       "name": "Shreveport",
+      "rank": 94,
       "state": "LA",
       "tz": "America/Chicago",
       "teams": [],

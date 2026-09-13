@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { loadSeed } from '../server/schedule/scheduleService.js';
-import { gameInMarket, resolveWindowGame } from '../server/coverage/coverageService.js';
+import { gameInMarket, resolveWindowGame, predictWidestGame } from '../server/coverage/coverageService.js';
 import { marketForZip, resolveChannel, accessCheck } from '../server/market/marketService.js';
 
 const games = loadSeed(2026);
@@ -39,12 +39,19 @@ test('affinity market gets a likely, not confirmed, answer', () => {
   assert.equal(r.confidence, 'likely');
 });
 
-test('a market matching nothing in the window returns no pick at all', () => {
-  // Sacramento's affinity is SF, LV and LAR, none of which play in this window. The engine used
-  // to hand back an arbitrary candidate here, which the UI then reported as fact.
+test('a market matching nothing still gets a named prediction, marked as one', () => {
+  // Sacramento's affinity is SF, LV and LAR, none of which play in this window. It used to get an
+  // arbitrary candidate reported as fact; now it gets the biggest-market matchup, marked predicted.
   const r = resolveWindowGame({ games, week: 1, marketKey: 'sacramento', network: 'FOX', window: 'SUN_EARLY' });
-  assert.equal(r.game, null);
-  assert.equal(r.confidence, 'unknown');
+  assert.ok(r.game, 'a prediction should always name a game');
+  assert.equal(r.confidence, 'predicted');
+  assert.equal(r.game.id, '2026-W01-CHI-CAR', 'Chicago is the largest market among the candidates');
+});
+
+test('the prediction is stable and does not depend on schedule order', () => {
+  const a = predictWidestGame(games.filter((g) => g.week === 1 && g.window === 'SUN_EARLY' && g.networks.includes('FOX')));
+  const b = predictWidestGame([...games].reverse().filter((g) => g.week === 1 && g.window === 'SUN_EARLY' && g.networks.includes('FOX')));
+  assert.equal(a.id, b.id, 'reordering the schedule must not change the answer - that was the old bug');
 });
 
 test('zip resolves to market and channel defaults to OTA number on DirecTV', () => {
@@ -110,11 +117,10 @@ const week2Fox = [
   g('2026-W02-MIA-LV', 'MIA', 'LV', 'SUN_LATE', true),
 ];
 
-test('a market with no local team and no affinity match gets no pick, not a guess', () => {
+test('a market with no local team and no affinity match gets a prediction, never a blank', () => {
   const r = resolveWindowGame({ games: week2Fox, week: 2, marketKey: 'hartford', network: 'FOX', window: 'SUN_EARLY' });
-  assert.equal(r.game, null);
-  assert.equal(r.confidence, 'unknown');
-  assert.match(r.reason, /local listings/i);
+  assert.ok(r.game, 'the app must always name a game');
+  assert.equal(r.confidence, 'predicted');
 });
 
 test('an unresolved window never claims a game is off the local station', () => {

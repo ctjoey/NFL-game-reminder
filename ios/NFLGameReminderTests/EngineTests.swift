@@ -38,13 +38,29 @@ final class EngineTests: XCTestCase {
                 g("WAS", "PHI", "SUN_LATE"), g("MIA", "LV", "SUN_LATE")]
     }
 
-    func testWindowWithNoLocalTeamOrAffinityMatchReturnsNoPick() {
+    func testWindowWithNoLocalTeamOrAffinityMatchStillNamesAGame() {
         let r = CoverageEngine.windowGame(games: foxWeek2(), week: 2, marketKey: "hartford", network: "FOX", window: "SUN_EARLY", catalog: catalog)
-        XCTAssertNil(r.game)
-        XCTAssertEqual(r.confidence, .unknown)
-        XCTAssertTrue(r.reason.lowercased().contains("local listings"))
+        XCTAssertNotNil(r.game, "the app must always name a game rather than shrug")
+        XCTAssertEqual(r.confidence, .predicted)
     }
 
+    func testThePredictionPicksTheBiggestMarketsAndDoesNotWander() {
+        // Atlanta is rank 10 and Tampa 13, so ATL at PIT outranks TB at CIN. The old rule took
+        // whatever came first in the array, which is exactly what the reversed case asserts against.
+        let week2 = foxWeek2().filter { $0.window == "SUN_EARLY" }
+        XCTAssertEqual(CoverageEngine.predicted(week2, catalog: catalog)?.id, "2026-W02-ATL-PIT")
+        XCTAssertEqual(CoverageEngine.predicted(week2.reversed(), catalog: catalog)?.id, "2026-W02-ATL-PIT")
+    }
+
+    func testNoConfidenceLevelEverShowsTheWordUnknown() {
+        for c in [Confidence.confirmed, .likely, .predicted, .unknown, .na, .stable, .typical] {
+            XCTAssertFalse(c.label.lowercased().contains("unknown"), "\(c.rawValue) renders as \(c.label)")
+            XCTAssertFalse(c.label.isEmpty)
+        }
+    }
+
+    /// The guard that matters: a guess may name a game, but it may never deny one. Saying "not on
+    /// your local station" about a game that is on it sends someone away from what they wanted.
     func testUnresolvedWindowNeverSaysAGameIsOffTheLocalStation() {
         let week2 = foxWeek2()
         for game in week2 {
@@ -84,7 +100,7 @@ final class EngineTests: XCTestCase {
     func testPublishedMapResolvesAWindowTheRulesCannot() {
         let week2 = foxWeek2()
         let unresolved = CoverageEngine.windowGame(games: week2, week: 2, marketKey: "hartford", network: "FOX", window: "SUN_EARLY", catalog: catalog)
-        XCTAssertNil(unresolved.game)
+        XCTAssertEqual(unresolved.confidence, .predicted, "without a map this is only a guess")
 
         let published = map("hartford", "FOX", "SUN_EARLY", "2026-W02-ATL-PIT")
         let r = CoverageEngine.windowGame(games: week2, week: 2, marketKey: "hartford", network: "FOX", window: "SUN_EARLY", catalog: catalog, published: published)

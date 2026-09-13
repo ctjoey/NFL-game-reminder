@@ -11,7 +11,7 @@ export const LINEAR_NETWORKS = ['CBS', 'FOX', 'NBC', 'ABC', 'ESPN', 'ESPN2', 'NF
 export const LOCAL_NETWORKS = ['CBS', 'FOX', 'NBC', 'ABC'];
 
 export function listMarkets() {
-  return Object.entries(MARKETS.markets).map(([key, m]) => ({ key, name: m.name, state: m.state, tz: m.tz, teams: m.teams }));
+  return Object.entries(MARKETS.markets).map(([key, m]) => ({ key, name: m.name, rank: m.rank, state: m.state, tz: m.tz, teams: m.teams }));
 }
 export function getMarket(key) {
   const m = MARKETS.markets[key];

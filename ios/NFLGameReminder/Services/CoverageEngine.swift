@@ -1,7 +1,7 @@
 import Foundation
 
 /// Which CBS/FOX Sunday-afternoon game does a market receive? Same rule order as the server:
-/// published map -> local team -> single candidate -> affinity team -> unknown.
+/// published map -> local team -> single candidate -> affinity team -> predicted.
 ///
 /// `published` is the fetched coverage feed (see CoverageFeed). It is passed in rather than read
 /// from a shared instance so the engine stays a pure function of its inputs and the tests can
@@ -25,11 +25,36 @@ enum CoverageEngine {
         if let m = market {
             for t in m.affinity { if let g = candidates.first(where: { $0.home == t || $0.away == t }) { return .init(game: g, confidence: .likely, reason: "\(m.name) usually receives \(Teams.short(t)) games") } }
         }
-        // Deliberately no "national game" rule. ESPN flags most Sunday-afternoon games as
-        // nationally distributed, so the flag does not identify the one game every market gets -
-        // and in the 1pm window no such game exists. Picking the first flagged candidate produced
-        // a confident wrong answer. A genuinely national window has one candidate and is caught above.
-        return .init(game: nil, confidence: .unknown, reason: "\(network) splits this window across markets and the regional map for this week is not published yet. Check your local listings.")
+        // Nothing above resolved it, so predict rather than shrug: an app that answers "what game
+        // is on" with a blank has not answered. The old rule keyed off ESPN's national flag, which
+        // is set on most Sunday games and so amounted to array order. This ranks candidates by the
+        // size of the markets the two teams come from - a network sends its biggest matchup to the
+        // most of the country - which is a real signal and a repeatable one.
+        //
+        // It is still a guess, and it is labelled as one. What it must never do is let the app say
+        // a game is *not* on the local station; see gameInMarket.
+        if let g = predicted(candidates, catalog: catalog) {
+            return .init(game: g, confidence: .predicted, reason: "\(network) has not published its regional map for this week; this is the matchup most markets get")
+        }
+        return .init(game: nil, confidence: .unknown, reason: "No \(network) game to show for this window.")
+    }
+
+    /// The candidate a network is most likely to send widely: the one whose teams come from the
+    /// biggest markets. Ties break on the second market, then on id so the answer never wanders.
+    static func predicted(_ candidates: [Game], catalog: Catalog) -> Game? {
+        func ranks(_ g: Game) -> (Int, Int) {
+            let r = [g.home, g.away]
+                .compactMap { Teams.all[$0]?.market }
+                .compactMap { catalog.markets[$0]?.rank }
+                .sorted()
+            return (r.first ?? 999, r.count > 1 ? r[1] : 999)
+        }
+        return candidates.min { a, b in
+            let (a1, a2) = ranks(a), (b1, b2) = ranks(b)
+            if a1 != b1 { return a1 < b1 }
+            if a2 != b2 { return a2 < b2 }
+            return a.id < b.id
+        }
     }
 
     static func gameInMarket(_ game: Game, marketKey: String?, all: [Game], catalog: Catalog = .shared, published: [String: CoverageWeek] = [:]) -> MarketResult {
@@ -44,8 +69,11 @@ enum CoverageEngine {
         // Only a confirmed pick may say a game is NOT on the local station. Telling someone the
         // wrong thing is on sends them away from the right channel, so a guess stays a guess.
         guard pick.confidence == .confirmed else {
+            let lead = pick.confidence == .predicted
+                ? "Best guess: your market gets \(g.title) in this window"
+                : "Your market usually receives \(g.title) in this window"
             return .init(airs: nil, confidence: pick.confidence,
-                         reason: "Your market usually receives \(g.title) in this window, but \(network) regional maps change week to week. Check your local listings.",
+                         reason: "\(lead), but \(network) regional maps change week to week. Check your local listings.",
                          instead: g)
         }
         return .init(airs: false, confidence: .confirmed, reason: "\(network) in your market is showing \(g.title) in this window (\(pick.reason.lowercased()))", instead: g)

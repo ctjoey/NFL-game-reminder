@@ -119,12 +119,15 @@ struct Affiliate: Codable, Hashable { var call: String; var ota: String }
 struct Market: Codable, Identifiable, Hashable {
     var id: String = ""
     var name: String
+    /// Approximate market-size order, 1 = largest. Used to guess which game a network sends to
+    /// the most of the country when no published map says. Not an official DMA rank.
+    var rank: Int = 999
     var state: String
     var tz: String
     var teams: [String]
     var affinity: [String]
     var affiliates: [String: Affiliate]
-    enum CodingKeys: String, CodingKey { case name, state, tz, teams, affinity, affiliates }
+    enum CodingKeys: String, CodingKey { case name, rank, state, tz, teams, affinity, affiliates }
 }
 struct MarketsFile: Codable { var markets: [String: Market]; var zipPrefixes: [String: String] }
 
@@ -219,7 +222,23 @@ struct UserProfile: Codable, Equatable {
 
 // MARK: - Resolved card (what the UI and notifications render)
 
-enum Confidence: String, Codable { case confirmed, likely, unknown, na = "n/a", stable, typical }
+enum Confidence: String, Codable {
+    case confirmed, likely, predicted, unknown, na = "n/a", stable, typical
+
+    /// What the badge says. "Unknown" never reaches a viewer - an app that answers "what game is
+    /// on" with a shrug has not answered. `predicted` is the honest label for a best guess.
+    var label: String {
+        switch self {
+        case .confirmed: return "Confirmed"
+        case .likely: return "Likely"
+        case .predicted: return "Best guess"
+        case .unknown: return "Best guess"
+        case .na: return "N/A"
+        case .stable: return "Stable"
+        case .typical: return "Typical"
+        }
+    }
+}
 
 struct ChannelInfo: Equatable {
     var network: String

@@ -68,8 +68,8 @@ test('feed entries read as overrides, keyed by week', () => {
 test('the published map turns an unresolvable window into a confirmed answer', () => {
   const overrides = feedOverrides(good());
   const before = resolveWindowGame({ games, week: 1, marketKey: 'hartford', network: 'FOX', window: 'SUN_EARLY', overrides: {} });
-  assert.equal(before.game, null);
-  assert.equal(before.confidence, 'unknown');
+  assert.equal(before.confidence, 'predicted', 'without a map this is only a guess');
+  assert.notEqual(before.game.id, '2026-W01-ATL-PIT', 'and in this case the guess is wrong, which is the point');
 
   const after = resolveWindowGame({ games, week: 1, marketKey: 'hartford', network: 'FOX', window: 'SUN_EARLY', overrides });
   assert.equal(after.game.id, '2026-W01-ATL-PIT');

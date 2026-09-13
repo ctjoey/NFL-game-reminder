@@ -8,12 +8,17 @@
 //      (NFL rules require the home market to receive its team's game)
 //   3. Only one candidate game on that network in that window            -> confirmed
 //   4. A game involving a team in the market's affinity list             -> likely
-//   5. Otherwise: no pick                                                -> unknown
+//   5. Otherwise: the matchup from the biggest markets                    -> predicted
 //
 // There is deliberately no "national game" rule. ESPN flags most Sunday-afternoon games as
 // nationally distributed, so the flag never identified the single game every market receives -
 // and in the 1pm window no such game exists. A genuinely national window has one candidate and
 // is caught by rule 3.
+//
+// Rule 5 replaces it with a signal that is actually about distribution: a network sends its
+// biggest matchup to the most of the country, so the candidate whose teams come from the largest
+// markets is the best available guess. It is labelled `predicted`, and a predicted pick is never
+// allowed to tell anyone a game is *not* on their local station.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -72,12 +77,30 @@ export function resolveWindowGame({ games, week, marketKey, network, window, ove
       if (g) return { game: g, confidence: 'likely', reason: `${market.name} usually receives ${TEAMS[t]?.short || t} games`, candidates };
     }
   }
-  return {
-    game: null,
-    confidence: 'unknown',
-    reason: `${network} splits this window across markets and the regional map for this week is not published yet. Check your local listings.`,
-    candidates,
+  const guess = predictWidestGame(candidates);
+  if (guess) {
+    return {
+      game: guess,
+      confidence: 'predicted',
+      reason: `${network} has not published its regional map for this week; this is the matchup most markets get`,
+      candidates,
+    };
+  }
+  return { game: null, confidence: 'unknown', reason: `No ${network} game to show for this window.`, candidates };
+}
+
+/// The candidate a network is most likely to send widely: the one whose teams come from the
+/// biggest markets. Ties break on the second market, then on id so the answer never wanders.
+export function predictWidestGame(candidates) {
+  const rankOf = (m) => getMarket(m)?.rank ?? 999;
+  const key = (g) => {
+    const r = [g.home, g.away].map((t) => rankOf(TEAMS[t]?.market)).sort((a, b) => a - b);
+    return [r[0] ?? 999, r[1] ?? 999];
   };
+  return [...candidates].sort((a, b) => {
+    const ka = key(a); const kb = key(b);
+    return ka[0] - kb[0] || ka[1] - kb[1] || (a.id < b.id ? -1 : 1);
+  })[0] || null;
 }
 
 // For a specific game and market: does it air there, and if not, what airs instead?
@@ -94,10 +117,13 @@ export function gameInMarket(game, marketKey, allGames, overrides = OVERRIDES) {
   // Only a confirmed pick may say a game is NOT on the local station. Telling someone the wrong
   // thing is on sends them away from the right channel, so a guess stays a guess.
   if (!airs && r.confidence !== 'confirmed') {
+    const lead = r.confidence === 'predicted'
+      ? `Best guess: your market gets ${other} in this window`
+      : `Your market usually receives ${other} in this window`;
     return {
       airs: null,
       confidence: r.confidence,
-      reason: `Your market usually receives ${other} in this window, but ${network} regional maps change week to week. Check your local listings.`,
+      reason: `${lead}, but ${network} regional maps change week to week. Check your local listings.`,
       instead: r.game,
       local,
     };

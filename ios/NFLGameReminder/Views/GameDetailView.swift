@@ -85,7 +85,7 @@ struct GameDetailView: View {
                     }
                 }
             }
-            Text("\(card.coverage.show) starts \(card.coverage.minutesBefore) min before kickoff (\(card.coverage.confidence.rawValue)).")
+            Text("\(card.coverage.show) starts \(card.coverage.minutesBefore) min before kickoff (\(card.coverage.confidence.label.lowercased())).")
                 .font(.caption).foregroundStyle(Theme.textDim)
                 .fixedSize(horizontal: false, vertical: true)
         }

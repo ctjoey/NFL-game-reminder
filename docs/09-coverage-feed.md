@@ -16,10 +16,17 @@ The app never had that map. It had a rule engine that guessed:
 3. A team on the market's affinity list → *probably* that game
 4. ...and then it made something up
 
-Rule 4 was the bug. It has been deleted. But deleting it only makes the app honest, not correct:
-Hartford has no home team, so both windows now come back as "we don't know."
+Rule 4 was the bug: it keyed off ESPN's "national" flag, which is set on most Sunday games, so it
+amounted to picking whichever candidate came first in the array — and then the UI reported that
+pick as fact.
 
-**Correct requires the map.** This is the pipeline that carries it.
+Rule 4 is now a **prediction**: the candidate whose two teams come from the largest markets, on
+the reasoning that a network sends its biggest matchup to the widest audience. It is labelled
+*Best guess*, it is stable under reordering, and it is never allowed to say a game is **not** on
+someone's local station. The app always names a game — "unknown" is not an answer a schedule app
+gets to give — but it never dresses a guess as a fact.
+
+A prediction is still a guess. **Correct requires the map.** This is the pipeline that carries it.
 
 ## Shape
 
@@ -46,8 +53,8 @@ write rather than repairing. A guess promoted to confirmed is worse than no entr
 is precisely the bug that started this.
 
 **A missing entry is a safe state.** No map for a market means the engine falls back to its rules
-and, failing those, says it does not know. The feed can be empty, partial, or a week behind
-without the app ever lying.
+and, failing those, to a labelled prediction. The feed can be empty, partial, or a week behind
+without the app ever lying — the worst case is a visibly-marked guess, not a confident error.
 
 ## The weekly chore
 

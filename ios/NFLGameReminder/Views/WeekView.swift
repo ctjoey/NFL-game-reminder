@@ -123,7 +123,7 @@ struct WeekView: View {
 struct ConfidenceBadge: View {
     let confidence: Confidence
     var text: String? = nil
-    var body: some View { Pill(text: (text ?? confidence.rawValue).uppercased(), color: color) }
+    var body: some View { Pill(text: (text ?? confidence.label).uppercased(), color: color) }
     private var color: Color {
         switch confidence {
         case .confirmed, .stable: return Theme.ok
