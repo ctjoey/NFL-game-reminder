@@ -23,6 +23,58 @@ final class EngineTests: XCTestCase {
     func testNationalGamesAirEverywhere() {
         XCTAssertEqual(CoverageEngine.gameInMarket(game("2026-W01-DAL-NYG"), marketKey: "denver", all: games, catalog: catalog).airs, true)
     }
+    // Regression: reported from Hartford-New Haven on 13 Sep 2026. FOX was showing Falcons at
+    // Steelers at 1pm and Commanders at Eagles at 4:25, and the app said neither was on the local
+    // station, naming a different game for each window. Hartford has no home team and its affinity
+    // list matched nothing, so the pick fell through to a "national game" rule that took whichever
+    // candidate carried ESPN's national flag first.
+    private func foxWeek2() -> [Game] {
+        let k = Date(timeIntervalSince1970: 1_789_000_000)
+        func g(_ away: String, _ home: String, _ window: String) -> Game {
+            Game(id: "2026-W02-\(away)-\(home)", week: 2, kickoff: k, away: away, home: home,
+                 networks: ["FOX"], window: window, national: true)
+        }
+        return [g("ATL", "PIT", "SUN_EARLY"), g("TB", "CIN", "SUN_EARLY"),
+                g("WAS", "PHI", "SUN_LATE"), g("MIA", "LV", "SUN_LATE")]
+    }
+
+    func testWindowWithNoLocalTeamOrAffinityMatchReturnsNoPick() {
+        let r = CoverageEngine.windowGame(games: foxWeek2(), week: 2, marketKey: "hartford", network: "FOX", window: "SUN_EARLY", catalog: catalog)
+        XCTAssertNil(r.game)
+        XCTAssertEqual(r.confidence, .unknown)
+        XCTAssertTrue(r.reason.lowercased().contains("local listings"))
+    }
+
+    func testUnresolvedWindowNeverSaysAGameIsOffTheLocalStation() {
+        let week2 = foxWeek2()
+        for game in week2 {
+            let r = CoverageEngine.gameInMarket(game, marketKey: "hartford", all: week2, catalog: catalog)
+            XCTAssertNotEqual(r.airs, false, "\(game.id) was wrongly reported as not airing")
+            XCTAssertFalse(r.reason.contains("is showing"))
+        }
+    }
+
+    func testAffinityGuessIsOfferedAsUncertaintyNotADenial() {
+        let k = Date(timeIntervalSince1970: 1_789_000_000)
+        var week2 = foxWeek2()
+        week2.append(Game(id: "2026-W02-NYJ-TEN", week: 2, kickoff: k, away: "NYJ", home: "TEN", networks: ["FOX"], window: "SUN_EARLY"))
+        let pick = CoverageEngine.windowGame(games: week2, week: 2, marketKey: "hartford", network: "FOX", window: "SUN_EARLY", catalog: catalog)
+        XCTAssertEqual(pick.game?.id, "2026-W02-NYJ-TEN")
+        XCTAssertEqual(pick.confidence, .likely)
+        let other = CoverageEngine.gameInMarket(week2[0], marketKey: "hartford", all: week2, catalog: catalog)
+        XCTAssertNil(other.airs)
+        XCTAssertEqual(other.instead?.id, "2026-W02-NYJ-TEN")
+        XCTAssertTrue(other.reason.contains("usually receives"))
+    }
+
+    func testConfirmedPickMayStillSayAGameIsNotOnTheLocalStation() {
+        let late = foxWeek2().filter { $0.window == "SUN_LATE" }
+        let r = CoverageEngine.gameInMarket(late.first { $0.id == "2026-W02-MIA-LV" }!, marketKey: "philadelphia", all: late, catalog: catalog)
+        XCTAssertEqual(r.airs, false)
+        XCTAssertEqual(r.confidence, .confirmed)
+        XCTAssertEqual(r.instead?.id, "2026-W02-WAS-PHI")
+    }
+
     func testOverrideWins() {
         let r = CoverageEngine.windowGame(games: games, week: 1, marketKey: "milwaukee", network: "CBS", window: "SUN_LATE", catalog: catalog)
         XCTAssertEqual(r.game?.id, "2026-W01-GB-MIN"); XCTAssertEqual(r.confidence, .confirmed)

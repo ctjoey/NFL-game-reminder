@@ -19,8 +19,11 @@ enum CoverageEngine {
         if let m = market {
             for t in m.affinity { if let g = candidates.first(where: { $0.home == t || $0.away == t }) { return .init(game: g, confidence: .likely, reason: "\(m.name) usually receives \(Teams.short(t)) games") } }
         }
-        if let g = candidates.first(where: { $0.national }) { return .init(game: g, confidence: .likely, reason: "\(network)'s national game this window") }
-        return .init(game: candidates[0], confidence: .unknown, reason: "Regional assignment not published yet; check local listings")
+        // Deliberately no "national game" rule. ESPN flags most Sunday-afternoon games as
+        // nationally distributed, so the flag does not identify the one game every market gets -
+        // and in the 1pm window no such game exists. Picking the first flagged candidate produced
+        // a confident wrong answer. A genuinely national window has one candidate and is caught above.
+        return .init(game: nil, confidence: .unknown, reason: "\(network) splits this window across markets and the regional map for this week is not published yet. Check your local listings.")
     }
 
     static func gameInMarket(_ game: Game, marketKey: String?, all: [Game], catalog: Catalog = .shared) -> MarketResult {
@@ -32,6 +35,13 @@ enum CoverageEngine {
         let pick = windowGame(games: all, week: game.week, marketKey: marketKey, network: network, window: game.window, catalog: catalog)
         guard let g = pick.game else { return .init(airs: nil, confidence: .unknown, reason: pick.reason, instead: nil) }
         if g.id == game.id { return .init(airs: true, confidence: pick.confidence, reason: pick.reason, instead: nil) }
-        return .init(airs: false, confidence: pick.confidence, reason: "\(network) in your market is showing \(g.title) in this window (\(pick.reason.lowercased()))", instead: g)
+        // Only a confirmed pick may say a game is NOT on the local station. Telling someone the
+        // wrong thing is on sends them away from the right channel, so a guess stays a guess.
+        guard pick.confidence == .confirmed else {
+            return .init(airs: nil, confidence: pick.confidence,
+                         reason: "Your market usually receives \(g.title) in this window, but \(network) regional maps change week to week. Check your local listings.",
+                         instead: g)
+        }
+        return .init(airs: false, confidence: .confirmed, reason: "\(network) in your market is showing \(g.title) in this window (\(pick.reason.lowercased()))", instead: g)
     }
 }

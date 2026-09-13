@@ -6,8 +6,12 @@
 //      (NFL rules require the home market to receive its team's game)
 //   3. Only one candidate game on that network in that window            -> confirmed
 //   4. A game involving a team in the market's affinity list             -> likely
-//   5. The network's designated national game for the window            -> likely
-//   6. Otherwise: the first candidate, flagged                           -> unknown
+//   5. Otherwise: no pick                                                -> unknown
+//
+// There is deliberately no "national game" rule. ESPN flags most Sunday-afternoon games as
+// nationally distributed, so the flag never identified the single game every market receives -
+// and in the 1pm window no such game exists. A genuinely national window has one candidate and
+// is caught by rule 3.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -48,9 +52,12 @@ export function resolveWindowGame({ games, week, marketKey, network, window, ove
       if (g) return { game: g, confidence: 'likely', reason: `${market.name} usually receives ${TEAMS[t]?.short || t} games`, candidates };
     }
   }
-  const nat = candidates.find((c) => c.national);
-  if (nat) return { game: nat, confidence: 'likely', reason: `${network}'s national game this window`, candidates };
-  return { game: candidates[0], confidence: 'unknown', reason: 'Regional assignment not published yet; check local listings', candidates };
+  return {
+    game: null,
+    confidence: 'unknown',
+    reason: `${network} splits this window across markets and the regional map for this week is not published yet. Check your local listings.`,
+    candidates,
+  };
 }
 
 // For a specific game and market: does it air there, and if not, what airs instead?
@@ -63,10 +70,22 @@ export function gameInMarket(game, marketKey, allGames, overrides = OVERRIDES) {
   if (!r.game) return { airs: null, confidence: 'unknown', reason: r.reason, instead: null };
   const airs = r.game.id === game.id;
   const local = marketKey && [game.home, game.away].some((t) => TEAMS[t]?.market === marketKey);
+  const other = `${TEAMS[r.game.away]?.short} at ${TEAMS[r.game.home]?.short}`;
+  // Only a confirmed pick may say a game is NOT on the local station. Telling someone the wrong
+  // thing is on sends them away from the right channel, so a guess stays a guess.
+  if (!airs && r.confidence !== 'confirmed') {
+    return {
+      airs: null,
+      confidence: r.confidence,
+      reason: `Your market usually receives ${other} in this window, but ${network} regional maps change week to week. Check your local listings.`,
+      instead: r.game,
+      local,
+    };
+  }
   return {
     airs,
     confidence: r.confidence,
-    reason: airs ? r.reason : `${network} in your market is showing ${TEAMS[r.game.away]?.short} at ${TEAMS[r.game.home]?.short} in this window (${r.reason.toLowerCase()})`,
+    reason: airs ? r.reason : `${network} in your market is showing ${other} in this window (${r.reason.toLowerCase()})`,
     instead: airs ? null : r.game,
     local,
     alternatives: airs ? [] : ['NFL Sunday Ticket (out-of-market games)', 'NFL+ (phone/tablet, not live out-of-market)'].slice(0, 1),
