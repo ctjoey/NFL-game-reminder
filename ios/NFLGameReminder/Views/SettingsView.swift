@@ -29,6 +29,9 @@ struct SettingsView: View {
                         }
                     }
                     Button("Sync schedule now") { Task { await state.syncAndReplan(); message = state.schedule.lastError ?? "Synced \(state.schedule.games.count) games from \(state.schedule.source)." } }
+                    ShareLink(item: AppLinks.appStore, message: Text(AppLinks.shareMessage)) {
+                        Text("Share this app")
+                    }
                 }
                 Section {
                     Button("Delete my data", role: .destructive) { draft = UserProfile(); commit() }

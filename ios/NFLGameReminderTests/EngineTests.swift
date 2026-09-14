@@ -167,6 +167,13 @@ final class EngineTests: XCTestCase {
         XCTAssertNotNil(url, "the reporter must produce a mail link for streaming viewers too")
     }
 
+    func testReportsGoToTheAddressWePublish() {
+        XCTAssertEqual(ChannelReport.address, "wrongchannel@yahoo.com")
+        var yt = pitUser; yt.provider = "youtubetv"
+        let url = ChannelReport.mailURL(catalog.channel(for: "ABC", user: yt), user: yt, catalog: catalog)
+        XCTAssertEqual(url?.path, ChannelReport.address, "the mail link must target the published address")
+    }
+
     func testTheAskMatchesWhatWeActuallyShow() {
         // A number on screen can be wrong; a cable provider with no number wants one filled in.
         let ota = catalog.channel(for: "CBS", user: { var u = pitUser; u.provider = "ota"; return u }())

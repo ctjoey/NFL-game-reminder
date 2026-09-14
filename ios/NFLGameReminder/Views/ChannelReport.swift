@@ -12,7 +12,7 @@ import UIKit
 /// Reports arrive as ordinary mail and get folded into the next release, so this needs no server
 /// and nothing leaves the device unless the sender presses send.
 enum ChannelReport {
-    static let address = "capozzacontracting@gmail.com"
+    static let address = "wrongchannel@yahoo.com"
 
     /// What there is to correct here. A streaming service has no channel numbers to be wrong
     /// about, but the station it carries for this market certainly can be - and asking a YouTube
@@ -119,7 +119,9 @@ struct ChannelReportLink: View {
                 Text(ChannelReport.prompt(what))
             }
             .font(.caption2)
-            .foregroundStyle(Theme.textDim)
+            // Full-strength text, not the dim grey. It sat below the answer and read as chrome;
+            // a viewer who has spotted a mistake has to be able to see the way to say so.
+            .foregroundStyle(Theme.text)
         }
         .buttonStyle(.plain)
     }
