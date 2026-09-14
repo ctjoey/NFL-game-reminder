@@ -14,11 +14,27 @@ import UIKit
 enum ChannelReport {
     static let address = "capozzacontracting@gmail.com"
 
-    /// True when we are showing a number that could be wrong rather than admitting we do not know.
-    static func isCorrection(_ ch: ChannelInfo) -> Bool { ch.number != nil }
+    /// What there is to correct here. A streaming service has no channel numbers to be wrong
+    /// about, but the station it carries for this market certainly can be - and asking a YouTube
+    /// TV viewer for a channel number would be nonsense, which is why the ask differs.
+    enum Ask { case wrongNumber, missingNumber, wrongStation }
 
-    static func prompt(_ ch: ChannelInfo) -> String {
-        isCorrection(ch) ? "Wrong channel? Tell us" : "Know the channel? Tell us"
+    static func ask(_ ch: ChannelInfo, user: UserProfile, catalog: Catalog = .shared) -> Ask {
+        if ch.number != nil { return .wrongNumber }
+        let streaming = user.provider.flatMap { catalog.providers[$0]?.kind } == "stream"
+        return streaming ? .wrongStation : .missingNumber
+    }
+
+    static func prompt(_ ask: Ask) -> String {
+        switch ask {
+        case .wrongNumber: return "Wrong channel? Tell us"
+        case .missingNumber: return "Know the channel? Tell us"
+        case .wrongStation: return "Wrong station? Tell us"
+        }
+    }
+
+    static func icon(_ ask: Ask) -> String {
+        ask == .missingNumber ? "plus.bubble" : "exclamationmark.bubble"
     }
 
     static func mailURL(_ ch: ChannelInfo, user: UserProfile, catalog: Catalog = .shared) -> URL? {
@@ -26,6 +42,7 @@ enum ChannelReport {
         let marketName = market.map { "\($0.name), \($0.state)" } ?? "unknown market"
         let provider = user.provider.flatMap { catalog.providers[$0]?.name } ?? "not set"
 
+        let what = ask(ch, user: user, catalog: catalog)
         let subject = "\(ch.network) in \(marketName)"
         var body = """
         What the app shows
@@ -38,26 +55,40 @@ enum ChannelReport {
 
 
         """
-        body += isCorrection(ch)
-            ? """
-              What it should be
+        switch what {
+        case .wrongNumber:
+            body += """
+            What it should be
 
-              Station:   
-              Channel:   
-
-
-              Anything else worth knowing:
-
-              """
-            : """
-              What channel is it on your \(provider)?
-
-              Channel:   
+            Station:   
+            Channel:   
 
 
-              Anything else worth knowing:
+            Anything else worth knowing:
 
-              """
+            """
+        case .missingNumber:
+            body += """
+            What channel is it on your \(provider)?
+
+            Channel:   
+
+
+            Anything else worth knowing:
+
+            """
+        case .wrongStation:
+            body += """
+            \(provider) has no channel numbers, but the station can still be wrong.
+            Which station carries \(ch.network) where you are?
+
+            Station:   
+
+
+            Anything else worth knowing:
+
+            """
+        }
         body += "\n\n— sent from Game Time Reminder"
 
         var c = URLComponents()
@@ -82,9 +113,10 @@ struct ChannelReportLink: View {
                 openURL(url)
             }
         } label: {
+            let what = ChannelReport.ask(channel, user: state.user, catalog: state.catalog)
             HStack(spacing: 4) {
-                Image(systemName: ChannelReport.isCorrection(channel) ? "exclamationmark.bubble" : "plus.bubble")
-                Text(ChannelReport.prompt(channel))
+                Image(systemName: ChannelReport.icon(what))
+                Text(ChannelReport.prompt(what))
             }
             .font(.caption2)
             .foregroundStyle(Theme.textDim)

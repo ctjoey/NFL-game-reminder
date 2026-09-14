@@ -150,6 +150,36 @@ final class EngineTests: XCTestCase {
         for (_, week) in feed.weeks { XCTAssertFalse(week.source.isEmpty, "every published week must say where it came from") }
     }
 
+    // Reported from the phone: on YouTube TV the "Wrong channel?" link never appeared anywhere.
+    // Streaming providers mark every row n/a because they have no channel numbers, and both places
+    // that offered the reporter skipped n/a rows - so every cord-cutter lost the one control that
+    // lets them correct us. A missing number is not the same as nothing to report.
+    func testStreamingViewersAreStillAskedAboutTheStation() {
+        var yt = pitUser; yt.provider = "youtubetv"
+        let row = catalog.channel(for: "ABC", user: yt)
+        XCTAssertNil(row.number, "a streaming service has no channel number to show")
+        XCTAssertEqual(row.confidence, .na)
+
+        let what = ChannelReport.ask(row, user: yt, catalog: catalog)
+        XCTAssertEqual(what, .wrongStation)
+        XCTAssertEqual(ChannelReport.prompt(what), "Wrong station? Tell us")
+        let url = ChannelReport.mailURL(row, user: yt, catalog: catalog)
+        XCTAssertNotNil(url, "the reporter must produce a mail link for streaming viewers too")
+    }
+
+    func testTheAskMatchesWhatWeActuallyShow() {
+        // A number on screen can be wrong; a cable provider with no number wants one filled in.
+        let ota = catalog.channel(for: "CBS", user: { var u = pitUser; u.provider = "ota"; return u }())
+        XCTAssertNotNil(ota.number)
+        XCTAssertEqual(ChannelReport.ask(ota, user: { var u = pitUser; u.provider = "ota"; return u }(), catalog: catalog), .wrongNumber)
+
+        var cable = pitUser; cable.provider = "xfinity"
+        let row = catalog.channel(for: "CBS", user: cable)
+        XCTAssertNil(row.number, "cable lineups are per-headend, so we never ship a number")
+        XCTAssertEqual(ChannelReport.ask(row, user: cable, catalog: catalog), .missingNumber)
+        XCTAssertEqual(ChannelReport.prompt(.missingNumber), "Know the channel? Tell us")
+    }
+
     func testOverrideWins() {
         let r = CoverageEngine.windowGame(games: games, week: 1, marketKey: "milwaukee", network: "CBS", window: "SUN_LATE", catalog: catalog)
         XCTAssertEqual(r.game?.id, "2026-W01-GB-MIN"); XCTAssertEqual(r.confidence, .confirmed)

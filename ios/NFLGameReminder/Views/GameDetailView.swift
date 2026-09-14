@@ -73,9 +73,11 @@ struct GameDetailView: View {
                         Text(hint).font(.caption).foregroundStyle(Theme.textDim)
                             .fixedSize(horizontal: false, vertical: true)
                     }
-                    if ch.confidence != .na {
-                        ChannelReportLink(channel: ch).padding(.top, 1)
-                    }
+                    // Shown on every row. The guard here used to skip rows marked n/a, which is
+                    // every row on a streaming service - so the one control that lets a viewer
+                    // correct us was invisible to every cord-cutter. A missing channel number is
+                    // not the same as nothing to report: the station can still be wrong.
+                    ChannelReportLink(channel: ch).padding(.top, 1)
                 }
             }
             if !card.game.streams.isEmpty {

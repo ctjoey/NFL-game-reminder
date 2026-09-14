@@ -46,6 +46,10 @@ struct SettingsView: View {
                     Text("Schedule: \(state.schedule.games.count) games from \(state.schedule.source)\(state.schedule.lastSync.map { ", synced \($0.formatted(date: .abbreviated, time: .shortened))" } ?? "")").font(.caption)
                     if let e = state.schedule.lastError { Text("Last sync error: \(e)").font(.caption).foregroundStyle(.orange) }
                     Text("No ads. No account. Data stays on this device.").font(.caption).foregroundStyle(.secondary)
+                    // Worth a line: without it there is no way to tell a TestFlight build from the
+                    // App Store one, which makes "is this fixed yet?" unanswerable from the phone.
+                    Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?") (\(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"))")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
             }
             .dismissableKeyboard()
