@@ -11,6 +11,7 @@ on:
     paths:
       - 'server/**'
       - 'test/**'
+      - 'marketing/**'
       - 'docs/coverage-*.json'
       - 'ios/NFLGameReminder/Resources/coverage-*.json'
       - '.github/workflows/coverage.yml'
