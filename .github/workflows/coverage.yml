@@ -100,8 +100,15 @@ jobs:
       - name: Candidate games per regional window
         # Printed before the nag below, so a run that fails for a missing map still shows exactly
         # which games the map needs to be read for.
-        if: hashFiles('/tmp/games.json') != ''
-        run: node server/coverage/feed-cli.js candidates --games /tmp/games.json
+        #
+        # Guarded in shell rather than with `if: hashFiles(...)`: hashFiles only resolves paths
+        # inside the workspace, so against /tmp it returns empty and silently skips the step.
+        run: |
+          if [ -s /tmp/games.json ]; then
+            node server/coverage/feed-cli.js candidates --games /tmp/games.json
+          else
+            echo "::warning::live schedule unavailable; candidate list would only describe the seed"
+          fi
 
       - name: A map is published for the week now in play
         # Only nags on the schedule, or on demand. A push mid-week should not fail for a map that
