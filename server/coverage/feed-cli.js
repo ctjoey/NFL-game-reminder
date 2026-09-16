@@ -27,6 +27,7 @@ import fs from 'node:fs';
 import { loadSeed } from '../schedule/scheduleService.js';
 import { resolveWindowGame } from './coverageService.js';
 import { loadFeed, saveFeed, validateFeed, openSlots, emptyFeed, feedPath, FEED_WINDOWS } from './coverageFeed.js';
+import { listServices } from '../market/marketService.js';
 
 const args = process.argv.slice(2);
 const cmd = args[0];
@@ -219,6 +220,27 @@ function candidates() {
     }
   }
   console.log('\nAssign each game to its regions, then give the last one --markets rest.');
+
+  // Everything that is *not* a CBS/FOX regional window still has to be right: a national game on
+  // NBC, a Prime Thursday, a Netflix Christmas. Those need no coverage map - they are the same
+  // everywhere - but they do need a carrier the app recognises, because that is what the
+  // "you don't subscribe to this" warning is built on.
+  const known = new Set(listServices().map((s) => s.key));
+  const rest = gs.filter((g) => g.week === week && !(FEED_WINDOWS.includes(g.window) && (g.networks || []).some((n) => n === 'CBS' || n === 'FOX')));
+  console.log(`\nEverywhere else this week - national and streaming, no map needed (${rest.length}):`);
+  const problems = [];
+  for (const g of rest.sort((a, b) => a.kickoff.localeCompare(b.kickoff))) {
+    const carriers = [...(g.networks || []), ...(g.streams || [])];
+    const unknown = (g.streams || []).filter((s) => !known.has(s));
+    const tag = g.exclusive ? `  ${g.exclusive} exclusive` : '';
+    console.log(`    ${g.id}  ${g.away} at ${g.home}  ${g.window}  ${carriers.join(', ') || 'NO CARRIER'}${tag}`);
+    if (!carriers.length) problems.push(`${g.id} lists no network and no stream, so the app cannot say where it is`);
+    for (const u of unknown) problems.push(`${g.id} carries "${u}", which is not a service the app knows - nobody will be warned they cannot watch it`);
+  }
+  for (const p of problems) console.log(`::warning::${p}`);
+  console.log(problems.length
+    ? `\n${problems.length} carrier problem(s) above. A carrier the app does not know is a game nobody gets warned about.`
+    : '\nEvery game this week has a carrier the app recognises.');
 }
 
 function week() { console.log(currentWeek()); }
