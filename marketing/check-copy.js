@@ -36,8 +36,23 @@ function checkOverlap(fields, problems) {
   }
 }
 
+// Long-form fields live in their own files so they can be pasted straight into App Store Connect
+// without markdown quoting getting in the way. Limit is Apple's.
+const LONG_FIELDS = { 'app-store-description.txt': 4000, 'app-store-whats-new.txt': 4000 };
+
 export function checkCopy() {
   const problems = [];
+  for (const [name, limit] of Object.entries(LONG_FIELDS)) {
+    const file = path.join(here, name);
+    if (!fs.existsSync(file)) { problems.push(`${name}: missing`); continue; }
+    const text = fs.readFileSync(file, 'utf8').trimEnd();
+    if (text.length > limit) problems.push(`${name} is ${text.length}/${limit}`);
+    // The rename is the kind of thing that gets applied everywhere except the one long file
+    // nobody rereads, so the old name is an error rather than a note.
+    if (/Game Time Reminder/.test(text) && name !== 'app-store-whats-new.txt') {
+      problems.push(`${name} still says "Game Time Reminder"`);
+    }
+  }
   const files = ['app-store-copy.md', 'in-app-events.md'];
 
   for (const name of files) {

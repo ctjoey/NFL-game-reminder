@@ -67,6 +67,12 @@ Playoffs:
 > Every playoff game, the channel it's on in your market, and an alert before kickoff. No
 > guessing which network has which game.
 
+## Description and What's New
+
+Too long for a blockquote, and you want to paste them without markdown in the way, so they live in
+`marketing/app-store-description.txt` (4000) and `marketing/app-store-whats-new.txt` (4000).
+check-copy.js measures both and fails if either still says "Game Time Reminder".
+
 ## In-App Events
 
 See `marketing/in-app-events.md`.
