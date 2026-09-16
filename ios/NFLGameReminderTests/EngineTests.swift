@@ -225,6 +225,16 @@ final class EngineTests: XCTestCase {
         }
     }
 
+    // Every place the app says its own name, agreeing. The rename to GameDial touched five
+    // separate strings; the next one should touch one, and this fails if it does not.
+    func testTheAppAgreesWithItselfAboutItsName() {
+        XCTAssertEqual(Wordmark.head + Wordmark.tail, AppInfo.name, "the wordmark no longer spells the product name")
+        XCTAssertTrue(AppLinks.shareMessage.hasPrefix(AppInfo.name), "a share that does not name the app is a recommendation nobody can act on")
+        XCTAssertEqual(DeepLink.scheme, AppInfo.name.lowercased(), "the URL scheme should track the name")
+        XCTAssertTrue(AppLinks.appStore.absoluteString.hasSuffix("id6808454832"),
+                      "the id-only App Store form survives a rename; a slug does not")
+    }
+
     func testOverrideWins() {
         let r = CoverageEngine.windowGame(games: games, week: 1, marketKey: "milwaukee", network: "CBS", window: "SUN_LATE", catalog: catalog)
         XCTAssertEqual(r.game?.id, "2026-W01-GB-MIN"); XCTAssertEqual(r.confidence, .confirmed)

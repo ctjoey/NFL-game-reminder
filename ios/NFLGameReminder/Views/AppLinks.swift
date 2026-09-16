@@ -10,5 +10,5 @@ enum AppLinks {
     /// What rides along with the link. Says what the app answers rather than what it is called -
     /// the person receiving this has not heard of it, and "what channel is the game on" is the
     /// question they already have.
-    static let shareMessage = "GameDial — what NFL game is on, when coverage starts, and which channel it's on where you are."
+    static let shareMessage = "\(AppInfo.name) — what NFL game is on, when coverage starts, and which channel it's on where you are."
 }

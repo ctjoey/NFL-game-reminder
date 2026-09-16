@@ -10,6 +10,7 @@ struct OnboardingView: View {
         NavigationStack {
             Form {
                 Section {
+                    Wordmark(tagline: "Pro football on TV — the channel where you live.")
                     Text("No account, no ads. Tell us where you are and what you pay for; we do the rest.").font(.subheadline).foregroundStyle(.secondary)
                 }
                 LocationSection(draft: $draft, marketHint: $marketHint)
