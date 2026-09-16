@@ -1,4 +1,8 @@
-# Game Time Reminder
+# GameDial
+
+*App Store: **GameDial: Pro Football TV**. Shipped 1.0 and 1.0.1 as "Game Time Reminder";
+renamed in 1.0.2. Bundle id and Apple id are unchanged. Links use `gamedial://`; the old
+`gametime://` stays registered so anything already written against it keeps working.*
 
 Alerts for the NFL games you follow that tell you **when coverage begins, when kickoff is
 (in your time zone, with ET alongside), which network or streaming service has the game, and

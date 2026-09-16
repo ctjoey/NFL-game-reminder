@@ -89,7 +89,7 @@ enum ChannelReport {
 
             """
         }
-        body += "\n\n— sent from Game Time Reminder"
+        body += "\n\n— sent from GameDial"
 
         var c = URLComponents()
         c.scheme = "mailto"

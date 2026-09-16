@@ -193,26 +193,36 @@ final class EngineTests: XCTestCase {
     func testDeepLinkGrammar() {
         func link(_ s: String) -> DeepLink? { DeepLink.parse(URL(string: s)!) }
 
-        XCTAssertEqual(link("gametime://week/3"), .week(3))
-        XCTAssertEqual(link("gametime://Week/18"), .week(18), "hosts arrive lowercased or not depending on who typed them")
-        XCTAssertEqual(link("gametime:week/3"), .week(3), "the schemeless-slash form is easy to type by hand")
-        XCTAssertEqual(link("gametime://?week=3"), .week(3))
-        XCTAssertEqual(link("gametime://game/2026-W01-ATL-PIT"), .game("2026-W01-ATL-PIT"))
-        XCTAssertEqual(link("gametime://?game=2026-W01-ATL-PIT"), .game("2026-W01-ATL-PIT"),
-                       "the original query form still works, so old notifications keep opening")
-        XCTAssertEqual(link("gametime://alerts"), .alerts)
+        // Run the whole grammar against every scheme the app claims to honour. gametime:// was the
+        // scheme before the rename to GameDial; anything already written against it - a share, a
+        // note, an event set up early - must keep landing in the same place.
+        for scheme in DeepLink.schemes {
+            XCTAssertEqual(link("\(scheme)://week/3"), .week(3), scheme)
+            XCTAssertEqual(link("\(scheme)://Week/18"), .week(18), "hosts arrive lowercased or not depending on who typed them")
+            XCTAssertEqual(link("\(scheme):week/3"), .week(3), "the schemeless-slash form is easy to type by hand")
+            XCTAssertEqual(link("\(scheme)://?week=3"), .week(3), scheme)
+            XCTAssertEqual(link("\(scheme)://game/2026-W01-ATL-PIT"), .game("2026-W01-ATL-PIT"), scheme)
+            XCTAssertEqual(link("\(scheme)://?game=2026-W01-ATL-PIT"), .game("2026-W01-ATL-PIT"),
+                           "the original query form still works, so old notifications keep opening")
+            XCTAssertEqual(link("\(scheme)://alerts"), .alerts, scheme)
+        }
+        XCTAssertEqual(DeepLink.scheme, "gamedial", "new links should be written with the current name")
+        XCTAssertTrue(DeepLink.schemes.contains("gametime"), "dropping the old scheme breaks links already in the wild")
     }
 
     func testDeepLinkRejectsWhatItCannotHonour() {
         func link(_ s: String) -> DeepLink? { DeepLink.parse(URL(string: s)!) }
 
         XCTAssertNil(link("https://example.com/week/3"), "another scheme is not ours to open")
-        XCTAssertNil(link("gametime://week/0"), "there is no week 0")
-        XCTAssertNil(link("gametime://week/99"))
-        XCTAssertNil(link("gametime://week/three"))
-        XCTAssertNil(link("gametime://week"), "a week with no number cannot land anywhere useful")
-        XCTAssertNil(link("gametime://nonsense"))
-        XCTAssertNil(link("gametime://?game="), "an empty id would open a blank detail screen")
+        XCTAssertNil(link("gamedail://week/3"), "a typo of our own scheme is still not our scheme")
+        for scheme in DeepLink.schemes {
+            XCTAssertNil(link("\(scheme)://week/0"), "there is no week 0")
+            XCTAssertNil(link("\(scheme)://week/99"), scheme)
+            XCTAssertNil(link("\(scheme)://week/three"), scheme)
+            XCTAssertNil(link("\(scheme)://week"), "a week with no number cannot land anywhere useful")
+            XCTAssertNil(link("\(scheme)://nonsense"), scheme)
+            XCTAssertNil(link("\(scheme)://?game="), "an empty id would open a blank detail screen")
+        }
     }
 
     func testOverrideWins() {

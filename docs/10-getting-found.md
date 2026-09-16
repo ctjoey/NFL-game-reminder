@@ -39,11 +39,11 @@ gets removed, and in some subs gets the domain banned. Ten real answers beat a h
 This is unglamorous and it is the single fastest lever available. It costs an hour on Sunday
 morning.
 
-### 3. Ship 1.0.2, carrying the keyword rewrite - two to three days
+### 3. Ship 1.0.2 - the rename and the keyword rewrite - two to three days
 
-Keywords and subtitle only go live with a version. 1.0.2 is going out anyway for the URL scheme,
-so the ASO rewrite rides along rather than becoming its own errand. Both are drafted in
-`marketing/app-store-copy.md`.
+Name, subtitle and keywords all only go live with a version, so they travel together. 1.0.2
+carries the rename to **GameDial: Pro Football TV**, the new subtitle and keyword set, and the
+`gamedial://` URL scheme. All the copy is in `marketing/app-store-copy.md`.
 
 The keyword set is built around the phrasing people actually use - *what game is on*, *nfl tv
 schedule*, *nfl channel* - rather than around the product's own vocabulary. Nobody searches for
@@ -76,8 +76,11 @@ budget buys a statistically meaningless number of installs.
 number attached - installs, or markets corrected, or a season of accuracy - which is a reason to
 keep the coverage-map record, not a reason to email anyone in September.
 
-**The rename.** GameDial is a better name and the reposition is right, but a rename mid-season
-resets whatever search ranking has accumulated and costs a review cycle. February.
+**~~The rename.~~** *Reversed, 16 September.* The original reasoning was that a mid-season rename
+resets accumulated search ranking. That reasoning assumed there was ranking to reset - with
+essentially no installs there is nothing accumulated, so now is the cheapest this will ever be,
+and every week it is delayed makes it more expensive. Shipped in 1.0.2 as
+**GameDial: Pro Football TV**.
 
 ## The measurement that actually tells you something
 

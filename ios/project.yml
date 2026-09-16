@@ -8,7 +8,7 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.9"
-    MARKETING_VERSION: "1.0.1"
+    MARKETING_VERSION: "1.0.2"
     CURRENT_PROJECT_VERSION: "1"
     DEVELOPMENT_TEAM: ""
 targets:
@@ -29,7 +29,7 @@ targets:
     info:
       path: NFLGameReminder/Info.plist
       properties:
-        CFBundleDisplayName: Game Time
+        CFBundleDisplayName: GameDial
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleShortVersionString: $(MARKETING_VERSION)
         UILaunchScreen: {}
@@ -38,12 +38,14 @@ targets:
         NSCalendarsFullAccessUsageDescription: Add the games you follow to your calendar with coverage and kickoff times and your channel.
         NSUserNotificationsUsageDescription: Coverage-start, kickoff and schedule-change reminders for the games you follow.
         ITSAppUsesNonExemptEncryption: false
-        # Registers gametime:// so App Store In-App Events, share links and notifications can open
-        # the app on a specific screen. Without this the handler in NFLGameReminderApp is unreachable.
+        # Registers the URL schemes so App Store In-App Events, share links and notifications can
+        # open the app on a specific screen. Without this the handler in NFLGameReminderApp is
+        # unreachable. gametime was the scheme before the rename and stays registered: a link
+        # already written down does not know the app changed its name. See App/DeepLink.swift.
         CFBundleURLTypes:
           - CFBundleURLName: $(PRODUCT_BUNDLE_IDENTIFIER)
             CFBundleTypeRole: Viewer
-            CFBundleURLSchemes: [gametime]
+            CFBundleURLSchemes: [gamedial, gametime]
     dependencies:
       - target: NFLGameReminderWidget
   NFLGameReminderWidget:

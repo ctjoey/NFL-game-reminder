@@ -75,7 +75,7 @@ final class NotificationManager: ObservableObject {
 
     func sendTest(user: UserProfile) async {
         let content = UNMutableNotificationContent()
-        content.title = "Game Time Reminder is set up"
+        content.title = "GameDial is set up"
         // A banner shows about two lines. Put the answer first so a truncated one still works.
         content.body = "Notifications work. Times show in \(TimeFormat.abbr(user.timeZone, at: Date())). Only the games you follow."
         content.sound = .default

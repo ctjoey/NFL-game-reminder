@@ -8,7 +8,7 @@ or five and top up.
 
 *It treated the deep link as step zero.* It is, and it was missing: the app had a handler for
 incoming links but no registered URL scheme, so nothing could ever reach it. That is now built
-(`gametime://week/3`, `gametime://game/<id>`, `gametime://alerts`) but it is **not in the live
+(`gamedial://week/3`, `gamedial://game/<id>`, `gamedial://alerts`) but it is **not in the live
 build** - 1.0.1 (67) shipped before it. Until 1.0.2 is out, **leave the deep-link field blank**.
 An event whose link the live app cannot honour is worse than an event with no link: a reviewer
 taps it, nothing happens, and the event is rejected.
@@ -49,7 +49,7 @@ MNF, rather than only during the window it is named for. All times Eastern.
 - **Long description:** Sunday's regional map is in. See which games your area receives, when coverage starts, and the channel.
 - **Badge:** Live Event · **Priority:** Normal
 - **Runs:** Thu Sep 24, 6:00 pm - Tue Sep 29, 2:00 am
-- **Deep link:** (blank until 1.0.2) then `gametime://week/3`
+- **Deep link:** (blank until 1.0.2 is live) then `gamedial://week/3`
 
 ### 2. Week 4 Sunday Channels
 - **Reference name:** 2026 W04 Sunday regional coverage
@@ -58,7 +58,7 @@ MNF, rather than only during the window it is named for. All times Eastern.
 - **Long description:** One o'clock and four o'clock are different games in different cities. Check which two you get before kickoff.
 - **Badge:** Live Event · **Priority:** Normal
 - **Runs:** Thu Oct 1, 6:00 pm - Tue Oct 6, 2:00 am
-- **Deep link:** `gametime://week/4`
+- **Deep link:** `gamedial://week/4`
 
 ### 3. Week 5 Doubleheader Sunday
 - **Reference name:** 2026 W05 doubleheader
@@ -67,7 +67,7 @@ MNF, rather than only during the window it is named for. All times Eastern.
 - **Long description:** On doubleheader weeks a single network carries your afternoon. Find out which, and what it is showing.
 - **Badge:** Live Event · **Priority:** Normal
 - **Runs:** Thu Oct 8, 6:00 pm - Tue Oct 13, 2:00 am
-- **Deep link:** `gametime://week/5`
+- **Deep link:** `gamedial://week/5`
 
 ## Batch 2 - the tentpoles, submit ~12 days before each
 

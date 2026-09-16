@@ -58,11 +58,14 @@ means channel-number precision is the whole ballgame.
 ## Decided
 
 - **Reposition around the TV schedule.** Alerts become a feature.
-- **Name changes in V2.** Preferred name is *Game Time TV Guide*. Open concern:
-  "TV Guide" is a registered trademark of a media brand in this exact category,
-  a more direct Guideline 5.2.1 collision than the NFL question was.
-  *Game Time TV Schedule* or *Game Time TV* carry the same meaning without the
-  fight. Final call still to make.
+- **Renamed in 1.0.2 — settled 16 September, earlier than planned.**
+  **GameDial: Pro Football TV**, subtitle *Local NFL channels and alerts*.
+  Brought forward from V2 because the original "wait, a rename resets search
+  ranking" argument assumed there was ranking to reset; at zero installs there
+  is none, so the cost only grows. *Game Time TV Guide* was dropped: Fandom's
+  "TV Guide" registrations explicitly cover application software. "Pro" is
+  load-bearing — "Local Football TV" reads as high-school ball. Reasoning and
+  the upgrade path are in `marketing/app-store-copy.md`.
 - **Cards, not a grid.** A grid on a phone is hard to read and the card list
   already answers the question fast. "TV guide" is a mental model, not a layout.
 - **No scores, no news.** Different app, crowded space, and it breaks the
@@ -77,12 +80,10 @@ means channel-number precision is the whole ballgame.
 
 ## Open decisions
 
-1. **The name.** *Game Time TV Guide* as preferred, versus *Game Time TV
-   Schedule* / *Game Time TV* to avoid the trademark collision.
-2. **Pro pricing shape.** One-time purchase or annual subscription. Leagues run
+1. **Pro pricing shape.** One-time purchase or annual subscription. Leagues run
    on seasons and the market data needs yearly upkeep, which argues for a
    subscription; one-time is friendlier for a utility and easier to sell.
-3. **Schedule-first onboarding.** Whether to open to the schedule instead of the
+2. **Schedule-first onboarding.** Whether to open to the schedule instead of the
    setup wizard (see V2 below), or keep the current flow.
 
 ## The work

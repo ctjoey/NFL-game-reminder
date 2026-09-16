@@ -1,6 +1,6 @@
 {
-  "name": "Game Time Reminder",
-  "short_name": "Game Time",
+  "name": "GameDial — Pro Football TV",
+  "short_name": "GameDial",
   "description": "Coverage start, kickoff, network and your local channel for every NFL game you follow. No ads, no login.",
   "start_url": "/",
   "display": "standalone",
