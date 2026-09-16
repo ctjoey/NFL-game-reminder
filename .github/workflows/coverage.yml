@@ -48,8 +48,23 @@ jobs:
             exit 1
           fi
 
+      - name: Pull the live schedule
+        # The checked-in seed is a placeholder: one CBS and one FOX game per Sunday window, so
+        # every window resolves by the "only candidate" rule and any check run against it reports
+        # no ambiguity for weeks that are nothing but ambiguity. The runner has network; the seed
+        # is only a fallback for reading, never for deciding.
+        id: live
+        continue-on-error: true
+        run: node server/coverage/feed-cli.js fetch --out /tmp/games.json
+
       - name: Coverage status by week
-        run: node server/coverage/feed-cli.js status
+        run: |
+          if [ -s /tmp/games.json ]; then
+            node server/coverage/feed-cli.js status --games /tmp/games.json
+          else
+            echo "::warning::live schedule unavailable; status below is against the seed and understates how much is open"
+            node server/coverage/feed-cli.js status
+          fi
 
       - name: The published URL actually serves the feed
         # The app fetches this exact URL. Pages serves the default branch, so a feature branch can
@@ -83,6 +98,12 @@ jobs:
           fi
 
       - name: A map is published for the week now in play
-        # Only nags on the schedule. A push mid-week should not fail for a map that is not out yet.
-        if: github.event_name == 'schedule'
-        run: node server/coverage/feed-cli.js check
+        # Only nags on the schedule, or on demand. A push mid-week should not fail for a map that
+        # is not out yet.
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          if [ ! -s /tmp/games.json ]; then
+            echo "::error::Could not pull the live schedule, so the weekly map check did not run. This is not a pass - re-run once the source is reachable."
+            exit 1
+          fi
+          node server/coverage/feed-cli.js check --games /tmp/games.json

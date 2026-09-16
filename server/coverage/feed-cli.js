@@ -159,12 +159,37 @@ function currentWeek(gs = games(), now = new Date()) {
   return weeks[weeks.length - 1] ?? 1;
 }
 
+/// Pull the real schedule from the live source and write it out, so `check` and `status` can be
+/// run against the actual slate. The checked-in seed is a placeholder with one CBS and one FOX
+/// game per Sunday window; every window in it resolves by the "only candidate" rule, so a check
+/// run against it reports no ambiguity for weeks that are in fact nothing but ambiguity.
+async function fetchLive() {
+  const out = flag('out') ?? die('--out is required');
+  const { fetchSeason } = await import('../schedule/espnAdapter.js');
+  const gs = await fetchSeason(season);
+  if (!gs.length) die('live source returned no games');
+  fs.writeFileSync(out, JSON.stringify({ season, fetchedAt: new Date().toISOString(), games: gs }, null, 2));
+  console.log(`Wrote ${gs.length} live games for ${season} to ${out}.`);
+}
+
+/// A real NFL week has thirteen or so Sunday-afternoon games across CBS and FOX. Far fewer means
+/// we are looking at the seed, and any answer about ambiguity is about the placeholder rather than
+/// about the season - which is worse than no answer, because it comes back green.
+const SUNDAY = ['SUN_EARLY', 'SUN_LATE'];
+function looksLikeSeed(gs, week) {
+  return gs.filter((g) => g.week === week && SUNDAY.includes(g.window)).length < 8;
+}
+
 /// The nag. A week with open slots and no published map is the state that produced the bug this
 /// whole pipeline exists to prevent, so it fails loudly rather than printing a warning nobody reads.
 function check() {
   const gs = games();
   const week = Number(flag('week', currentWeek(gs)));
   const feed = loadFeed(season);
+  if (looksLikeSeed(gs, week)) {
+    die(`Week ${week} has only ${gs.filter((g) => g.week === week && SUNDAY.includes(g.window)).length} Sunday-afternoon games, so this is the seed, not the real slate. `
+      + 'Pass --games from a live pull: node server/coverage/feed-cli.js fetch --out games.json');
+  }
   const open = openSlots(gs, week, (a) => resolveWindowGame({ ...a, overrides: {} }));
   const filled = Object.values(feed.weeks?.[week]?.markets || {})
     .reduce((n, nets) => n + Object.values(nets).reduce((m, wins) => m + Object.keys(wins).length, 0), 0);
@@ -175,6 +200,7 @@ function check() {
 
 function week() { console.log(currentWeek()); }
 
-const commands = { template, apply, assign, validate, status, check, week };
-if (!commands[cmd]) die(`usage: feed-cli.js <${Object.keys(commands).join('|')}> [--week N] [--file draft.json] [--source "..."] [--games games.json] [--season 2026]`);
-commands[cmd]();
+const commands = { template, apply, assign, validate, status, check, week, fetch: fetchLive };
+if (!commands[cmd]) die(`usage: feed-cli.js <${Object.keys(commands).join('|')}> [--week N] [--file draft.json] [--source "..."] [--games games.json] [--out games.json] [--season 2026]`);
+// fetch is async; without this its rejection would print a warning and still exit 0.
+Promise.resolve(commands[cmd]()).catch((e) => die(e.stack || e.message));
