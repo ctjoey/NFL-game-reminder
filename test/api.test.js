@@ -6,11 +6,17 @@ import { ScheduleService } from '../server/schedule/scheduleService.js';
 import { Scheduler } from '../server/notify/scheduler.js';
 
 const quiet = { log() {}, warn() {}, error() {} };
+
+// Pinned to the Tuesday before the seed season opens. Alert planning is relative to now, so with a
+// real clock every assertion about pending alerts silently turns into an assertion about today's
+// date - the suite went red the morning week 1 finished, having caught nothing.
+const PRESEASON = () => new Date('2026-09-08T12:00:00Z');
+
 async function start() {
   const db = new DB({ persist: false });
   const schedule = new ScheduleService({ db, source: 'seed', logger: quiet });
   const scheduler = new Scheduler({ db, schedule, logger: quiet, deliverImpl: async () => ({ console: { ok: true } }) });
-  const { app } = createApp({ db, schedule, scheduler, env: { NODE_ENV: 'test' } });
+  const { app } = createApp({ db, schedule, scheduler, env: { NODE_ENV: 'test' }, clock: PRESEASON });
   const server = await new Promise((r) => { const s = app.listen(0, () => r(s)); });
   const base = `http://127.0.0.1:${server.address().port}`;
   const j = async (path, opts = {}) => { const res = await fetch(base + path, { headers: { 'content-type': 'application/json' }, ...opts, body: opts.body ? JSON.stringify(opts.body) : undefined }); return { status: res.status, body: res.headers.get('content-type')?.includes('json') ? await res.json() : await res.text() }; };

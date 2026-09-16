@@ -16,7 +16,10 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT || 3000);
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 
-export function createApp({ db = new DB(), schedule, scheduler, env = process.env } = {}) {
+// `clock` exists so the alert preview can be asked "what would fire, as of when". Production
+// always means now; tests need a fixed instant, because an assertion about how many alerts are
+// pending quietly stops testing anything once the games it names are in the past.
+export function createApp({ db = new DB(), schedule, scheduler, env = process.env, clock = () => new Date() } = {}) {
   schedule = schedule || new ScheduleService({ db });
   const inbox = [];
   scheduler = scheduler || new Scheduler({ db, schedule, inbox });
@@ -103,7 +106,7 @@ export function createApp({ db = new DB(), schedule, scheduler, env = process.en
     const u = userOr404(req, res); if (!u) return;
     const games = schedule.all();
     const week = Number(req.params.n);
-    const planned = previewFor(u, games);
+    const planned = previewFor(u, games, clock());
     const cards = schedule.week(week).map((g) => buildCard(u, g, games, { changes: db.changes(), plannedAlerts: planned }));
     res.json({ week, cards, followedCount: cards.filter((c) => c.followed).length, alertsThisWeek: planned.filter((p) => (p.gameId && cards.some((c) => c.id === p.gameId)) || p.week === week).length, schedule: schedule.meta });
   });
@@ -111,11 +114,11 @@ export function createApp({ db = new DB(), schedule, scheduler, env = process.en
     const u = userOr404(req, res); if (!u) return;
     const g = schedule.byId(req.params.gameId);
     if (!g) return res.status(404).json({ error: 'unknown game' });
-    res.json(buildCard(u, g, schedule.all(), { changes: db.changes(), plannedAlerts: previewFor(u, schedule.all()) }));
+    res.json(buildCard(u, g, schedule.all(), { changes: db.changes(), plannedAlerts: previewFor(u, schedule.all(), clock()) }));
   });
   app.get('/api/users/:id/alerts', (req, res) => {
     const u = userOr404(req, res); if (!u) return;
-    const items = previewFor(u, schedule.all()).map((p) => ({ ...p, game: p.game ? { id: p.game.id, away: p.game.away, home: p.game.home } : null }));
+    const items = previewFor(u, schedule.all(), clock()).map((p) => ({ ...p, game: p.game ? { id: p.game.id, away: p.game.away, home: p.game.home } : null }));
     res.json({ planned: items, recent: [...db.sentEntries(`${u.id}|`)].map(([key, v]) => ({ key, ...v })).filter((x) => x.delivered).sort((a, b) => b.at.localeCompare(a.at)).slice(0, 30), inbox: inbox.filter((m) => m.userId === u.id).slice(-30).reverse() });
   });
   app.post('/api/users/:id/test', async (req, res) => {
