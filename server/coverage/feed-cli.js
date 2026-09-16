@@ -198,9 +198,32 @@ function check() {
   if (!filled) die(`No coverage map published for week ${week}. Run: node server/coverage/feed-cli.js template --week ${week}`);
 }
 
+/// The short list the weekly chore actually needs.
+///
+/// A coverage map assigns games to regions, and the regions come from the published map. What you
+/// need in front of you while reading it is the other half: which games are even candidates in
+/// each CBS/FOX Sunday window, with the ids to type. That is a dozen lines, where `template` emits
+/// every unresolved market-network-window slot and runs to hundreds.
+function candidates() {
+  const gs = games();
+  const week = Number(flag('week', currentWeek(gs)));
+  const published = loadFeed(season).weeks?.[week]?.markets || {};
+  console.log(`Week ${week} regional windows:`);
+  for (const network of ['CBS', 'FOX']) {
+    for (const window of FEED_WINDOWS) {
+      const cands = gs.filter((g) => g.week === week && g.window === window && (g.networks || []).includes(network));
+      if (!cands.length) continue;
+      const filled = Object.values(published).filter((n) => n?.[network]?.[window]).length;
+      console.log(`\n  ${network} ${window} - ${cands.length} candidate(s), ${filled} market(s) published`);
+      for (const g of cands) console.log(`    ${g.id}  ${g.away} at ${g.home}`);
+    }
+  }
+  console.log('\nAssign each game to its regions, then give the last one --markets rest.');
+}
+
 function week() { console.log(currentWeek()); }
 
-const commands = { template, apply, assign, validate, status, check, week, fetch: fetchLive };
+const commands = { template, apply, assign, candidates, validate, status, check, week, fetch: fetchLive };
 if (!commands[cmd]) die(`usage: feed-cli.js <${Object.keys(commands).join('|')}> [--week N] [--file draft.json] [--source "..."] [--games games.json] [--out games.json] [--season 2026]`);
 // fetch is async; without this its rejection would print a warning and still exit 0.
 Promise.resolve(commands[cmd]()).catch((e) => die(e.stack || e.message));

@@ -97,6 +97,12 @@ jobs:
             echo "::warning::$URL returned $code. Expected on a branch Pages has not published yet; must be 200 once merged."
           fi
 
+      - name: Candidate games per regional window
+        # Printed before the nag below, so a run that fails for a missing map still shows exactly
+        # which games the map needs to be read for.
+        if: hashFiles('/tmp/games.json') != ''
+        run: node server/coverage/feed-cli.js candidates --games /tmp/games.json
+
       - name: A map is published for the week now in play
         # Only nags on the schedule, or on demand. A push mid-week should not fail for a map that
         # is not out yet.
