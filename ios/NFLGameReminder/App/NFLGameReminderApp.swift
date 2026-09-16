@@ -13,7 +13,12 @@ struct NFLGameReminderApp: App {
                 .environmentObject(state)
                 .onAppear { delegate.state = state; BackgroundRefresh.register(appState: state) }
                 .onOpenURL { url in
-                    if let id = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.first(where: { $0.name == "game" })?.value { state.deepLinkGameId = id }
+                    switch DeepLink.parse(url) {
+                    case .week(let n): state.selectedWeek = n; state.deepLinkTab = 0
+                    case .game(let id): state.deepLinkGameId = id; state.deepLinkTab = 0
+                    case .alerts: state.deepLinkTab = 1
+                    case nil: break
+                    }
                 }
         }
         .onChange(of: phase) { _, p in
@@ -55,6 +60,9 @@ struct RootView: View {
             .tint(Theme.accent)
             .preferredColorScheme(.dark)
             .onAppear(perform: applyScreenshotMode)
+            .onChange(of: state.deepLinkTab) { _, t in
+                if let t { tab = t; state.deepLinkTab = nil }
+            }
         } else {
             OnboardingView().tint(Theme.accent).preferredColorScheme(.dark)
         }

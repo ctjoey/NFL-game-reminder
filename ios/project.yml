@@ -38,6 +38,12 @@ targets:
         NSCalendarsFullAccessUsageDescription: Add the games you follow to your calendar with coverage and kickoff times and your channel.
         NSUserNotificationsUsageDescription: Coverage-start, kickoff and schedule-change reminders for the games you follow.
         ITSAppUsesNonExemptEncryption: false
+        # Registers gametime:// so App Store In-App Events, share links and notifications can open
+        # the app on a specific screen. Without this the handler in NFLGameReminderApp is unreachable.
+        CFBundleURLTypes:
+          - CFBundleURLName: $(PRODUCT_BUNDLE_IDENTIFIER)
+            CFBundleTypeRole: Viewer
+            CFBundleURLSchemes: [gametime]
     dependencies:
       - target: NFLGameReminderWidget
   NFLGameReminderWidget:

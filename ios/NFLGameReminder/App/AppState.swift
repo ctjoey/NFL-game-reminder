@@ -10,6 +10,8 @@ final class AppState: ObservableObject {
     @Published var selectedWeek: Int
     @Published var showAllGames = false
     @Published var deepLinkGameId: String?
+    /// Set by an incoming link; RootView consumes it to switch tabs, then clears it.
+    @Published var deepLinkTab: Int?
     let schedule: ScheduleStore
     let notifications = NotificationManager.shared
     let catalog: Catalog

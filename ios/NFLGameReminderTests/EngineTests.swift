@@ -187,6 +187,34 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(ChannelReport.prompt(.missingNumber), "Know the channel? Tell us")
     }
 
+    // Deep links carry App Store In-App Events, share sheets and notifications. A link that lands
+    // on the wrong screen is invisible until a promotion is already running, so the grammar is
+    // pinned here rather than trusted.
+    func testDeepLinkGrammar() {
+        func link(_ s: String) -> DeepLink? { DeepLink.parse(URL(string: s)!) }
+
+        XCTAssertEqual(link("gametime://week/3"), .week(3))
+        XCTAssertEqual(link("gametime://Week/18"), .week(18), "hosts arrive lowercased or not depending on who typed them")
+        XCTAssertEqual(link("gametime:week/3"), .week(3), "the schemeless-slash form is easy to type by hand")
+        XCTAssertEqual(link("gametime://?week=3"), .week(3))
+        XCTAssertEqual(link("gametime://game/2026-W01-ATL-PIT"), .game("2026-W01-ATL-PIT"))
+        XCTAssertEqual(link("gametime://?game=2026-W01-ATL-PIT"), .game("2026-W01-ATL-PIT"),
+                       "the original query form still works, so old notifications keep opening")
+        XCTAssertEqual(link("gametime://alerts"), .alerts)
+    }
+
+    func testDeepLinkRejectsWhatItCannotHonour() {
+        func link(_ s: String) -> DeepLink? { DeepLink.parse(URL(string: s)!) }
+
+        XCTAssertNil(link("https://example.com/week/3"), "another scheme is not ours to open")
+        XCTAssertNil(link("gametime://week/0"), "there is no week 0")
+        XCTAssertNil(link("gametime://week/99"))
+        XCTAssertNil(link("gametime://week/three"))
+        XCTAssertNil(link("gametime://week"), "a week with no number cannot land anywhere useful")
+        XCTAssertNil(link("gametime://nonsense"))
+        XCTAssertNil(link("gametime://?game="), "an empty id would open a blank detail screen")
+    }
+
     func testOverrideWins() {
         let r = CoverageEngine.windowGame(games: games, week: 1, marketKey: "milwaukee", network: "CBS", window: "SUN_LATE", catalog: catalog)
         XCTAssertEqual(r.game?.id, "2026-W01-GB-MIN"); XCTAssertEqual(r.confidence, .confirmed)
