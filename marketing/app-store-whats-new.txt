@@ -1,7 +1,5 @@
-Same app, new name.
+Two corrections, both about telling you the truth rather than a good guess.
 
-Game Time Reminder is now GameDial. Nothing to set up again — your market, your TV and streaming services, and the teams you follow are all exactly where you left them.
+Thursday and Sunday night games that stream on Prime Video or Peacock are also on a free local channel in the two teams' home markets. The app used to tell you those games were subscription-only. If you live in either team's market, it now tells you that you can watch for nothing.
 
-Also in this version:
-• Links from alerts and shares now open straight to the right game or week
-• The app tells you what it's called, on setup and in Settings
+And on weeks when CBS or FOX carries just one round of games, most of the country has nothing on that network in the late afternoon. The app used to offer a best guess anyway. Now it says plainly that no game airs in your market in that window.
