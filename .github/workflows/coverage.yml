@@ -35,8 +35,27 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      - name: Pull the live schedule
+        # The checked-in seed is a placeholder: one CBS and one FOX game per Sunday window, so
+        # every window resolves by the "only candidate" rule and any check run against it reports
+        # no ambiguity for weeks that are nothing but ambiguity. The runner has network; the seed
+        # is only a fallback for reading, never for deciding.
+        id: live
+        continue-on-error: true
+        run: node server/coverage/feed-cli.js fetch --out /tmp/games.json
+
       - name: Feed validates against the schedule
-        run: node server/coverage/feed-cli.js validate
+        # Against the LIVE schedule. Validating against the seed was worse than not validating:
+        # the seed's week 2 has different games in different windows, so a correct map is rejected
+        # and a wrong game id is never caught. The feed describes the real season; it has to be
+        # checked against the real season.
+        run: |
+          if [ -s /tmp/games.json ]; then
+            node server/coverage/feed-cli.js validate --games /tmp/games.json
+          else
+            echo "::warning::live schedule unavailable; validating against the seed, which only proves the file is well-formed"
+            node server/coverage/feed-cli.js validate
+          fi
 
       - name: Feed published to the site matches the copy bundled in the app
         # The bundled copy is the floor the app uses before its first successful fetch. If the two
@@ -47,15 +66,6 @@ jobs:
             echo "::error::docs/coverage-2026.json and the bundled copy differ. Run: cp docs/coverage-2026.json ios/NFLGameReminder/Resources/coverage-2026.json"
             exit 1
           fi
-
-      - name: Pull the live schedule
-        # The checked-in seed is a placeholder: one CBS and one FOX game per Sunday window, so
-        # every window resolves by the "only candidate" rule and any check run against it reports
-        # no ambiguity for weeks that are nothing but ambiguity. The runner has network; the seed
-        # is only a fallback for reading, never for deciding.
-        id: live
-        continue-on-error: true
-        run: node server/coverage/feed-cli.js fetch --out /tmp/games.json
 
       - name: Coverage status by week
         run: |
