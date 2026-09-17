@@ -94,3 +94,31 @@ test('the weekly chore only asks about windows the rules cannot already answer',
   // Pittsburgh gets the Steelers by rule, so it must never appear in the chore list.
   assert.equal(open.some((s) => s.market === 'pittsburgh' && s.network === 'FOX'), false);
 });
+
+test('a published "no game" is a confirmed absence, not a gap to guess into', () => {
+  const overrides = { 2: { hartford: { CBS: { SUN_LATE: 'none' } } } };
+  const r = resolveWindowGame({ games, week: 2, marketKey: 'hartford', network: 'CBS', window: 'SUN_LATE', overrides });
+  assert.equal(r.game, null);
+  assert.equal(r.confidence, 'confirmed', 'a single-header week means most of the country really has nothing on');
+  assert.match(r.reason, /no game in your market/);
+
+  // And the card says so outright, rather than shrugging.
+  const late = games.find((g) => g.week === 2 && g.window === 'SUN_LATE' && (g.networks || []).includes('CBS'));
+  const inMarket = gameInMarket(late, 'hartford', games, overrides);
+  assert.equal(inMarket.airs, false);
+  assert.equal(inMarket.confidence, 'confirmed');
+});
+
+test('"none" validates, so a week can say what is not on without being rejected', () => {
+  const f = good();
+  f.weeks[1].markets.hartford.FOX.SUN_LATE = 'none';
+  const v = validateFeed(f, games);
+  assert.equal(v.ok, true, v.errors.join('; '));
+});
+
+test('an older app treats "none" as an unknown id and falls back, rather than breaking', () => {
+  // 1.0.2 has no idea what "none" means: it looks the id up, finds nothing, and drops through to
+  // the rules. That is why the feed can carry these before the app that understands them ships.
+  const asOldBuildSees = games.find((g) => g.id === 'none');
+  assert.equal(asOldBuildSees, undefined, 'no real game can ever be called "none"');
+});

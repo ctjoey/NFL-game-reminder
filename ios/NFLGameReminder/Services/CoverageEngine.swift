@@ -13,9 +13,17 @@ enum CoverageEngine {
         let market = marketKey.flatMap { catalog.markets[$0] }
         let candidates = games.filter { $0.week == week && $0.window == window && $0.networks.contains(network) }
         guard !candidates.isEmpty else { return .init(game: nil, confidence: .unknown, reason: "No \(network) game in this window.") }
-        if let mk = marketKey,
-           let id = published.publishedGame(week: week, market: mk, network: network, window: window) ?? catalog.overrides[String(week)]?[mk]?[network]?[window],
-           let g = games.first(where: { $0.id == id }) {
+        let publishedId = marketKey.flatMap {
+            published.publishedGame(week: week, market: $0, network: network, window: window)
+                ?? catalog.overrides[String(week)]?[$0]?[network]?[window]
+        }
+        // A published "nothing airs here", checked before every rule below it - all of those exist
+        // to produce a game, and on a single-header week the honest answer for most of the country
+        // is that there is no game on this network in this window.
+        if publishedId == CoverageWeek.noGame {
+            return .init(game: nil, confidence: .confirmed, reason: "\(network) carries no game in your market in this window")
+        }
+        if let id = publishedId, let g = games.first(where: { $0.id == id }) {
             return .init(game: g, confidence: .confirmed, reason: "Published coverage map")
         }
         if let m = market {
@@ -64,7 +72,12 @@ enum CoverageEngine {
         }
         let network = game.networks.first { ["CBS", "FOX"].contains($0) } ?? "CBS"
         let pick = windowGame(games: all, week: game.week, marketKey: marketKey, network: network, window: game.window, catalog: catalog, published: published)
-        guard let g = pick.game else { return .init(airs: nil, confidence: .unknown, reason: pick.reason, instead: nil) }
+        guard let g = pick.game else {
+            // A confirmed absence is an answer; anything else is the engine shrugging.
+            return pick.confidence == .confirmed
+                ? .init(airs: false, confidence: .confirmed, reason: pick.reason, instead: nil)
+                : .init(airs: nil, confidence: .unknown, reason: pick.reason, instead: nil)
+        }
         if g.id == game.id { return .init(airs: true, confidence: pick.confidence, reason: pick.reason, instead: nil) }
         // Only a confirmed pick may say a game is NOT on the local station. Telling someone the
         // wrong thing is on sends them away from the right channel, so a guess stays a guess.

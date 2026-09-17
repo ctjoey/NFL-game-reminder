@@ -235,6 +235,28 @@ final class EngineTests: XCTestCase {
                       "the id-only App Store form survives a rename; a slug does not")
     }
 
+    // A single-header week: one network carries a single round of games, so most of the country
+    // has nothing on CBS at 4:25. Before this the engine fell through to a prediction and put a
+    // game on screen that was on nobody's television.
+    func testPublishedNoGameIsAConfirmedAbsence() {
+        let week = CoverageWeek(source: "test", publishedAt: nil,
+                                markets: ["hartford": ["CBS": ["SUN_LATE": CoverageWeek.noGame]]])
+        let published = ["2": week]
+
+        let pick = CoverageEngine.windowGame(games: games, week: 2, marketKey: "hartford",
+                                             network: "CBS", window: "SUN_LATE",
+                                             catalog: catalog, published: published)
+        XCTAssertNil(pick.game)
+        XCTAssertEqual(pick.confidence, .confirmed, "nothing being on is an answer, not a shrug")
+
+        if let late = games.first(where: { $0.week == 2 && $0.window == "SUN_LATE" && $0.networks.contains("CBS") }) {
+            let r = CoverageEngine.gameInMarket(late, marketKey: "hartford", all: games,
+                                                catalog: catalog, published: published)
+            XCTAssertEqual(r.airs, false)
+            XCTAssertEqual(r.confidence, .confirmed)
+        }
+    }
+
     func testOverrideWins() {
         let r = CoverageEngine.windowGame(games: games, week: 1, marketKey: "milwaukee", network: "CBS", window: "SUN_LATE", catalog: catalog)
         XCTAssertEqual(r.game?.id, "2026-W01-GB-MIN"); XCTAssertEqual(r.confidence, .confirmed)

@@ -22,6 +22,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { NO_GAME } from './coverageFeed.js';
 import { getMarket } from '../market/marketService.js';
 import { TEAMS } from '../schedule/teams.js';
 import { loadFeed, feedOverrides } from './coverageFeed.js';
@@ -60,6 +61,12 @@ export function resolveWindowGame({ games, week, marketKey, network, window, ove
   if (!candidates.length) return { game: null, confidence: 'unknown', reason: `No ${network} game in this window.` , candidates };
 
   const ov = overrides?.[String(week)]?.[marketKey]?.[network]?.[window];
+  // A published "nothing airs here". Must be checked before anything else, because every rule
+  // below it exists to produce a game, and on a single-header week the honest answer for most of
+  // the country is that there is no game.
+  if (ov === NO_GAME) {
+    return { game: null, confidence: 'confirmed', reason: `${network} carries no game in your market in this window`, candidates };
+  }
   if (ov) {
     const g = candidates.find((c) => c.id === ov) || games.find((c) => c.id === ov);
     if (g) return { game: g, confidence: 'confirmed', reason: 'Published coverage map', candidates };
@@ -110,7 +117,13 @@ export function gameInMarket(game, marketKey, allGames, overrides = OVERRIDES) {
   }
   const network = (game.networks || []).find((n) => REGIONAL_NETWORKS.includes(n));
   const r = resolveWindowGame({ games: allGames, week: game.week, marketKey, network, window: game.window, overrides });
-  if (!r.game) return { airs: null, confidence: 'unknown', reason: r.reason, instead: null };
+  // No game resolved. If that is a published "nothing airs here" it is a confirmed no, and the
+  // card can say so plainly; if the engine simply could not work it out, it stays unknown.
+  if (!r.game) {
+    return r.confidence === 'confirmed'
+      ? { airs: false, confidence: 'confirmed', reason: r.reason, instead: null }
+      : { airs: null, confidence: 'unknown', reason: r.reason, instead: null };
+  }
   const airs = r.game.id === game.id;
   const local = marketKey && [game.home, game.away].some((t) => TEAMS[t]?.market === marketKey);
   const other = `${TEAMS[r.game.away]?.short} at ${TEAMS[r.game.home]?.short}`;

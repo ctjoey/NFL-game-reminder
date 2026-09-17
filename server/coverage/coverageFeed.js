@@ -19,6 +19,17 @@ export const FEED_VERSION = 1;
 export const FEED_NETWORKS = ['CBS', 'FOX'];
 export const FEED_WINDOWS = ['SUN_EARLY', 'SUN_LATE'];
 
+/// "This market gets no game at all in this window."
+///
+/// On a single-header week one network carries a single round of games, so most of the country has
+/// nothing on CBS at 4:25. Without a way to say that, the feed's only options were to name a game
+/// that is not on - the engine would fall through to a prediction and offer one - or to stay silent
+/// and let it predict anyway. Both put a phantom game on the screen.
+///
+/// Older app builds do not know this value: they look for a game with this id, find none, and fall
+/// back to the same prediction they make today. So publishing it is safe before the app ships.
+export const NO_GAME = 'none';
+
 export function emptyFeed(season = 2026) {
   return { version: FEED_VERSION, season, generatedAt: new Date().toISOString(), weeks: {} };
 }
@@ -76,6 +87,7 @@ export function validateFeed(feed, games) {
         for (const [window, gameId] of Object.entries(windows || {})) {
           if (!FEED_WINDOWS.includes(window)) { errors.push(`week ${week} ${market} ${network}: "${window}" is not a regional window`); continue; }
           entries += 1;
+          if (gameId === NO_GAME) continue;   // a deliberate "nothing airs here", not a game id
           const game = games.find((g) => g.id === gameId);
           if (!game) { errors.push(`week ${week} ${market} ${network} ${window}: no game "${gameId}" in the schedule`); continue; }
           if (game.week !== n) errors.push(`week ${week} ${market} ${network} ${window}: ${gameId} is a week ${game.week} game`);

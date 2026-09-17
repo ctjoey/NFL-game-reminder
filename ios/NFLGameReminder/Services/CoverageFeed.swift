@@ -1,6 +1,18 @@
 import Foundation
 
 /// One week of the published regional-coverage map: market -> network -> window -> game id.
+extension CoverageWeek {
+    /// "This market gets no game at all in this window." Mirrors NO_GAME in coverageFeed.js.
+    ///
+    /// On a single-header week one network carries a single round of games, so most of the country
+    /// has nothing on CBS at 4:25. Without this the engine falls through to a prediction and puts a
+    /// game on screen that is not on anyone's television.
+    ///
+    /// It lives out here rather than on CoverageFeed because that class is @MainActor, which would
+    /// make a static on it main-actor-isolated too - and CoverageEngine is a plain nonisolated enum.
+    static var noGame: String { "none" }
+}
+
 struct CoverageWeek: Codable, Equatable, Sendable {
     var source: String
     var publishedAt: String?
