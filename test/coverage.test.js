@@ -152,3 +152,20 @@ test('a confirmed pick may still say a game is not on the local station', () => 
   assert.equal(r.instead.id, '2026-W02-WAS-PHI');
   assert.match(r.reason, /is showing/);
 });
+
+test('a streaming exclusive is watchable free over the air in the two teams home markets', () => {
+  const game = loadSeed(2026).find((g) => g.id === '2026-W02-DET-BUF');
+  assert.equal(game.exclusive, 'Prime', 'seed sanity: this is the Prime Thursday game');
+
+  // Detroit, no Prime subscription. The listing for this game reads "Prime Video - also WJBK/FOX
+  // Detroit, WKBW/ABC Buffalo", so this viewer can watch it for nothing.
+  const home = accessCheck({ market: 'detroit', services: [], provider: null }, game);
+  assert.equal(home.ok, true, 'telling a Detroit viewer they cannot watch this is the damaging error');
+  assert.ok(home.ways.some((w) => w.kind === 'ota'), 'the free option has to be offered, not just implied');
+  assert.match(home.notes.join(' '), /simulcast/);
+
+  // Anywhere else, the exclusive really is exclusive and the warning must still fire.
+  const away = accessCheck({ market: 'hartford', services: [], provider: null }, game);
+  assert.equal(away.ok, false, 'the simulcast is only in the teams own markets');
+  assert.ok(away.missing.some((m) => m.network === 'Prime'));
+});

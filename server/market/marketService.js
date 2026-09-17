@@ -125,6 +125,20 @@ export function accessCheck(user, game) {
     const local = [game.home, game.away].some((t) => TEAMS[t]?.market === user.market);
     if (primetime || local) { ways.push({ kind: 'stream', network: 'NFL+', label: 'NFL+ (phone/tablet only)' }); notes.push('NFL+ streams this on phone and tablet only, not on a TV.'); }
   }
+  // A streaming-exclusive game is simulcast free over the air in the two teams' home markets.
+  // That is why the Thursday listing reads "Prime Video - also WJBK/FOX Detroit, WKBW/ABC Buffalo".
+  // Without this the app tells a Detroit viewer with no Prime subscription that they cannot watch a
+  // game that is on a free channel in their living room, which is the most damaging thing a
+  // "can you watch this" check can get wrong.
+  //
+  // Which station carries it varies by market and deal - FOX in Detroit, ABC in Buffalo - and the
+  // schedule feed does not carry it, so this says "your local station" rather than inventing a
+  // channel number.
+  const homeMarket = [game.home, game.away].some((t) => TEAMS[t]?.market === user.market);
+  if (game.exclusive && homeMarket) {
+    ways.push({ kind: 'ota', network: 'local', label: 'Free over the air on your local station' });
+    notes.push(`${game.exclusive} games are simulcast on a local broadcast station in the two teams' home markets. Check your listings for the channel.`);
+  }
   if (provider?.carriageNotes) {
     const affected = (game.networks || []).some((n) => !(provider.carries || []).includes(n));
     if (affected) notes.push(provider.carriageNotes);

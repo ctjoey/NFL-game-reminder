@@ -127,6 +127,17 @@ final class Catalog {
             let primetime = ["SNF", "MNF", "TNF", "KICKOFF", "HOLIDAY"].contains(game.window)
             if primetime || local { ways.append(.init(kind: "stream", network: "NFL+", label: "NFL+ (phone/tablet only)", channel: nil)); notes.append("NFL+ streams this on phone and tablet only, not on a TV.") }
         }
+        // A streaming-exclusive game is simulcast free over the air in the two teams' home markets.
+        // That is why the Thursday listing reads "Prime Video - also WJBK/FOX Detroit, WKBW/ABC
+        // Buffalo". Without it the app tells a Detroit viewer with no Prime subscription they
+        // cannot watch a game that is on a free channel in their living room.
+        //
+        // Which station carries it varies by market and deal, and the schedule does not say, so
+        // this names no channel.
+        if let ex = game.exclusive, local {
+            ways.append(.init(kind: "ota", network: "local", label: "Free over the air on your local station", channel: nil))
+            notes.append("\(ex) games are simulcast on a local broadcast station in the two teams' home markets. Check your listings for the channel.")
+        }
         if let p = provider, let cn = p.carriageNotes, game.networks.contains(where: { !p.carries.contains($0) }) { notes.append(cn) }
         return AccessResult(ok: !ways.isEmpty, ways: ways, missing: missing, notes: notes, exclusive: game.exclusive)
     }

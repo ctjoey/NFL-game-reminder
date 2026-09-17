@@ -253,6 +253,26 @@ final class EngineTests: XCTestCase {
         var u = pitUser; u.services = ["Netflix"]
         XCTAssertTrue(catalog.access(for: game("2026-W01-SF-LAR"), user: u).ok)
     }
+    // The Prime Thursday listing reads "Prime Video - also WJBK/FOX Detroit, WKBW/ABC Buffalo".
+    // A streaming exclusive is free over the air in the two teams' own markets, and saying
+    // otherwise sends someone out to buy a subscription for a game already on their TV.
+    func testStreamingExclusiveIsFreeOverTheAirInTheTeamsOwnMarkets() {
+        guard let game = games.first(where: { $0.exclusive != nil && $0.window == "TNF" }) else {
+            return XCTFail("no streaming-exclusive Thursday game in the seed to reason about")
+        }
+        let homeMarket = Teams.market(game.home) ?? ""
+
+        var atHome = UserProfile(); atHome.market = homeMarket; atHome.services = []
+        let home = catalog.access(for: game, user: atHome)
+        XCTAssertTrue(home.ok, "a viewer in the team's own market can watch this for free")
+        XCTAssertTrue(home.ways.contains { $0.kind == "ota" }, "the free option must be offered outright")
+        XCTAssertTrue(home.notes.contains { $0.contains("simulcast") })
+
+        var elsewhere = UserProfile(); elsewhere.market = "hartford"; elsewhere.services = []
+        let away = catalog.access(for: game, user: elsewhere)
+        XCTAssertFalse(away.ok, "outside those two markets the exclusive really is exclusive")
+    }
+
     func testSundayTicketLocalBlackoutNote() {
         var u = pitUser; u.provider = "youtubetv"; u.services = ["SundayTicket"]
         XCTAssertTrue(catalog.access(for: game("2026-W01-ATL-PIT"), user: u).notes.contains { $0.contains("Sunday Ticket does not carry your local game") })
