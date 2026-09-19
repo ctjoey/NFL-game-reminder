@@ -5,7 +5,6 @@ struct WeekView: View {
     @State private var detail: GameCard?
 
     private var tz: TimeZone { state.user.timeZone }
-    private var showScores: Bool { state.user.showScores }
 
     var body: some View {
         NavigationStack {
@@ -143,6 +142,7 @@ struct GameCardView: View {
     var showsDetailChevron: Bool = true
     let onToggleFollow: () -> Void
     private var tz: TimeZone { state.user.timeZone }
+    private var showScores: Bool { state.user.showScores }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

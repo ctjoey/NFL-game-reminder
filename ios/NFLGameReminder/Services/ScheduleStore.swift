@@ -191,9 +191,12 @@ enum ESPNAdapter {
         // abbreviations off also carry `score`. Only kept once the game is over - a live score
         // would make this a scores app, and that is a different product.
         var finalScore: FinalScore?
+        // Int($0) spelled out rather than flatMap(Int.init): Int has several failable
+        // initialisers and leaning on overload resolution here is a compile error waiting for a
+        // Swift release to happen.
         if ev.status?.type?.state == "post",
-           let a = comp.competitors.first(where: { $0.homeAway == "away" })?.score.flatMap(Int.init),
-           let h = comp.competitors.first(where: { $0.homeAway == "home" })?.score.flatMap(Int.init) {
+           let a = comp.competitors.first(where: { $0.homeAway == "away" })?.score.flatMap({ Int($0) }),
+           let h = comp.competitors.first(where: { $0.homeAway == "home" })?.score.flatMap({ Int($0) }) {
             finalScore = FinalScore(away: a, home: h)
         }
         return Game(id: "\(season)-W\(String(format: "%02d", week))-\(away)-\(home)", week: week, kickoff: kickoff, away: away, home: home, networks: networks, streams: streams,
