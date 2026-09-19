@@ -1,7 +1,7 @@
 {
   "version": 1,
   "season": 2026,
-  "generatedAt": "2026-09-19T23:23:08.272Z",
+  "generatedAt": "2026-09-19T23:29:07.323Z",
   "weeks": {
     "1": {
       "source": "observed off-air, Hartford-New Haven DMA, 2026-09-13",
@@ -16,8 +16,8 @@
       }
     },
     "2": {
-      "source": "506sports week 2 close-ups, 2026-09-19",
-      "publishedAt": "2026-09-19T23:23:08.272Z",
+      "source": "506sports week 2 FOX early close-ups, 2026-09-19",
+      "publishedAt": "2026-09-19T23:29:07.322Z",
       "markets": {
         "seattle": {
           "FOX": {
@@ -177,7 +177,8 @@
         },
         "miami": {
           "FOX": {
-            "SUN_LATE": "2026-W02-MIA-SF"
+            "SUN_LATE": "2026-W02-MIA-SF",
+            "SUN_EARLY": "2026-W02-GB-NYJ"
           },
           "CBS": {
             "SUN_EARLY": "2026-W02-PIT-NE",
@@ -186,7 +187,8 @@
         },
         "westpalm": {
           "FOX": {
-            "SUN_LATE": "2026-W02-MIA-SF"
+            "SUN_LATE": "2026-W02-MIA-SF",
+            "SUN_EARLY": "2026-W02-GB-NYJ"
           },
           "CBS": {
             "SUN_EARLY": "2026-W02-PIT-NE",
@@ -255,7 +257,8 @@
         },
         "tampa": {
           "FOX": {
-            "SUN_LATE": "2026-W02-WAS-DAL"
+            "SUN_LATE": "2026-W02-WAS-DAL",
+            "SUN_EARLY": "2026-W02-MIN-CHI"
           },
           "CBS": {
             "SUN_EARLY": "2026-W02-CLE-TB",
@@ -436,7 +439,8 @@
         },
         "orlando": {
           "FOX": {
-            "SUN_LATE": "2026-W02-WAS-DAL"
+            "SUN_LATE": "2026-W02-WAS-DAL",
+            "SUN_EARLY": "2026-W02-MIN-CHI"
           },
           "CBS": {
             "SUN_LATE": "2026-W02-JAX-DEN",
@@ -485,7 +489,8 @@
         },
         "birmingham": {
           "FOX": {
-            "SUN_LATE": "2026-W02-WAS-DAL"
+            "SUN_LATE": "2026-W02-WAS-DAL",
+            "SUN_EARLY": "2026-W02-PHI-TEN"
           }
         },
         "memphis": {
@@ -752,7 +757,7 @@
         "mobile": {
           "FOX": {
             "SUN_LATE": "2026-W02-WAS-DAL",
-            "SUN_EARLY": "2026-W02-CAR-ATL"
+            "SUN_EARLY": "2026-W02-PHI-TEN"
           },
           "CBS": {
             "SUN_EARLY": "2026-W02-PIT-NE",
@@ -761,7 +766,8 @@
         },
         "birmingham2": {
           "FOX": {
-            "SUN_LATE": "2026-W02-WAS-DAL"
+            "SUN_LATE": "2026-W02-WAS-DAL",
+            "SUN_EARLY": "2026-W02-PHI-TEN"
           }
         },
         "albuquerque": {
@@ -796,7 +802,12 @@
         },
         "honolulu": {
           "FOX": {
-            "SUN_LATE": "2026-W02-WAS-DAL"
+            "SUN_LATE": "2026-W02-SEA-ARI",
+            "SUN_EARLY": "2026-W02-MIN-CHI"
+          },
+          "CBS": {
+            "SUN_EARLY": "2026-W02-PIT-NE",
+            "SUN_LATE": "none"
           }
         },
         "syracuse": {
@@ -842,7 +853,7 @@
         "scranton": {
           "FOX": {
             "SUN_LATE": "2026-W02-WAS-DAL",
-            "SUN_EARLY": "2026-W02-PHI-TEN"
+            "SUN_EARLY": "2026-W02-GB-NYJ"
           },
           "CBS": {
             "SUN_EARLY": "2026-W02-PIT-NE",
