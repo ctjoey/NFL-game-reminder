@@ -2,6 +2,16 @@ import Foundation
 
 // MARK: - Schedule
 
+/// How a game that has already been played finished.
+///
+/// One value rather than two optional Ints, so "we know the away score but not the home score"
+/// cannot be represented at all. Present only once a game is over - a live score would make this
+/// a different product.
+struct FinalScore: Codable, Equatable, Hashable {
+    var away: Int
+    var home: Int
+}
+
 struct Game: Codable, Identifiable, Equatable, Hashable {
     var id: String
     var week: Int
@@ -19,11 +29,12 @@ struct Game: Codable, Identifiable, Equatable, Hashable {
     var verified: Bool
     var timeTbd: Bool
     var source: String
+    var finalScore: FinalScore?
 
-    enum CodingKeys: String, CodingKey { case id, week, kickoff, away, home, networks, streams, exclusive, window, national, venue, label, notes, verified, timeTbd, source }
+    enum CodingKeys: String, CodingKey { case id, week, kickoff, away, home, networks, streams, exclusive, window, national, venue, label, notes, verified, timeTbd, source, finalScore }
 
-    init(id: String, week: Int, kickoff: Date, away: String, home: String, networks: [String] = [], streams: [String] = [], exclusive: String? = nil, window: String, national: Bool = false, venue: String? = nil, label: String? = nil, notes: String? = nil, verified: Bool = true, timeTbd: Bool = false, source: String = "seed") {
-        self.id = id; self.week = week; self.kickoff = kickoff; self.away = away; self.home = home; self.networks = networks; self.streams = streams; self.exclusive = exclusive; self.window = window; self.national = national; self.venue = venue; self.label = label; self.notes = notes; self.verified = verified; self.timeTbd = timeTbd; self.source = source
+    init(id: String, week: Int, kickoff: Date, away: String, home: String, networks: [String] = [], streams: [String] = [], exclusive: String? = nil, window: String, national: Bool = false, venue: String? = nil, label: String? = nil, notes: String? = nil, verified: Bool = true, timeTbd: Bool = false, source: String = "seed", finalScore: FinalScore? = nil) {
+        self.id = id; self.week = week; self.kickoff = kickoff; self.away = away; self.home = home; self.networks = networks; self.streams = streams; self.exclusive = exclusive; self.window = window; self.national = national; self.venue = venue; self.label = label; self.notes = notes; self.verified = verified; self.timeTbd = timeTbd; self.source = source; self.finalScore = finalScore
     }
 
     init(from decoder: Decoder) throws {
@@ -46,6 +57,7 @@ struct Game: Codable, Identifiable, Equatable, Hashable {
         verified = try c.decodeIfPresent(Bool.self, forKey: .verified) ?? true
         timeTbd = try c.decodeIfPresent(Bool.self, forKey: .timeTbd) ?? false
         source = try c.decodeIfPresent(String.self, forKey: .source) ?? "seed"
+        finalScore = try c.decodeIfPresent(FinalScore.self, forKey: .finalScore)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -58,6 +70,7 @@ struct Game: Codable, Identifiable, Equatable, Hashable {
         try c.encode(national, forKey: .national); try c.encodeIfPresent(venue, forKey: .venue)
         try c.encodeIfPresent(label, forKey: .label); try c.encodeIfPresent(notes, forKey: .notes)
         try c.encode(verified, forKey: .verified); try c.encode(timeTbd, forKey: .timeTbd); try c.encode(source, forKey: .source)
+        try c.encodeIfPresent(finalScore, forKey: .finalScore)
     }
 
     /// Order-independent identity across feeds (a feed may flip home/away for neutral sites).
@@ -192,6 +205,13 @@ struct UserProfile: Codable, Equatable {
     var alerts = AlertSettings()
     var quiet: QuietHours? = QuietHours()
     var maxPerDay = 12
+    /// Show the final score on games that have already been played.
+    ///
+    /// On by default, because the person who followed Thursday's game almost always wants to know
+    /// how it ended. Off is for the one who recorded it and opens the app on Saturday to check
+    /// Sunday's channel - this app is for people who want to watch, so it has to be possible to
+    /// come here without being told the result.
+    var showScores = true
     var onboarded = false
     var timeZone: TimeZone { TimeZone(identifier: tz) ?? .current }
 

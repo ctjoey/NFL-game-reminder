@@ -64,3 +64,35 @@ test('sync keeps seed games when live fetch fails, and applies live games when i
   assert.ok(ok.week(2).length > 0);
   assert.ok(changes.some((c) => c.type === 'removed'));
 });
+
+test('a final score is read off the payload we already fetch, and only once the game is over', () => {
+  const event = (state, awayScore, homeScore) => ({
+    id: '1', date: '2026-09-18T00:15:00Z', week: { number: 2 },
+    status: { type: { state } },
+    competitions: [{
+      competitors: [
+        { homeAway: 'away', score: awayScore, team: { abbreviation: 'DET' } },
+        { homeAway: 'home', score: homeScore, team: { abbreviation: 'BUF' } },
+      ],
+      broadcasts: [{ names: ['Prime Video'] }],
+    }],
+  });
+
+  assert.equal(normalizeEvent(event('pre', '0', '0'), 2026).finalScore, null, 'a game that has not kicked off has no final');
+  assert.equal(normalizeEvent(event('in', '14', '10'), 2026).finalScore, null,
+               'a score mid-game is a different product; we close the loop, we do not call the game');
+  assert.deepEqual(normalizeEvent(event('post', '27', '24'), 2026).finalScore, { away: 27, home: 24 });
+
+  // A shutout is a real score, not a missing one.
+  assert.deepEqual(normalizeEvent(event('post', '0', '31'), 2026).finalScore, { away: 0, home: 31 });
+  // Garbage in the score field must not become NaN on someone's card.
+  assert.equal(normalizeEvent(event('post', null, '24'), 2026).finalScore, null);
+});
+
+test('scores never register as schedule changes', () => {
+  // The change feed tells people a game moved. Tracking the score would fire a "schedule change"
+  // alert on every touchdown, which is precisely the noise this app promises not to make.
+  const before = [{ id: 'g', week: 2, kickoff: '2026-09-18T00:15:00Z', away: 'DET', home: 'BUF', networks: [], streams: ['Prime'], finalScore: null }];
+  const after = [{ ...before[0], finalScore: { away: 27, home: 24 } }];
+  assert.deepEqual(diffGames(before, after), [], 'a score is not a move');
+});

@@ -159,7 +159,7 @@ enum ESPNAdapter {
         struct Status: Decodable { var type: StatusType?; struct StatusType: Decodable { var state: String? } }
         struct Competition: Decodable {
             var competitors: [Competitor]; var broadcasts: [Broadcast]?; var geoBroadcasts: [GeoBroadcast]?; var venue: Venue?; var timeValid: Bool?
-            struct Competitor: Decodable { var homeAway: String; var team: Team; struct Team: Decodable { var abbreviation: String } }
+            struct Competitor: Decodable { var homeAway: String; var score: String?; var team: Team; struct Team: Decodable { var abbreviation: String } }
             struct Broadcast: Decodable { var names: [String]? }
             struct GeoBroadcast: Decodable { var market: Market?; var media: Media?; struct Market: Decodable { var type: String? }; struct Media: Decodable { var shortName: String? } }
             struct Venue: Decodable { var fullName: String?; var address: Address?; struct Address: Decodable { var city: String? } }
@@ -186,9 +186,19 @@ enum ESPNAdapter {
         if ["SNF", "MNF", "TNF", "KICKOFF", "HOLIDAY", "SAT", "INTL"].contains(window) { national = true }
         let venue = comp.venue?.fullName.map { v in comp.venue?.address?.city.map { "\(v), \($0)" } ?? v }
         let label = ev.name.flatMap { $0.range(of: "kickoff|christmas|thanksgiving|international", options: [.regularExpression, .caseInsensitive]) != nil ? $0 : nil }
+
+        // The final rides along in the payload we already fetch: the competitor objects we read
+        // abbreviations off also carry `score`. Only kept once the game is over - a live score
+        // would make this a scores app, and that is a different product.
+        var finalScore: FinalScore?
+        if ev.status?.type?.state == "post",
+           let a = comp.competitors.first(where: { $0.homeAway == "away" })?.score.flatMap(Int.init),
+           let h = comp.competitors.first(where: { $0.homeAway == "home" })?.score.flatMap(Int.init) {
+            finalScore = FinalScore(away: a, home: h)
+        }
         return Game(id: "\(season)-W\(String(format: "%02d", week))-\(away)-\(home)", week: week, kickoff: kickoff, away: away, home: home, networks: networks, streams: streams,
                     exclusive: networks.isEmpty && streams.count == 1 ? streams[0] : nil, window: window, national: national, venue: venue, label: label, notes: nil, verified: true,
-                    timeTbd: comp.timeValid == false, source: "espn")
+                    timeTbd: comp.timeValid == false, source: "espn", finalScore: finalScore)
     }
 
     static func fetchWeek(_ season: Int, week: Int, session: URLSession = .shared) async throws -> [Game] {

@@ -19,6 +19,9 @@ export function matchKey(g) {
   return `${g.week}:${[g.away, g.home].sort().join('-')}`;
 }
 
+// Deliberately excludes finalScore and status: the change feed exists to tell people a game
+// moved, and a score is not a move. Tracking it would fire a "schedule change" alert on every
+// touchdown.
 const TRACKED = ['kickoff', 'networks', 'streams', 'home', 'away', 'exclusive'];
 function same(a, b) { return JSON.stringify(a ?? null) === JSON.stringify(b ?? null); }
 

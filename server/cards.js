@@ -58,6 +58,7 @@ export function buildCard(user, game, allGames, { changes = [], plannedAlerts = 
     notes: game.notes || null,
     verified: game.verified !== false,
     timeTbd: Boolean(game.timeTbd),
+    finalScore: game.finalScore || null,
     source: game.source || 'seed',
     window: game.window,
     windowLabel: WINDOWS[game.window]?.label || game.window,

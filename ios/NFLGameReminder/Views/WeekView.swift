@@ -5,6 +5,7 @@ struct WeekView: View {
     @State private var detail: GameCard?
 
     private var tz: TimeZone { state.user.timeZone }
+    private var showScores: Bool { state.user.showScores }
 
     var body: some View {
         NavigationStack {
@@ -193,6 +194,13 @@ struct GameCardView: View {
             }
             .lineLimit(1)
             .minimumScaleFactor(0.6)
+            // Named rather than "27-24": a bare pair of numbers next to two team names makes the
+            // reader work out which way round it goes, and gets it wrong half the time.
+            if showScores, let f = card.game.finalScore {
+                Text("Final · \(Teams.short(card.game.away)) \(f.away), \(Teams.short(card.game.home)) \(f.home)")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(Theme.textDim)
+            }
             if let label = card.game.label {
                 Text(label).font(.caption2.weight(.semibold)).foregroundStyle(Theme.accent)
             }

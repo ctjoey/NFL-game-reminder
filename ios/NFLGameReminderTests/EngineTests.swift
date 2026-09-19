@@ -257,6 +257,29 @@ final class EngineTests: XCTestCase {
         }
     }
 
+    // Scores close the loop on a card that told you when to turn the television on: you open the
+    // app on Friday and it says how Thursday finished. They must survive a round trip through the
+    // cache, or the answer disappears the moment the app is reopened offline.
+    func testFinalScoreSurvivesEncodingAndIsOptional() throws {
+        var played = game("2026-W01-ATL-PIT")
+        played.finalScore = FinalScore(away: 0, home: 31)     // a shutout is a real score
+        let back = try JSONDecoder().decode(Game.self, from: JSONEncoder().encode(played))
+        XCTAssertEqual(back.finalScore, FinalScore(away: 0, home: 31))
+
+        // A game not yet played carries no score, and a feed that omits the key must still decode.
+        let upcoming = game("2026-W01-SF-LAR")
+        XCTAssertNil(upcoming.finalScore)
+        let json = #"{"id":"x","week":1,"kickoff":"2026-09-13T17:00:00Z","away":"ATL","home":"PIT","window":"SUN_EARLY"}"#
+        XCTAssertNil(try JSONDecoder().decode(Game.self, from: Data(json.utf8)).finalScore,
+                     "older cached games have no score key and must not fail to load")
+    }
+
+    func testShowScoresDefaultsOnAndCanBeTurnedOff() {
+        XCTAssertTrue(UserProfile().showScores, "whoever followed Thursday's game wants to know how it ended")
+        var quiet = UserProfile(); quiet.showScores = false
+        XCTAssertFalse(quiet.showScores, "and whoever recorded it must be able to come here without being told")
+    }
+
     func testOverrideWins() {
         let r = CoverageEngine.windowGame(games: games, week: 1, marketKey: "milwaukee", network: "CBS", window: "SUN_LATE", catalog: catalog)
         XCTAssertEqual(r.game?.id, "2026-W01-GB-MIN"); XCTAssertEqual(r.confidence, .confirmed)

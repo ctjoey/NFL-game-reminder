@@ -50,6 +50,26 @@ export function normalizeEvent(ev, season) {
   // Sunday primetime, MNF, TNF and holiday games are national by definition.
   if (['SNF', 'MNF', 'TNF', 'KICKOFF', 'HOLIDAY', 'SAT', 'INTL'].includes(window)) national = true;
   const tbd = comp.timeValid === false || ev.status?.type?.name === 'STATUS_SCHEDULED' && comp.timeValid === false;
+
+  // The final score rides along in the payload we already fetch: the same competitor objects we
+  // read team abbreviations off also carry `score`. No new source, no new request, no new cost.
+  //
+  // Only kept once the game is over. A live score would make this a scores app, which is a
+  // different product in a crowded market - the point here is to close the loop on a card that
+  // told you when to turn the television on.
+  //
+  // Number(null) is 0 and Number('') is 0, so coercing straight from the field turns a missing
+  // score into a shutout that never happened. A score has to actually be there to be read.
+  const points = (v) => {
+    if (v === null || v === undefined || v === '') return null;
+    const n = Number(v);
+    return Number.isInteger(n) && n >= 0 ? n : null;
+  };
+  const state = ev.status?.type?.state || 'pre';
+  const a = points(away?.score);
+  const h = points(home?.score);
+  const finalScore = state === 'post' && a !== null && h !== null ? { away: a, home: h } : null;
+
   return {
     id: `${season}-W${String(week).padStart(2, '0')}-${awayId}-${homeId}`,
     espnId: ev.id,
@@ -64,7 +84,8 @@ export function normalizeEvent(ev, season) {
     window,
     national,
     venue: comp.venue?.fullName ? `${comp.venue.fullName}${comp.venue.address?.city ? ', ' + comp.venue.address.city : ''}` : null,
-    status: ev.status?.type?.state || 'pre',
+    status: state,
+    finalScore,
     label: ev.name && /kickoff|christmas|thanksgiving|international/i.test(ev.name) ? ev.name : null,
     verified: true,
     source: 'espn',
