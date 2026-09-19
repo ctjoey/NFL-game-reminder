@@ -36,14 +36,30 @@ final class Catalog {
     }
 
     var marketList: [Market] { markets.values.sorted { $0.name < $1.name } }
-    /// Alphabetical, except the two fallbacks belong at the bottom where fallbacks belong.
-    static let fallbackProviders: Set<String> = ["other", "otherstream"]
+
+    /// Kept in the catalogue but off the menu.
+    ///
+    /// "Other cable or satellite" and "Other streaming service" ask the viewer to describe
+    /// themselves in a way that buys nothing: we have no lineup for either, so the answer is the
+    /// same as picking nothing. They stay in the data because ten retired providers - U-verse,
+    /// Mediacom, WOW, Frontier, Vidgo and the rest - were migrated onto them, and deleting the
+    /// entries would strand every one of those people on a provider that does not exist.
+    static let hiddenProviders: Set<String> = ["other", "otherstream"]
+
+    /// What a new viewer may choose from.
     var providerList: [Provider] {
-        providers.values.sorted { a, b in
-            let af = Catalog.fallbackProviders.contains(a.id), bf = Catalog.fallbackProviders.contains(b.id)
-            if af != bf { return bf }
-            return a.name < b.name
-        }
+        providers.values
+            .filter { !Catalog.hiddenProviders.contains($0.id) }
+            .sorted { $0.name < $1.name }
+    }
+
+    /// The same list, plus whatever the viewer is already on - including a hidden entry. A picker
+    /// whose selection has no matching row renders blank, so someone migrated onto "Other" would
+    /// open Settings to an empty TV provider and reasonably conclude the app had lost it.
+    func providerOptions(selected: String?) -> [Provider] {
+        var list = providerList
+        if let id = selected, Catalog.hiddenProviders.contains(id), let p = providers[id] { list.append(p) }
+        return list
     }
     var serviceList: [StreamingService] { services.values.sorted { $0.name < $1.name } }
     func label(_ network: String) -> String { networkLabels[network] ?? network }

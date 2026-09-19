@@ -67,7 +67,12 @@ function renderSetup(isSettings = false) {
     if (d.zip.length >= 5) { const m = await api(`/api/lookup/zip/${d.zip}`); if (m.key) { d.market = m.key; marketSel.value = m.key; marketInfo.textContent = `${m.name}: CBS ${m.affiliates.CBS.call} · FOX ${m.affiliates.FOX.call} · NBC ${m.affiliates.NBC.call} · ABC ${m.affiliates.ABC.call}`; } else marketInfo.textContent = m.message; }
   } });
   const marketSel = h('select', { onchange: (e) => { d.market = e.target.value || null; marketInfo.textContent = ''; } }, h('option', { value: '' }, '— pick your TV market —'), ...c.markets.map((m) => h('option', { value: m.key, selected: d.market === m.key }, `${m.name}, ${m.state}`)));
-  const provSel = h('select', { onchange: (e) => { d.provider = e.target.value || null; rerender(); } }, h('option', { value: '' }, '— how do you watch TV? —'), ...c.providers.map((p) => h('option', { value: p.key, selected: d.provider === p.key }, p.name)));
+  // "Other cable or satellite" and "Other streaming service" are off the menu: we hold no lineup
+  // for either, so choosing one answers nothing that choosing nothing does not. They stay in the
+  // catalogue for the people already migrated onto them, and so stay listed for those people only.
+  const HIDDEN_PROVIDERS = ['other', 'otherstream'];
+  const provOpts = c.providers.filter((p) => !HIDDEN_PROVIDERS.includes(p.key) || d.provider === p.key);
+  const provSel = h('select', { onchange: (e) => { d.provider = e.target.value || null; rerender(); } }, ...provOpts.map((p) => h('option', { value: p.key, selected: d.provider === p.key }, p.name)));
   const prov = c.providers.find((p) => p.key === d.provider);
   const tzSel = h('select', { onchange: (e) => (d.tz = e.target.value) }, ...[d.tz, 'America/New_York', 'America/Chicago', 'America/Denver', 'America/Phoenix', 'America/Los_Angeles', 'America/Anchorage', 'Pacific/Honolulu', 'Europe/London'].filter((v, i, a) => a.indexOf(v) === i).map((z) => h('option', { value: z, selected: d.tz === z }, z)));
 

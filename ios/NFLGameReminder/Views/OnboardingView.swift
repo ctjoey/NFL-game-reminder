@@ -56,8 +56,9 @@ struct LocationSection: View {
                 ForEach(state.catalog.marketList) { m in Text("\(m.name), \(m.state)").tag(String?.some(m.id)) }
             }
             WidePicker(title: "TV provider", selection: $draft.provider) {
-                Text("— how do you watch TV? —").tag(String?.none)
-                ForEach(state.catalog.providerList) { p in Text(p.name).tag(String?.some(p.id)) }
+                ForEach(state.catalog.providerOptions(selected: draft.provider)) { p in
+                    Text(p.name).tag(String?.some(p.id))
+                }
             }
             if let p = draft.provider.flatMap({ state.catalog.providers[$0] }) {
                 if let h = p.guideHint { Text(h).font(.caption).foregroundStyle(.secondary) }

@@ -328,6 +328,28 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(alerts[0].body.contains("WPXI (NBC) ch. 11"))
         XCTAssertTrue(alerts[0].body.contains("Was: Sun Sep 13, 1:00 pm EDT on FOX/FOX One"))
     }
+    // The two "Other" entries are off the menu - they describe the viewer without telling us
+    // anything, since we hold no lineup for either. They stay in the catalogue, because ten retired
+    // providers were migrated onto them.
+    func testTheOtherProvidersAreOffTheMenuButNotGone() {
+        let offered = Set(catalog.providerList.map(\.id))
+        XCTAssertFalse(offered.contains("other"), "a new viewer should not be asked to pick Other")
+        XCTAssertFalse(offered.contains("otherstream"))
+        XCTAssertNotNil(catalog.providers["other"], "still in the data; ten retired providers point at it")
+
+        // Someone already on one keeps seeing it, or their picker would render blank and look as
+        // though the app had forgotten the setting.
+        let asOtherUser = Set(catalog.providerOptions(selected: "other").map(\.id))
+        XCTAssertTrue(asOtherUser.contains("other"))
+        XCTAssertFalse(Set(catalog.providerOptions(selected: nil).map(\.id)).contains("other"))
+        XCTAssertFalse(Set(catalog.providerOptions(selected: "directv").map(\.id)).contains("otherstream"))
+
+        // And the migration target is reachable end to end: retire, then find it in your own list.
+        var migrated = pitUser; migrated.provider = "armstrong"
+        migrated.migrateRetiredProvider()
+        XCTAssertTrue(catalog.providerOptions(selected: migrated.provider).contains { $0.id == migrated.provider })
+    }
+
     /// A provider entry has to earn its place by changing the answer. Ten did not, and anyone
     /// who had picked one should land on a fallback that still works.
     func testRetiredProvidersMigrateToAFallbackThatMatchesTheirKind() {
