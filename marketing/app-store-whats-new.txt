@@ -1,3 +1,5 @@
-Final scores. Open the app on Friday and Thursday night's game now shows how it ended, and the same for Saturday games later in the season. If you record games and would rather not know, there is a switch for it in Settings.
+Records on every matchup. Steelers (1-0) at Patriots (0-1), so you can see what a game is worth before you decide to watch it. They keep themselves current as results come in.
+
+Final scores. Open the app on Friday and Thursday night's game now shows how it ended, and the same for Saturday games later in the season. If you record games and would rather not know, one switch in Settings turns off both the scores and the records.
 
 The TV provider list is shorter. "Other cable or satellite" and "Other streaming service" have been taken out — neither told us anything we could use, so picking one gave you the same answer as picking nothing.
