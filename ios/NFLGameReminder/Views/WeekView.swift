@@ -144,6 +144,13 @@ struct GameCardView: View {
     private var tz: TimeZone { state.user.timeZone }
     private var showScores: Bool { state.user.showScores }
     private var records: (away: String?, home: String?) { Records.matchup(card.game, in: state.schedule.games) }
+    /// A live score is only worth showing if the data behind it is minutes old. The app refetches
+    /// on foreground, so this is true the moment someone opens it - and false again if they leave
+    /// the screen sitting there, which is exactly when a stale number would mislead.
+    private var liveIsFresh: Bool {
+        guard let synced = state.schedule.lastSync else { return false }
+        return Date().timeIntervalSince(synced) < ScheduleStore.liveFreshness
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -201,6 +208,14 @@ struct GameCardView: View {
                 Text("Final · \(Teams.short(card.game.away)) \(f.away), \(Teams.short(card.game.home)) \(f.home)")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(Theme.textDim)
+            } else if showScores, liveIsFresh, let l = card.game.liveScore {
+                // In the accent colour, because unlike a final this number is still moving. The
+                // clock is part of the sentence: a score the reader cannot date is a score they
+                // have to trust blindly, and this one goes stale in minutes.
+                Text("\(Teams.short(card.game.away)) \(l.away), \(Teams.short(card.game.home)) \(l.home)"
+                     + (l.situation.map { " · \($0)" } ?? ""))
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(Theme.accent)
             }
             if let label = card.game.label {
                 Text(label).font(.caption2.weight(.semibold)).foregroundStyle(Theme.accent)

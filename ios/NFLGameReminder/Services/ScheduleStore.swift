@@ -121,6 +121,33 @@ final class ScheduleStore: ObservableObject {
     }
 
     // MARK: live sync
+    /// How stale the data on screen may be before a live score stops being shown.
+    static let liveFreshness: TimeInterval = 5 * 60
+
+    /// One request instead of eighteen, unless the season itself needs re-reading.
+    ///
+    /// The app refetches on every foreground. Pulling all eighteen weeks each time was harmless
+    /// when people opened the app twice a week; live scores mean opening it repeatedly during a
+    /// game, and eighteen requests per open is how a public endpoint starts refusing them. The
+    /// full season only matters for a flex in some future week, which does not happen in the
+    /// minutes you are watching one.
+    func refresh() async -> [ScheduleChange] {
+        let stale = lastSync.map { Date().timeIntervalSince($0) > 6 * 3600 } ?? true
+        return stale || games.isEmpty ? await sync() : await syncWeek(currentWeek())
+    }
+
+    /// Re-read a single week. `apply` already replaces whole weeks, so this merges cleanly.
+    func syncWeek(_ week: Int) async -> [ScheduleChange] {
+        do {
+            let live = try await ESPNAdapter.fetchWeek(season, week: week, session: session)
+            guard !live.isEmpty else { throw URLError(.zeroByteResource) }
+            return apply(live, source: "espn")
+        } catch {
+            lastError = "\(Date().formatted(date: .abbreviated, time: .shortened)): \(error.localizedDescription)"
+            return []
+        }
+    }
+
     func sync() async -> [ScheduleChange] {
         do {
             let live = try await ESPNAdapter.fetchSeason(season, session: session)
@@ -156,7 +183,7 @@ enum ESPNAdapter {
         var id: String; var date: String; var name: String?
         var week: Week?; var status: Status?; var competitions: [Competition]
         struct Week: Decodable { var number: Int }
-        struct Status: Decodable { var type: StatusType?; struct StatusType: Decodable { var state: String? } }
+        struct Status: Decodable { var type: StatusType?; var period: Int?; var displayClock: String?; struct StatusType: Decodable { var state: String? } }
         struct Competition: Decodable {
             var competitors: [Competitor]; var broadcasts: [Broadcast]?; var geoBroadcasts: [GeoBroadcast]?; var venue: Venue?; var timeValid: Bool?
             struct Competitor: Decodable { var homeAway: String; var score: String?; var team: Team; struct Team: Decodable { var abbreviation: String } }
@@ -194,6 +221,15 @@ enum ESPNAdapter {
         // Int($0) spelled out rather than flatMap(Int.init): Int has several failable
         // initialisers and leaning on overload resolution here is a compile error waiting for a
         // Swift release to happen.
+        // The same two numbers while the game is being played, with the clock attached so the score
+        // dates itself. Only while the state is "in" - a live score is a detail on a card that
+        // already tells you the channel, not a scores feed.
+        var liveScore: LiveScore?
+        if ev.status?.type?.state == "in",
+           let a = comp.competitors.first(where: { $0.homeAway == "away" })?.score.flatMap({ Int($0) }),
+           let h = comp.competitors.first(where: { $0.homeAway == "home" })?.score.flatMap({ Int($0) }) {
+            liveScore = LiveScore(away: a, home: h, period: ev.status?.period, clock: ev.status?.displayClock)
+        }
         if ev.status?.type?.state == "post",
            let a = comp.competitors.first(where: { $0.homeAway == "away" })?.score.flatMap({ Int($0) }),
            let h = comp.competitors.first(where: { $0.homeAway == "home" })?.score.flatMap({ Int($0) }) {
@@ -201,7 +237,7 @@ enum ESPNAdapter {
         }
         return Game(id: "\(season)-W\(String(format: "%02d", week))-\(away)-\(home)", week: week, kickoff: kickoff, away: away, home: home, networks: networks, streams: streams,
                     exclusive: networks.isEmpty && streams.count == 1 ? streams[0] : nil, window: window, national: national, venue: venue, label: label, notes: nil, verified: true,
-                    timeTbd: comp.timeValid == false, source: "espn", finalScore: finalScore)
+                    timeTbd: comp.timeValid == false, source: "espn", finalScore: finalScore, liveScore: liveScore)
     }
 
     static func fetchWeek(_ season: Int, week: Int, session: URLSession = .shared) async throws -> [Game] {

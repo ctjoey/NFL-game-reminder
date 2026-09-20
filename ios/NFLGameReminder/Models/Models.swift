@@ -12,6 +12,23 @@ struct FinalScore: Codable, Equatable, Hashable {
     var home: Int
 }
 
+/// A game in progress: the score, and the clock that lets a reader judge how old it is.
+///
+/// A score with no clock beside it is a claim nobody can check. This exists so the card can show
+/// "24-21 · Q3 4:12" rather than a bare number that might be twenty minutes behind.
+struct LiveScore: Codable, Equatable, Hashable {
+    var away: Int
+    var home: Int
+    var period: Int?
+    var clock: String?
+
+    /// "Q3 4:12", or "OT 1:30". Nil when the feed gave a score with no clock to date it.
+    var situation: String? {
+        guard let p = period, let c = clock, !c.isEmpty else { return nil }
+        return p > 4 ? "OT \(c)" : "Q\(p) \(c)"
+    }
+}
+
 struct Game: Codable, Identifiable, Equatable, Hashable {
     var id: String
     var week: Int
@@ -30,11 +47,12 @@ struct Game: Codable, Identifiable, Equatable, Hashable {
     var timeTbd: Bool
     var source: String
     var finalScore: FinalScore?
+    var liveScore: LiveScore?
 
-    enum CodingKeys: String, CodingKey { case id, week, kickoff, away, home, networks, streams, exclusive, window, national, venue, label, notes, verified, timeTbd, source, finalScore }
+    enum CodingKeys: String, CodingKey { case id, week, kickoff, away, home, networks, streams, exclusive, window, national, venue, label, notes, verified, timeTbd, source, finalScore, liveScore }
 
-    init(id: String, week: Int, kickoff: Date, away: String, home: String, networks: [String] = [], streams: [String] = [], exclusive: String? = nil, window: String, national: Bool = false, venue: String? = nil, label: String? = nil, notes: String? = nil, verified: Bool = true, timeTbd: Bool = false, source: String = "seed", finalScore: FinalScore? = nil) {
-        self.id = id; self.week = week; self.kickoff = kickoff; self.away = away; self.home = home; self.networks = networks; self.streams = streams; self.exclusive = exclusive; self.window = window; self.national = national; self.venue = venue; self.label = label; self.notes = notes; self.verified = verified; self.timeTbd = timeTbd; self.source = source; self.finalScore = finalScore
+    init(id: String, week: Int, kickoff: Date, away: String, home: String, networks: [String] = [], streams: [String] = [], exclusive: String? = nil, window: String, national: Bool = false, venue: String? = nil, label: String? = nil, notes: String? = nil, verified: Bool = true, timeTbd: Bool = false, source: String = "seed", finalScore: FinalScore? = nil, liveScore: LiveScore? = nil) {
+        self.id = id; self.week = week; self.kickoff = kickoff; self.away = away; self.home = home; self.networks = networks; self.streams = streams; self.exclusive = exclusive; self.window = window; self.national = national; self.venue = venue; self.label = label; self.notes = notes; self.verified = verified; self.timeTbd = timeTbd; self.source = source; self.finalScore = finalScore; self.liveScore = liveScore
     }
 
     init(from decoder: Decoder) throws {
@@ -58,6 +76,7 @@ struct Game: Codable, Identifiable, Equatable, Hashable {
         timeTbd = try c.decodeIfPresent(Bool.self, forKey: .timeTbd) ?? false
         source = try c.decodeIfPresent(String.self, forKey: .source) ?? "seed"
         finalScore = try c.decodeIfPresent(FinalScore.self, forKey: .finalScore)
+        liveScore = try c.decodeIfPresent(LiveScore.self, forKey: .liveScore)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -71,6 +90,7 @@ struct Game: Codable, Identifiable, Equatable, Hashable {
         try c.encodeIfPresent(label, forKey: .label); try c.encodeIfPresent(notes, forKey: .notes)
         try c.encode(verified, forKey: .verified); try c.encode(timeTbd, forKey: .timeTbd); try c.encode(source, forKey: .source)
         try c.encodeIfPresent(finalScore, forKey: .finalScore)
+        try c.encodeIfPresent(liveScore, forKey: .liveScore)
     }
 
     /// Order-independent identity across feeds (a feed may flip home/away for neutral sites).

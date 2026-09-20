@@ -67,7 +67,7 @@ final class AppState: ObservableObject {
     func syncAndReplan() async {
         await coverage.refresh()
         let before = schedule.games
-        let delta = await schedule.sync()
+        let delta = await schedule.refresh()
         if !delta.isEmpty {
             let alerts = AlertPlanner.changeAlerts(delta, previous: before, current: schedule.games, user: user, catalog: catalog)
             await notifications.deliverNow(alerts)

@@ -122,3 +122,42 @@ test('records are derived from the finals we already hold, as of each game', () 
   assert.equal(week1.away, null, 'nobody has played before week 1, so no "(0-0)" clutter');
   assert.equal(week1.home, null);
 });
+
+test('a live score is kept only while the game is being played, and carries its clock', () => {
+  const ev = (state, extra = {}) => ({
+    id: '1', date: '2026-09-20T17:00:00Z', week: { number: 2 },
+    status: { type: { state }, ...extra },
+    competitions: [{
+      competitors: [
+        { homeAway: 'away', score: '24', team: { abbreviation: 'PIT' } },
+        { homeAway: 'home', score: '21', team: { abbreviation: 'NE' } },
+      ],
+      broadcasts: [{ names: ['CBS'] }],
+    }],
+  });
+
+  const live = normalizeEvent(ev('in', { period: 3, displayClock: '4:12' }), 2026);
+  assert.deepEqual(live.liveScore, { away: 24, home: 21, period: 3, clock: '4:12' });
+  assert.equal(live.finalScore, null, 'a game in progress has no final');
+
+  // Before kickoff and after the whistle there is nothing live to report.
+  assert.equal(normalizeEvent(ev('pre'), 2026).liveScore, null);
+  const done = normalizeEvent(ev('post'), 2026);
+  assert.equal(done.liveScore, null, 'a finished game is a final, not a live score');
+  assert.deepEqual(done.finalScore, { away: 24, home: 21 });
+
+  // A score with no clock is still a score; the card just cannot date it.
+  const noClock = normalizeEvent(ev('in'), 2026).liveScore;
+  assert.equal(noClock.period, null);
+  assert.equal(noClock.clock, null);
+});
+
+test('a live score never counts toward a record', () => {
+  // Only finals move the standings. Counting a game in progress would show a team at 2-0 in the
+  // third quarter of a game they go on to lose.
+  const games = [{
+    id: 'g', week: 2, away: 'PIT', home: 'NE', window: 'SUN_EARLY', networks: ['CBS'],
+    kickoff: '2026-09-20T17:00:00Z', finalScore: null, liveScore: { away: 24, home: 21, period: 3, clock: '4:12' },
+  }];
+  assert.deepEqual(recordsBefore(games, '2026-09-21T00:00:00Z'), {});
+});

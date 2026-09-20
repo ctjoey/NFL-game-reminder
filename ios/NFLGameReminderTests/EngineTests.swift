@@ -308,6 +308,25 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(week1.home)
     }
 
+    // A live score is a detail on a card that already tells you the channel. It must date itself,
+    // survive the cache, and never be mistaken for a result.
+    func testLiveScoreCarriesItsClockAndIsNotAResult() throws {
+        let live = LiveScore(away: 24, home: 21, period: 3, clock: "4:12")
+        XCTAssertEqual(live.situation, "Q3 4:12")
+        XCTAssertEqual(LiveScore(away: 24, home: 21, period: 5, clock: "1:30").situation, "OT 1:30")
+        XCTAssertNil(LiveScore(away: 24, home: 21, period: nil, clock: nil).situation,
+                     "with no clock there is nothing to date the score with, so say nothing")
+
+        var playing = game("2026-W01-ATL-PIT")
+        playing.liveScore = live
+        let back = try JSONDecoder().decode(Game.self, from: JSONEncoder().encode(playing))
+        XCTAssertEqual(back.liveScore, live)
+        XCTAssertNil(back.finalScore, "in progress is not finished")
+
+        // Standings move on finals only - a team leading in the third quarter is not 1-0.
+        XCTAssertNil(Records.matchup(playing, in: [playing]).away)
+    }
+
     func testOverrideWins() {
         let r = CoverageEngine.windowGame(games: games, week: 1, marketKey: "milwaukee", network: "CBS", window: "SUN_LATE", catalog: catalog)
         XCTAssertEqual(r.game?.id, "2026-W01-GB-MIN"); XCTAssertEqual(r.confidence, .confirmed)

@@ -70,6 +70,16 @@ export function normalizeEvent(ev, season) {
   const h = points(home?.score);
   const finalScore = state === 'post' && a !== null && h !== null ? { away: a, home: h } : null;
 
+  // The same two numbers while the game is being played, with the clock attached so the score
+  // dates itself on screen. A score with no clock next to it is a claim the reader cannot check.
+  //
+  // Only while state is "in". A live score is a detail on a card that already tells you the
+  // channel; it is not a scores feed, and the moment it becomes one this is competing with ESPN.
+  const st = ev.status || {};
+  const liveScore = state === 'in' && a !== null && h !== null
+    ? { away: a, home: h, period: Number.isInteger(st.period) ? st.period : null, clock: st.displayClock || null }
+    : null;
+
   return {
     id: `${season}-W${String(week).padStart(2, '0')}-${awayId}-${homeId}`,
     espnId: ev.id,
@@ -86,6 +96,7 @@ export function normalizeEvent(ev, season) {
     venue: comp.venue?.fullName ? `${comp.venue.fullName}${comp.venue.address?.city ? ', ' + comp.venue.address.city : ''}` : null,
     status: state,
     finalScore,
+    liveScore,
     label: ev.name && /kickoff|christmas|thanksgiving|international/i.test(ev.name) ? ev.name : null,
     verified: true,
     source: 'espn',
