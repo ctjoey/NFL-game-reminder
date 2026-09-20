@@ -79,5 +79,8 @@ struct RootView: View {
         case .weekall: state.showAllGames = true
         case .week: break
         }
+        // Explicitly, rather than leaning on the scene-phase change: on a cold launch that can fire
+        // before the observer is attached, and the capture would photograph the bundled sample.
+        Task { await state.syncAndReplan() }
     }
 }

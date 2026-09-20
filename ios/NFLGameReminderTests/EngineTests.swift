@@ -357,9 +357,10 @@ final class EngineTests: XCTestCase {
         for g in staged where g.week < ScreenshotMode.showcaseWeek {
             XCTAssertNotNil(g.finalScore, "week \(g.week) should be complete")
         }
-        let r = Records.matchup(early[0], in: staged)
-        XCTAssertNotNil(r.away, "every team has played twice by the showcase week")
-        XCTAssertNotNil(r.home)
+        let played = Set(staged.filter { $0.week < ScreenshotMode.showcaseWeek }.flatMap { [$0.away, $0.home] })
+        XCTAssertFalse(played.isEmpty)
+        let table = Records.before(early[0].kickoff, in: staged)
+        for t in played { XCTAssertEqual(table[t]?.played, true, "\(t) finished a game before the showcase week") }
 
         // The shape of the week survives: one shift for the whole season, not a per-game fiction.
         let realGap = games.first { $0.id == week[0].id }!.kickoff.timeIntervalSince(

@@ -102,7 +102,7 @@ jobs:
           shoot () {   # <screen> <output name>
             xcrun simctl terminate "$UDID" "$BID" || true
             SIMCTL_CHILD_SCREENSHOT="$1" xcrun simctl launch "$UDID" "$BID"
-            sleep 8
+            sleep 15
             xcrun simctl io "$UDID" screenshot "screenshots/raw/$2.png"
           }
           shoot week     01-this-week

@@ -28,7 +28,9 @@ final class AppState: ObservableObject {
             user = ScreenshotMode.demoProfile
             // A staged season, and a sync stamp to match: the live-score line hides itself unless
             // the data behind it is minutes old, which is the correct behaviour and would
-            // otherwise blank the very thing the screenshot is there to show.
+            // otherwise blank the very thing the screenshot is there to show. This is the seed, so
+            // it is thin; syncAndReplan replaces it with the real season a moment later, and it is
+            // what the capture falls back to if the network is down.
             s.overrideGames(ScreenshotMode.stage(ScheduleStore.loadSeed(season: s.season)), lastSync: Date())
         } else if let data = UserDefaults.standard.data(forKey: Self.userKey), var u = try? JSONDecoder().decode(UserProfile.self, from: data) {
             u.migrateRetiredProvider()
@@ -79,10 +81,22 @@ final class AppState: ObservableObject {
     /// The coverage map is refreshed alongside the schedule: a map published on Wednesday is worth
     /// nothing if the app only reads the copy it shipped with.
     func syncAndReplan() async {
-        // Store-listing capture: the schedule on screen is staged, and a live sync would replace it
-        // between the launch and the shutter.
-        guard !ScreenshotMode.isActive else { await replan(); return }
         await coverage.refresh()
+        // Store-listing capture. The bundled seed is a sample - seven games in a week, and teams
+        // whose first appearance is the week being photographed, so half the cards would carry a
+        // record on one side only. Pull the real season, then stage that: a full Sunday, and every
+        // team with two games behind it. A plain refresh would not do, because init already stamped
+        // lastSync to keep the live-score line alive, and refresh reads that as "recent enough".
+        if ScreenshotMode.isActive {
+            // Back to the pristine seed first, so running this twice shifts the season once: what
+            // the live feed does not cover is kept as-is by `apply`, and staged times kept from a
+            // previous pass would be shifted a second time.
+            schedule.overrideGames(ScheduleStore.loadSeed(season: schedule.season), lastSync: nil)
+            _ = await schedule.sync()
+            schedule.overrideGames(ScreenshotMode.stage(schedule.games), lastSync: Date())
+            await replan()
+            return
+        }
         let before = schedule.games
         let delta = await schedule.refresh()
         if !delta.isEmpty {
