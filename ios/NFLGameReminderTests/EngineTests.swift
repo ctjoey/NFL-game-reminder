@@ -327,6 +327,50 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(Records.matchup(playing, in: [playing]).away)
     }
 
+    // The store screenshots are a permanent asset, so the season they are shot against has to look
+    // the same whenever CI happens to run - a Tuesday in March included.
+    func testScreenshotStagingPutsTheCaptureInTheMiddleOfSundayAfternoon() {
+        let now = Date()
+        let staged = ScreenshotMode.stage(games, now: now)
+        XCTAssertEqual(staged.count, games.count, "staging moves the season, it does not edit the slate")
+
+        let week = staged.filter { $0.week == ScreenshotMode.showcaseWeek }
+        let early = week.filter { $0.window == "SUN_EARLY" }
+        XCTAssertFalse(early.isEmpty)
+        for g in early {
+            XCTAssertNotNil(g.liveScore, "the early window is what the capture is standing in the middle of")
+            XCTAssertNil(g.finalScore)
+            XCTAssertEqual(g.liveScore?.situation, "Q3")
+        }
+
+        // Thursday is done, Sunday night has not started. Both read off the same clock as the
+        // countdown pill, so the pill and the score line agree.
+        let thursday = week.filter { $0.window == "TNF" }
+        XCTAssertFalse(thursday.isEmpty)
+        for g in thursday { XCTAssertNotNil(g.finalScore, "Thursday night is the score you open the app on Friday for") }
+        for g in week.filter({ $0.window == "SNF" || $0.window == "MNF" }) {
+            XCTAssertNil(g.finalScore); XCTAssertNil(g.liveScore)
+            XCTAssertGreaterThan(g.kickoff, now, "still to come")
+        }
+
+        // Two finished weeks behind it, which is where the records on the cards come from.
+        for g in staged where g.week < ScreenshotMode.showcaseWeek {
+            XCTAssertNotNil(g.finalScore, "week \(g.week) should be complete")
+        }
+        let r = Records.matchup(early[0], in: staged)
+        XCTAssertNotNil(r.away, "every team has played twice by the showcase week")
+        XCTAssertNotNil(r.home)
+
+        // The shape of the week survives: one shift for the whole season, not a per-game fiction.
+        let realGap = games.first { $0.id == week[0].id }!.kickoff.timeIntervalSince(
+            games.first { $0.id == week[1].id }!.kickoff)
+        XCTAssertEqual(week[0].kickoff.timeIntervalSince(week[1].kickoff), realGap, accuracy: 1)
+
+        // Same build, same scoreboard - Swift's own hashing is seeded per process and would not be.
+        XCTAssertEqual(ScreenshotMode.stage(games, now: now).map(\.finalScore),
+                       staged.map(\.finalScore))
+    }
+
     func testOverrideWins() {
         let r = CoverageEngine.windowGame(games: games, week: 1, marketKey: "milwaukee", network: "CBS", window: "SUN_LATE", catalog: catalog)
         XCTAssertEqual(r.game?.id, "2026-W01-GB-MIN"); XCTAssertEqual(r.confidence, .confirmed)

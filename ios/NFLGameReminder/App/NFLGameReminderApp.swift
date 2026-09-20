@@ -70,12 +70,14 @@ struct RootView: View {
 
     /// Store-listing capture: open straight to the screen being photographed.
     private func applyScreenshotMode() {
-        switch ScreenshotMode.screen {
+        guard let screen = ScreenshotMode.screen else { return }
+        state.selectedWeek = ScreenshotMode.showcaseWeek
+        switch screen {
         case .alerts: tab = 1
         case .settings: tab = 2
-        case .detail: state.deepLinkGameId = "2026-W01-DAL-NYG"
+        case .detail: state.deepLinkGameId = state.screenshotDetailGameId
         case .weekall: state.showAllGames = true
-        case .week, .none: break
+        case .week: break
         }
     }
 }

@@ -54,6 +54,16 @@ final class ScheduleStore: ObservableObject {
         return seed.games.sorted { $0.kickoff < $1.kickoff }
     }
 
+    /// Replace the in-memory schedule without writing it to disk.
+    ///
+    /// Used by the store-listing capture harness, which stages a season so the screenshots have
+    /// scores in them, and by tests. Nothing in the shipping flow calls it, and because it never
+    /// persists, a staged season cannot outlive the process that made it.
+    func overrideGames(_ staged: [Game], lastSync when: Date?) {
+        games = staged.sorted { $0.kickoff < $1.kickoff }
+        lastSync = when
+    }
+
     private func persist() {
         if let d = try? JSONEncoder().encode(Snapshot(season: season, games: games, source: source, lastSync: lastSync)) { try? d.write(to: fileURL, options: .atomic) }
         let log = ChangeLog(version: Self.changeLogVersion, changes: changes.suffix(500).map { $0 })

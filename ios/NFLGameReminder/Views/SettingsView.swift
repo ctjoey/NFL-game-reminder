@@ -16,8 +16,8 @@ struct SettingsView: View {
                 FollowSection(draft: $draft)
                 AlertsSection(draft: $draft)
                 Section("Delivery") {
-                    Toggle("Show final scores", isOn: $draft.showScores)
-                    Text("Off if you record games and would rather not see how they ended.")
+                    Toggle("Show scores and records", isOn: $draft.showScores)
+                    Text("Live scores, final scores and won-lost records. Off if you record games and would rather not see how they ended.")
                         .font(.caption).foregroundStyle(.secondary)
                     HStack { Text("Notifications"); Spacer(); Text(state.notifications.authorized ? "Allowed" : "Not allowed").foregroundStyle(state.notifications.authorized ? .green : .red) }
                     if !state.notifications.authorized { Button("Allow notifications") { Task { await state.notifications.requestAuthorization(); await state.replan() } } }

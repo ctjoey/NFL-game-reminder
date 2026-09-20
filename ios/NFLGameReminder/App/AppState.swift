@@ -26,6 +26,10 @@ final class AppState: ObservableObject {
         self.schedule = s
         if ScreenshotMode.isActive {
             user = ScreenshotMode.demoProfile
+            // A staged season, and a sync stamp to match: the live-score line hides itself unless
+            // the data behind it is minutes old, which is the correct behaviour and would
+            // otherwise blank the very thing the screenshot is there to show.
+            s.overrideGames(ScreenshotMode.stage(ScheduleStore.loadSeed(season: s.season)), lastSync: Date())
         } else if let data = UserDefaults.standard.data(forKey: Self.userKey), var u = try? JSONDecoder().decode(UserProfile.self, from: data) {
             u.migrateRetiredProvider()
             user = u
@@ -56,6 +60,16 @@ final class AppState: ObservableObject {
         }
     }
 
+    /// The game the store-listing capture opens for its detail shot: one that is being played, and
+    /// one of the demo profile's own teams, so the card is followed and the coverage rows are full.
+    var screenshotDetailGameId: String? {
+        let week = schedule.week(ScreenshotMode.showcaseWeek)
+        let mine = Set(user.follow.teams)
+        return (week.first { $0.liveScore != nil && (mine.contains($0.away) || mine.contains($0.home)) }
+                ?? week.first { $0.liveScore != nil }
+                ?? week.first)?.id
+    }
+
     func replan() async {
         plan = AlertPlanner.plan(user: user, games: schedule.games, catalog: catalog)
         if user.onboarded { await notifications.schedule(plan: plan, user: user) }
@@ -65,6 +79,9 @@ final class AppState: ObservableObject {
     /// The coverage map is refreshed alongside the schedule: a map published on Wednesday is worth
     /// nothing if the app only reads the copy it shipped with.
     func syncAndReplan() async {
+        // Store-listing capture: the schedule on screen is staged, and a live sync would replace it
+        // between the launch and the shutter.
+        guard !ScreenshotMode.isActive else { await replan(); return }
         await coverage.refresh()
         let before = schedule.games
         let delta = await schedule.refresh()
