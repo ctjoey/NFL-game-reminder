@@ -12,20 +12,21 @@ struct FinalScore: Codable, Equatable, Hashable {
     var home: Int
 }
 
-/// A game in progress: the score, and the clock that lets a reader judge how old it is.
+/// A game in progress: the score and the quarter it is in.
 ///
-/// A score with no clock beside it is a claim nobody can check. This exists so the card can show
-/// "24-21 · Q3 4:12" rather than a bare number that might be twenty minutes behind.
+/// No game clock, deliberately. The app fetches when you open it and does not tick, so a clock on
+/// screen would be a frozen number that looks like a running one - the most convincing way to be
+/// wrong. A quarter is honest at the same refresh rate: it only goes stale around a break, where a
+/// clock is stale within seconds. Anyone who wants the down and distance has a sports app.
 struct LiveScore: Codable, Equatable, Hashable {
     var away: Int
     var home: Int
     var period: Int?
-    var clock: String?
 
-    /// "Q3 4:12", or "OT 1:30". Nil when the feed gave a score with no clock to date it.
+    /// "Q3", or "OT". Nil when the feed did not say which quarter.
     var situation: String? {
-        guard let p = period, let c = clock, !c.isEmpty else { return nil }
-        return p > 4 ? "OT \(c)" : "Q\(p) \(c)"
+        guard let p = period, p > 0 else { return nil }
+        return p > 4 ? "OT" : "Q\(p)"
     }
 }
 

@@ -183,7 +183,7 @@ enum ESPNAdapter {
         var id: String; var date: String; var name: String?
         var week: Week?; var status: Status?; var competitions: [Competition]
         struct Week: Decodable { var number: Int }
-        struct Status: Decodable { var type: StatusType?; var period: Int?; var displayClock: String?; struct StatusType: Decodable { var state: String? } }
+        struct Status: Decodable { var type: StatusType?; var period: Int?; struct StatusType: Decodable { var state: String? } }
         struct Competition: Decodable {
             var competitors: [Competitor]; var broadcasts: [Broadcast]?; var geoBroadcasts: [GeoBroadcast]?; var venue: Venue?; var timeValid: Bool?
             struct Competitor: Decodable { var homeAway: String; var score: String?; var team: Team; struct Team: Decodable { var abbreviation: String } }
@@ -221,14 +221,14 @@ enum ESPNAdapter {
         // Int($0) spelled out rather than flatMap(Int.init): Int has several failable
         // initialisers and leaning on overload resolution here is a compile error waiting for a
         // Swift release to happen.
-        // The same two numbers while the game is being played, with the clock attached so the score
-        // dates itself. Only while the state is "in" - a live score is a detail on a card that
-        // already tells you the channel, not a scores feed.
+        // The same two numbers while the game is being played, with the quarter. Only while the
+        // state is "in" - a live score is a detail on a card that already tells you the channel,
+        // not a scores feed.
         var liveScore: LiveScore?
         if ev.status?.type?.state == "in",
            let a = comp.competitors.first(where: { $0.homeAway == "away" })?.score.flatMap({ Int($0) }),
            let h = comp.competitors.first(where: { $0.homeAway == "home" })?.score.flatMap({ Int($0) }) {
-            liveScore = LiveScore(away: a, home: h, period: ev.status?.period, clock: ev.status?.displayClock)
+            liveScore = LiveScore(away: a, home: h, period: ev.status?.period)
         }
         if ev.status?.type?.state == "post",
            let a = comp.competitors.first(where: { $0.homeAway == "away" })?.score.flatMap({ Int($0) }),

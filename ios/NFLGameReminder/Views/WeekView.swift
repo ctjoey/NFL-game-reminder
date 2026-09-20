@@ -211,8 +211,8 @@ struct GameCardView: View {
                     .foregroundStyle(Theme.textDim)
             } else if showScores, liveIsFresh, let l = card.game.liveScore {
                 // In the accent colour, because unlike a final this number is still moving. The
-                // clock is part of the sentence: a score the reader cannot date is a score they
-                // have to trust blindly, and this one goes stale in minutes.
+                // quarter and no game clock - the app fetches on open and does not tick, so a
+                // clock here would be a frozen number that reads as a running one.
                 Text("\(Teams.short(card.game.away)) \(l.away), \(Teams.short(card.game.home)) \(l.home)"
                      + (l.situation.map { " · \($0)" } ?? ""))
                     .font(.caption.weight(.bold))

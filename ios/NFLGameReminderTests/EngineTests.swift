@@ -308,14 +308,14 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(week1.home)
     }
 
-    // A live score is a detail on a card that already tells you the channel. It must date itself,
-    // survive the cache, and never be mistaken for a result.
-    func testLiveScoreCarriesItsClockAndIsNotAResult() throws {
-        let live = LiveScore(away: 24, home: 21, period: 3, clock: "4:12")
-        XCTAssertEqual(live.situation, "Q3 4:12")
-        XCTAssertEqual(LiveScore(away: 24, home: 21, period: 5, clock: "1:30").situation, "OT 1:30")
-        XCTAssertNil(LiveScore(away: 24, home: 21, period: nil, clock: nil).situation,
-                     "with no clock there is nothing to date the score with, so say nothing")
+    // A live score is a detail on a card that already tells you the channel. It must survive the
+    // cache and never be mistaken for a result.
+    func testLiveScoreCarriesItsQuarterAndIsNotAResult() throws {
+        let live = LiveScore(away: 24, home: 21, period: 3)
+        XCTAssertEqual(live.situation, "Q3", "the quarter and never a game clock: the app does not tick")
+        XCTAssertEqual(LiveScore(away: 24, home: 21, period: 5).situation, "OT")
+        XCTAssertNil(LiveScore(away: 24, home: 21, period: nil).situation,
+                     "no quarter given, so say nothing rather than guess one")
 
         var playing = game("2026-W01-ATL-PIT")
         playing.liveScore = live
