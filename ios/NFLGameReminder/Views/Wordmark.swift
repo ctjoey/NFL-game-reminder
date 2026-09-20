@@ -31,3 +31,18 @@ struct Wordmark: View {
         .padding(.vertical, 4)
     }
 }
+
+/// The wordmark sized for a navigation bar.
+///
+/// It replaces the screen titles on the three tabs. That is not a loss of orientation: the tab bar
+/// along the bottom already says which of the three you are on, so the title was repeating it, and
+/// the top of the screen is the one place a person looks often enough to learn what the app is
+/// called.
+struct WordmarkInline: View {
+    var body: some View {
+        (Text(Wordmark.head).foregroundStyle(Theme.text) + Text(Wordmark.tail).foregroundStyle(Theme.accent))
+            .font(.system(size: 18, weight: .heavy, design: .rounded))
+            .tracking(-0.2)
+            .accessibilityLabel(AppInfo.name)
+    }
+}

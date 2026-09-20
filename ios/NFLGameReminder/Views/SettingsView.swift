@@ -62,7 +62,8 @@ struct SettingsView: View {
             .dismissableKeyboard()
             .scrollContentBackground(.hidden)
             .background { Theme.background.ignoresSafeArea() }
-            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .principal) { WordmarkInline() } }
             .toolbarBackground(Theme.bgTop, for: .navigationBar)
             // Re-read on every visit, not just the first: following a game from the week screen
             // changes the profile while this screen is off-screen and not receiving updates, and

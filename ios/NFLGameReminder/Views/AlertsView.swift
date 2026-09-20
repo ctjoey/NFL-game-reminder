@@ -37,7 +37,8 @@ struct AlertsView: View {
             }
             .background { Theme.background.ignoresSafeArea() }
             .scrollContentBackground(.hidden)
-            .navigationTitle("Alerts")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .principal) { WordmarkInline() } }
             .toolbarBackground(Theme.bgTop, for: .navigationBar)
             .task { await state.notifications.refreshStatus() }
         }

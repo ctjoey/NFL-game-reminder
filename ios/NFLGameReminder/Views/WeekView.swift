@@ -42,7 +42,8 @@ struct WeekView: View {
             }
             .background { Theme.background.ignoresSafeArea() }
             .scrollContentBackground(.hidden)
-            .navigationTitle("This Week’s Games")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .principal) { WordmarkInline() } }
             .toolbarBackground(Theme.bgTop, for: .navigationBar)
             .refreshable { await state.syncAndReplan() }
             .sheet(item: $detail) { c in GameDetailView(cardId: c.id) }
