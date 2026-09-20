@@ -1,5 +1,3 @@
-Two corrections, both about telling you the truth rather than a good guess.
+Final scores. Open the app on Friday and Thursday night's game now shows how it ended, and the same for Saturday games later in the season. If you record games and would rather not know, there is a switch for it in Settings.
 
-Thursday and Sunday night games that stream on Prime Video or Peacock are also on a free local channel in the two teams' home markets. The app used to tell you those games were subscription-only. If you live in either team's market, it now tells you that you can watch for nothing.
-
-And on weeks when CBS or FOX carries just one round of games, most of the country has nothing on that network in the late afternoon. The app used to offer a best guess anyway. Now it says plainly that no game airs in your market in that window.
+The TV provider list is shorter. "Other cable or satellite" and "Other streaming service" have been taken out — neither told us anything we could use, so picking one gave you the same answer as picking nothing.
