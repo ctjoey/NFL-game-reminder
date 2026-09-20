@@ -143,6 +143,7 @@ struct GameCardView: View {
     let onToggleFollow: () -> Void
     private var tz: TimeZone { state.user.timeZone }
     private var showScores: Bool { state.user.showScores }
+    private var records: (away: String?, home: String?) { Records.matchup(card.game, in: state.schedule.games) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -188,9 +189,9 @@ struct GameCardView: View {
                 .accessibilityLabel(card.followed ? "Stop reminding me" : "Remind me")
             }
             HStack(alignment: .firstTextBaseline, spacing: 7) {
-                teamName(Teams.short(card.game.away), card.game.away)
+                teamName(Teams.short(card.game.away), card.game.away, records.away)
                 Text("at").font(.caption).foregroundStyle(Theme.textDim)
-                teamName(Teams.short(card.game.home), card.game.home)
+                teamName(Teams.short(card.game.home), card.game.home, records.home)
             }
             .lineLimit(1)
             .minimumScaleFactor(0.6)
@@ -210,7 +211,7 @@ struct GameCardView: View {
         .background(Theme.matchupGradient(away: card.game.away, home: card.game.home))
     }
 
-    private func teamName(_ name: String, _ id: String) -> some View {
+    private func teamName(_ name: String, _ id: String, _ record: String?) -> some View {
         HStack(spacing: 6) {
             RoundedRectangle(cornerRadius: 2)
                 .fill(Theme.team(id))
@@ -218,6 +219,13 @@ struct GameCardView: View {
             Text(name)
                 .font(.system(size: 21, weight: .heavy, design: .rounded))
                 .foregroundStyle(Theme.text)
+            // Dimmer and smaller than the name: the matchup is what you came for, the record is
+            // context. Hidden with the scores, because a record gives the result away too.
+            if showScores, let record {
+                Text("(\(record))")
+                    .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Theme.textDim)
+            }
         }
     }
 

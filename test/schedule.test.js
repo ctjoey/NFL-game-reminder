@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { diffGames, matchKey, ScheduleService, loadSeed } from '../server/schedule/scheduleService.js';
 import { normalizeEvent, normalizeNetworkName } from '../server/schedule/espnAdapter.js';
+import { matchupRecords, recordsBefore, summarize } from '../server/schedule/records.js';
 import { coverageStart, inferWindow } from '../server/schedule/windows.js';
 import { DB } from '../server/db.js';
 
@@ -95,4 +96,29 @@ test('scores never register as schedule changes', () => {
   const before = [{ id: 'g', week: 2, kickoff: '2026-09-18T00:15:00Z', away: 'DET', home: 'BUF', networks: [], streams: ['Prime'], finalScore: null }];
   const after = [{ ...before[0], finalScore: { away: 27, home: 24 } }];
   assert.deepEqual(diffGames(before, after), [], 'a score is not a move');
+});
+
+test('records are derived from the finals we already hold, as of each game', () => {
+  const g = (id, week, away, home, day, fs) => ({
+    id, week, away, home, window: 'SUN_EARLY', networks: ['CBS'],
+    kickoff: `2026-09-${day}T17:00:00Z`, finalScore: fs,
+  });
+  const games = [
+    g('w1a', 1, 'PIT', 'NE', '13', { away: 24, home: 17 }),   // PIT beat NE
+    g('w1b', 1, 'GB', 'CHI', '13', { away: 20, home: 20 }),   // tie
+    g('w2a', 2, 'PIT', 'NE', '20', null),                     // not played yet
+  ];
+
+  const week2 = matchupRecords(games, games[2]);
+  assert.equal(week2.away, '1-0', 'Pittsburgh brings a win into week 2');
+  assert.equal(week2.home, '0-1');
+
+  // A tie prints the third number; nothing else does.
+  assert.equal(summarize(recordsBefore(games, '2026-09-20T00:00:00Z').GB), '0-0-1');
+  assert.equal(summarize(recordsBefore(games, '2026-09-20T00:00:00Z').PIT), '1-0');
+
+  // The record is the one carried INTO the game, so a past card does not drift as the season runs.
+  const week1 = matchupRecords(games, games[0]);
+  assert.equal(week1.away, null, 'nobody has played before week 1, so no "(0-0)" clutter');
+  assert.equal(week1.home, null);
 });

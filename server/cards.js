@@ -3,6 +3,7 @@
 // the game actually airs in their market, whether they can watch it with what they pay for,
 // and which alerts are planned. Every derived fact carries a confidence.
 import { TEAMS, teamLabel } from './schedule/teams.js';
+import { matchupRecords } from './schedule/records.js';
 import { coverageStart, WINDOWS } from './schedule/windows.js';
 import { resolveChannel, accessCheck, networkLabel } from './market/marketService.js';
 import { gameInMarket } from './coverage/coverageService.js';
@@ -44,14 +45,15 @@ export function buildCard(user, game, allGames, { changes = [], plannedAlerts = 
   const cov = coverageStart(game);
   const inMarket = user.market ? gameInMarket(game, user.market, allGames) : { airs: null, confidence: 'unknown', reason: 'Set your ZIP to see whether this game airs in your market.', instead: null };
   const access = accessCheck(user, game);
+  const records = matchupRecords(allGames, game);
   const follow = isFollowed(user, game);
   const networks = (game.networks || []).map((n) => ({ network: n, label: networkLabel(n), channel: resolveChannel(user, n) }));
   const streams = (game.streams || []).map((s) => ({ key: s, label: networkLabel(s) }));
   return {
     id: game.id,
     week: game.week,
-    away: { id: game.away, short: teamLabel(game.away), name: teamLabel(game.away, 'full') },
-    home: { id: game.home, short: teamLabel(game.home), name: teamLabel(game.home, 'full') },
+    away: { id: game.away, short: teamLabel(game.away), name: teamLabel(game.away, 'full'), record: records.away },
+    home: { id: game.home, short: teamLabel(game.home), name: teamLabel(game.home, 'full'), record: records.home },
     title: `${teamLabel(game.away)} at ${teamLabel(game.home)}`,
     label: game.label || null,
     venue: game.venue || null,

@@ -280,6 +280,34 @@ final class EngineTests: XCTestCase {
         XCTAssertFalse(quiet.showScores, "and whoever recorded it must be able to come here without being told")
     }
 
+    // Records come out of the finals we already hold rather than a separate field, so the standings
+    // can never disagree with the scores on the same screen.
+    func testRecordsAreDerivedAsOfEachGame() {
+        func g(_ id: String, _ away: String, _ home: String, _ day: Int, _ f: FinalScore?) -> Game {
+            Game(id: id, week: day == 13 ? 1 : 2,
+                 kickoff: DateParsing.parse("2026-09-\(day)T17:00:00Z")!,
+                 away: away, home: home, networks: ["CBS"], window: "SUN_EARLY", finalScore: f)
+        }
+        let games = [
+            g("w1a", "PIT", "NE", 13, FinalScore(away: 24, home: 17)),
+            g("w1b", "GB", "CHI", 13, FinalScore(away: 20, home: 20)),   // a tie
+            g("w2a", "PIT", "NE", 20, nil),                              // not played
+        ]
+
+        let week2 = Records.matchup(games[2], in: games)
+        XCTAssertEqual(week2.away, "1-0", "Pittsburgh brings a win into week 2")
+        XCTAssertEqual(week2.home, "0-1")
+
+        let table = Records.before(games[2].kickoff, in: games)
+        XCTAssertEqual(table["GB"]?.summary, "0-0-1", "a tie prints the third number")
+        XCTAssertEqual(table["PIT"]?.summary, "1-0", "and nothing else does")
+
+        // Carried INTO the game, so an old card does not drift as the season runs on.
+        let week1 = Records.matchup(games[0], in: games)
+        XCTAssertNil(week1.away, "nobody has played before week 1, so no (0-0) on every card")
+        XCTAssertNil(week1.home)
+    }
+
     func testOverrideWins() {
         let r = CoverageEngine.windowGame(games: games, week: 1, marketKey: "milwaukee", network: "CBS", window: "SUN_LATE", catalog: catalog)
         XCTAssertEqual(r.game?.id, "2026-W01-GB-MIN"); XCTAssertEqual(r.confidence, .confirmed)
