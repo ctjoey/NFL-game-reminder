@@ -1,15 +1,18 @@
-The game you want is on some channel, and it's never the one you were sure it was. GameDial tells you which.
+Not sure which channel is actually showing your team? GameDial knows, and it tells you the exact channel in your area.
 
-Give it your ZIP code and what you pay for. From then on, for every game of the season: when coverage starts, when the ball is actually kicked, and the channel where you live. Not "it's on FOX." FOX 8, WJW.
-
-SCORES WHEN YOU OPEN IT
-Live scores and the quarter while games are on. Thursday night's final still there on Friday. Records on every matchup — Steelers (2-0) at Patriots (1-1). They never arrive as a notification, and one switch hides them if you're recording.
+Enter your ZIP code and pick your TV or streaming service, and you get the game airing on your local stations. It doesn't just say "it's on CBS." It says CBS 4, WFOR — the one in your market.
 
 REMINDERS
-When network coverage begins. Thirty minutes before kickoff, an hour, or a day — your call. The night before, when a game is on a service you don't have. The moment a game gets flexed.
+Get an alert when network coverage begins, or set it earlier to plan out your day — your call. You'll also know when a game isn't being shown in your area, and the moment one gets flexed.
 
 YOUR MARKET
-Regional games change block by block across this country. GameDial knows which matchup your station is carrying — confirmed once the networks publish the week's map, marked as an estimate until they do. Traveling? Change your market and the channel numbers follow.
+Regional games change block by block across this country. GameDial knows which matchup your station is carrying, confirmed once the networks publish the week's map.
+
+TRAVELING?
+Find out whether your team will be on TV when you get to town. Change your market and the channel numbers follow.
+
+LIVE SCORES
+Scores and the quarter while the games are on, finals when they're over, and both teams' records on every matchup. They never arrive as a notification, and one switch hides them if you're recording.
 
 No account. No sign-up. Everything stays on your phone.
 
