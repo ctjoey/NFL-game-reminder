@@ -1,29 +1,29 @@
-It's five past one on Sunday. You're on the couch, you found the remote, and the NFL game you wanted is not on the channel you were sure it was on. You're now watching a team you have no feelings about while somebody, somewhere, watches yours.
+It's five past one on Sunday. You found the remote, and the game you wanted is not on the channel you were sure it was on. Somebody, somewhere, is watching your team. You are watching neither.
 
-GameDial exists so that never happens again.
+GameDial fixes that in about a minute.
 
-Tell it your ZIP code and what TV and streaming services you have. That's the whole setup. From then on it knows, for every game of the season: when the pregame show starts, when the ball is actually kicked, which network carries it, and — the part nobody else tells you — what channel it's on for your viewing area. Not just "it's on FOX." Now you get FOX 8, WJW, in your living room.
+Tell it your ZIP code and what you pay for. That's the whole setup. From then on, for every game of the season, it knows when the pregame starts, when the ball is actually kicked, and what channel the game is on where you live. Not "it's on FOX." FOX 8, WJW, in your living room.
+
+NOW IT SHOWS YOU THE SCORES TOO
+Open it while the games are on and you see where each one stands and which quarter it's in. Open it Friday and Thursday night's final is right there. Every matchup carries the records — Steelers (2-0) at Patriots (1-1) — so you know what a game is worth before you give it three hours.
+
+Scores never arrive as a notification. They're there when you open the app, and not a second before. Recording something? One switch in Settings hides all of it.
 
 IT REMINDS YOU AT THE RIGHT MOMENTS
 • When network coverage begins, so you catch the pregame instead of the second quarter
 • Thirty minutes before kickoff, or an hour, or a day — your call
-• The night before, if a game is somewhere you don't subscribe to. Better to find out Saturday than at kickoff.
-• The moment a game moves. Games get flexed to new days, new times, new networks. You'll know, and your reminders move with it.
-• One weekly rundown of everything you're following, with every channel listed
+• The night before, when a game is on a service you don't subscribe to
+• The moment a game gets flexed to a new day, time or network, with your reminders moved to match
+• One weekly rundown of everything you're following, every channel listed
 
 IT KNOWS WHERE YOU ARE
-Choose a television market from New York to Sacramento. Regional games differ block by block across this country, and GameDial knows which one your local station is showing — and warns you when your market is getting a different game than the one you were looking for.
-
-When the networks have published their regional map for the week, you get a confirmed answer. When they haven't published it yet, you get the matchup most markets receive, clearly marked as an estimate. What it will never do is tell you a game isn't on your station unless it knows.
+Regional games change block by block across this country. GameDial knows which matchup your local station is carrying, and tells you straight: confirmed once the networks publish the week's map, clearly marked as an estimate until they do. It will never claim a game isn't on your station unless it actually knows.
 
 Traveling? Change your market. Every station, channel number and regional matchup follows you to the hotel. Watch football in a city you've never been to like you grew up there.
 
-IT KNOWS WHAT YOU PAY FOR
-Antenna, cable, satellite or streaming — pick yours and it warns you a day ahead when a game is on a service you don't have, and tells you what it would take to watch. No more discovering at 8:15 that tonight's game is on something you don't subscribe to.
-
 AND IT LEAVES YOU ALONE
-No account. No sign-up. No score alerts, no trade rumors, no "you won't believe what he said." Only the games you chose, only the moments you picked. Everything stays on your phone — there's no server to send it to.
+No account. No sign-up. No trade rumors, no push alerts about somebody's contract. Only the games you chose, only the moments you picked. Everything stays on your phone — there's no server to send it to.
 
-Set it up in about a minute. Then stop wondering what channel and time the game is on.
+Set it up in a minute, and stop wondering what channel the game is on.
 
 Not affiliated with or endorsed by the National Football League or any television network. Team and network names are used only to identify games and broadcasts.
