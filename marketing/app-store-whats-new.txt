@@ -1,7 +1,3 @@
-Scores, live and final. Open the app during the game window and you see where it stands right now and which quarter it is in. Open it on Friday and Thursday night's game shows how it ended.
+A new app icon, and that's the whole update.
 
-Records on every matchup. Steelers (1-0) at Patriots (0-1), so you can see what a game is worth before you decide to watch it.
-
-If you record games and would rather not know, one switch in Settings turns off all of it — live scores, finals and records.
-
-The TV provider list is shorter. "Other cable or satellite" and "Other streaming service" have been taken out — neither told us anything we could use, so picking one gave you the same answer as picking nothing.
+Nothing else changed. Everything from the last release — live scores and the quarter while the games are on, final scores, and both teams' records on every matchup — works exactly as it did.
