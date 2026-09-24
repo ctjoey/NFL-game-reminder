@@ -6,9 +6,9 @@ import SwiftUI
 /// at once" - about eight games on screen where the cards fit three. It is the same information a
 /// printed TV listing carries, in the same order the eye wants it: when, who, where to find it.
 ///
-/// The channel sits on the right where the column lines up down the page, because that column is
-/// the reason to use this app rather than any schedule on the web. Every other listing stops at
-/// "FOX". This one says which FOX.
+/// The network sits on the right where the column lines up down the page. Which FOX - the number
+/// and the call sign - is what this app knows that no other listing does, but it belongs on the
+/// card, one tap away. Putting it here would widen every line by two facts nobody is scanning for.
 struct GameRowView: View {
     @EnvironmentObject var state: AppState
     let card: GameCard
@@ -32,7 +32,7 @@ struct GameRowView: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 matchup
-                if let second = secondLine { second }
+                secondLine
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -114,39 +114,26 @@ struct GameRowView: View {
         }
     }
 
-    /// Network over station, right-aligned so the column reads straight down the page. A stream
-    /// with no channel number says the service instead, which is the same answer to the same
-    /// question: where do I go to watch this.
+    /// The network only - CBS, FOX, Prime - not the local channel number.
+    ///
+    /// The number is the better answer to "where do I point the remote", and it is still one tap
+    /// away on the card. It is the wrong answer here. A list is read by running down a column, and
+    /// a column of "FOX 8 WJW" next to "CBS 4 WFOR" is three facts wide where the eye wants one.
+    /// Scanning and looking up are different jobs; this screen is the first one.
     @ViewBuilder private var channel: some View {
-        VStack(alignment: .trailing, spacing: 1) {
+        Group {
             if let ch = card.channels.first {
-                HStack(spacing: 3) {
-                    Text(ch.label)
-                        .font(.system(size: 12, weight: .heavy, design: .rounded))
-                        .foregroundStyle(Theme.network(ch.network))
-                    if let n = ch.number {
-                        Text(n)
-                            .font(.system(size: 12, weight: .heavy, design: .rounded))
-                            .foregroundStyle(Theme.text)
-                    }
-                }
-                if let call = ch.stationCall {
-                    Text(call).font(.system(size: 9, weight: .semibold)).foregroundStyle(Theme.textDim)
-                }
+                Text(ch.label).foregroundStyle(Theme.network(ch.network))
             } else if let ex = card.game.exclusive {
-                Text(ex)
-                    .font(.system(size: 12, weight: .heavy, design: .rounded))
-                    .foregroundStyle(Theme.network(ex))
-                Text("streaming").font(.system(size: 9, weight: .semibold)).foregroundStyle(Theme.textDim)
+                Text(ex).foregroundStyle(Theme.network(ex))
             } else if let s = card.game.streams.first {
-                Text(state.catalog.label(s))
-                    .font(.system(size: 12, weight: .heavy, design: .rounded))
-                    .foregroundStyle(Theme.network(s))
+                Text(state.catalog.label(s)).foregroundStyle(Theme.network(s))
             } else {
-                Text("TBD").font(.system(size: 11, weight: .bold)).foregroundStyle(Theme.textDim)
+                Text("TBD").foregroundStyle(Theme.textDim)
             }
         }
-        .frame(width: 66, alignment: .trailing)
-        .lineLimit(1).minimumScaleFactor(0.75)
+        .font(.system(size: 13, weight: .heavy, design: .rounded))
+        .frame(width: 62, alignment: .trailing)
+        .lineLimit(1).minimumScaleFactor(0.7)
     }
 }
