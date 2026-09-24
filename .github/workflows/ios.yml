@@ -110,6 +110,7 @@ jobs:
           shoot alerts   03-alerts
           shoot settings 04-settings
           shoot weekall  05-every-game
+          shoot weeklist 06-every-game-list
           xcrun simctl shutdown "$UDID" || true
           xcrun simctl delete "$UDID" || true
           ls -l screenshots/raw

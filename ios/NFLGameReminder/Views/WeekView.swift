@@ -1,8 +1,14 @@
 import SwiftUI
 
 struct WeekView: View {
+    /// Per-device, not part of the profile: a layout preference is about the phone you are holding
+    /// and the eyes reading it, not about who you follow, and it should not travel or need a
+    /// migration. Screenshot capture writes the same key.
+    static let compactLayoutKey = "weekLayout.compact"
+
     @EnvironmentObject var state: AppState
     @State private var detail: GameCard?
+    @AppStorage(WeekView.compactLayoutKey) private var compact = false
 
     private var tz: TimeZone { state.user.timeZone }
 
@@ -30,9 +36,13 @@ struct WeekView: View {
                         if let first = dayCards.first {
                             dayHeader(first.game.kickoff)
                         }
-                        ForEach(dayCards) { card in
-                            GameCardView(card: card) { state.toggleFollow(card) }
-                                .onTapGesture { detail = card }
+                        if compact {
+                            dayList(dayCards)
+                        } else {
+                            ForEach(dayCards) { card in
+                                GameCardView(card: card) { state.toggleFollow(card) }
+                                    .onTapGesture { detail = card }
+                            }
                         }
                     }
                     Color.clear.frame(height: 12)
@@ -51,6 +61,22 @@ struct WeekView: View {
                 if let id, let c = state.card(id) { state.selectedWeek = c.game.week; detail = c; state.deepLinkGameId = nil }
             }
         }
+    }
+
+    /// A day as one panel with hairlines between games, rather than a stack of separate objects.
+    /// At this density the gaps between cards were doing more visual work than the games were.
+    private func dayList(_ dayCards: [GameCard]) -> some View {
+        VStack(spacing: 0) {
+            ForEach(Array(dayCards.enumerated()), id: \.element.id) { i, card in
+                if i > 0 { Divider().overlay(Theme.hairline) }
+                GameRowView(card: card) { state.toggleFollow(card) }
+                    .contentShape(Rectangle())
+                    .onTapGesture { detail = card }
+            }
+        }
+        .background(Theme.surface, in: RoundedRectangle(cornerRadius: 16))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Theme.hairline, lineWidth: 1))
     }
 
     private func controlBar(cards: [GameCard]) -> some View {
@@ -75,7 +101,18 @@ struct WeekView: View {
                     Text("All").tag(true)
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 130)
+                .frame(width: 118)
+                Button {
+                    compact.toggle()
+                } label: {
+                    Image(systemName: compact ? "rectangle.grid.1x2" : "list.bullet")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(compact ? Theme.accent : Theme.textDim)
+                        .frame(width: 32, height: 30)
+                        .background(Theme.surfaceRaised, in: RoundedRectangle(cornerRadius: 8))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(compact ? "Show full cards" : "Show the whole week as a list")
             }
             HStack(spacing: 6) {
                 statChip("\(cards.filter(\.followed).count)", "following", Theme.accent)

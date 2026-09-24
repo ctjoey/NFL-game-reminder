@@ -4,7 +4,7 @@ import Foundation
 /// screenshot is a real render of the shipping UI in a known state, rather than an empty first-run
 /// screen. The flag can only arrive as a launch argument, so nothing here can reach a real user.
 enum ScreenshotMode {
-    enum Screen: String { case week, weekall, detail, alerts, settings }
+    enum Screen: String { case week, weekall, weeklist, detail, alerts, settings }
 
     static var screen: Screen? {
         // simctl forwards SIMCTL_CHILD_SCREENSHOT to the app as SCREENSHOT. That path is
