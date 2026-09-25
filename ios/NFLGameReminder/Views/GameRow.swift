@@ -30,7 +30,7 @@ struct GameRowView: View {
 
             time
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 3) {
                 matchup
                 secondLine
             }
@@ -90,28 +90,44 @@ struct GameRowView: View {
         }
     }
 
-    /// One line under the matchup, and only when there is something worth the height: the score,
-    /// or the warning that the local station is showing a different game. Never both - a game you
-    /// cannot watch has no score worth reading, and the warning is the thing to act on.
+    /// The score, big enough to read at arm's length, because a quick look at the scores is now
+    /// one of the two reasons to open this app on a Sunday. It is set larger than the team names
+    /// above it on purpose: when there is a score on a row, the score is what you came for.
+    ///
+    /// Team abbreviations rather than the nicknames used on line one - "LAC 17 · BUF 24" fits at
+    /// this size where "Chargers 17 · Bills 24" would have to shrink to about eleven points, which
+    /// is the opposite of the point. Still named rather than a bare "17-24": a pair of numbers
+    /// alone makes the reader work out which way round it goes.
+    ///
+    /// A score outranks the not-on-your-station warning, which is a change of mind. The warning is
+    /// what matters before kickoff, when there is no score to show anyway; once a game is being
+    /// played, not being able to watch it is exactly when you most want the number.
     @ViewBuilder private var secondLine: some View {
-        if card.inMarket.airs == false {
+        if showScores, let f = card.game.finalScore {
+            scoreLine("FINAL", "\(card.game.away) \(f.away) · \(card.game.home) \(f.home)", Theme.textDim)
+        } else if showScores, liveIsFresh, let l = card.game.liveScore {
+            scoreLine(l.situation ?? "LIVE", "\(card.game.away) \(l.away) · \(card.game.home) \(l.home)", Theme.accent)
+        } else if card.inMarket.airs == false {
             Label(card.inMarket.instead.map { "Your station has \($0.title)" } ?? "Not on your local station",
                   systemImage: "exclamationmark.triangle.fill")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(Theme.warn)
                 .lineLimit(1)
-        } else if showScores, let f = card.game.finalScore {
-            Text("Final · \(Teams.short(card.game.away)) \(f.away), \(Teams.short(card.game.home)) \(f.home)")
-                .font(.system(size: 10, weight: .semibold))
-                .foregroundStyle(Theme.textDim)
-                .lineLimit(1)
-        } else if showScores, liveIsFresh, let l = card.game.liveScore {
-            Text("\(Teams.short(card.game.away)) \(l.away), \(Teams.short(card.game.home)) \(l.home)"
-                 + (l.situation.map { " · \($0)" } ?? ""))
-                .font(.system(size: 10, weight: .bold))
-                .foregroundStyle(Theme.accent)
-                .lineLimit(1)
         }
+    }
+
+    private func scoreLine(_ status: String, _ score: String, _ tint: Color) -> some View {
+        HStack(spacing: 6) {
+            Text(status)
+                .font(.system(size: 9, weight: .heavy, design: .rounded)).tracking(0.6)
+                .foregroundStyle(tint)
+                .padding(.horizontal, 5).padding(.vertical, 1)
+                .background(tint.opacity(0.16), in: Capsule())
+            Text(score)
+                .font(.system(size: 16, weight: .heavy, design: .rounded))
+                .foregroundStyle(tint == Theme.accent ? Theme.accent : Theme.text)
+        }
+        .lineLimit(1).minimumScaleFactor(0.75)
     }
 
     /// The network only - CBS, FOX, Prime - not the local channel number.
