@@ -18,6 +18,11 @@ on:
   schedule:
     - cron: '0 15 * * 4'   # Thursdays, 15:00 UTC - after the midweek maps are out
   workflow_dispatch:
+    inputs:
+      probe_week:
+        description: 'Probe 506 for this week and print the page structure (blank to skip)'
+        type: string
+        default: ''
 
 jobs:
   feed:
@@ -31,6 +36,14 @@ jobs:
           node-version: '20'
           cache: npm
       - run: npm ci
+
+      # The sandbox this was written in cannot reach 506, so the sampler's page adapter has to be
+      # finished from a run that can. This prints the image URLs, the legend colours and the game
+      # lines; it changes nothing and is skipped unless a week is passed in.
+      - name: Probe the 506 page (manual runs only)
+        if: inputs.probe_week != ''
+        continue-on-error: true
+        run: node server/coverage/sampler-cli.js probe --week "${{ inputs.probe_week }}"
 
       - name: Unit tests
         run: npm test
