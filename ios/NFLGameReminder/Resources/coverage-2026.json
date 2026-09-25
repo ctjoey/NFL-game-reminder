@@ -1,7 +1,7 @@
 {
   "version": 1,
   "season": 2026,
-  "generatedAt": "2026-09-25T17:09:23.601Z",
+  "generatedAt": "2026-09-25T18:05:47.406Z",
   "weeks": {
     "1": {
       "source": "observed off-air, Hartford-New Haven DMA, 2026-09-13",
@@ -932,7 +932,7 @@
     },
     "3": {
       "source": "506sports 2026-09-25: every regional window read from the published maps, the CBS and FOX close-ups and zoom-ins, plus the UPDATES lines.",
-      "publishedAt": "2026-09-25T17:09:23.601Z",
+      "publishedAt": "2026-09-25T18:05:47.406Z",
       "markets": {
         "batonrouge": {
           "CBS": {
@@ -1316,8 +1316,8 @@
             "SUN_LATE": "2026-W03-BAL-DAL"
           },
           "FOX": {
-            "SUN_EARLY": "2026-W03-LAC-BUF",
-            "SUN_LATE": "none"
+            "SUN_EARLY": "none",
+            "SUN_LATE": "2026-W03-MIN-TB"
           }
         },
         "knoxville": {
@@ -1546,6 +1546,10 @@
           "CBS": {
             "SUN_LATE": "2026-W03-BAL-DAL",
             "SUN_EARLY": "2026-W03-NE-JAX"
+          },
+          "FOX": {
+            "SUN_LATE": "2026-W03-MIN-TB",
+            "SUN_EARLY": "none"
           }
         },
         "raleigh": {
@@ -1741,8 +1745,8 @@
             "SUN_EARLY": "2026-W03-KC-MIA"
           },
           "FOX": {
-            "SUN_LATE": "2026-W03-MIN-TB",
-            "SUN_EARLY": "none"
+            "SUN_LATE": "none",
+            "SUN_EARLY": "2026-W03-LAC-BUF"
           }
         },
         "washington": {
