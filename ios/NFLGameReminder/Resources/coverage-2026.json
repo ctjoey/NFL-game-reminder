@@ -1,7 +1,7 @@
 {
   "version": 1,
   "season": 2026,
-  "generatedAt": "2026-09-25T16:03:51.487Z",
+  "generatedAt": "2026-09-25T17:09:23.601Z",
   "weeks": {
     "1": {
       "source": "observed off-air, Hartford-New Haven DMA, 2026-09-13",
@@ -931,8 +931,8 @@
       }
     },
     "3": {
-      "source": "506sports 2026-09-25: every regional window read from the published maps, the CBS early and FOX close-ups and zoom-ins, plus the UPDATES lines.",
-      "publishedAt": "2026-09-25T16:03:51.487Z",
+      "source": "506sports 2026-09-25: every regional window read from the published maps, the CBS and FOX close-ups and zoom-ins, plus the UPDATES lines.",
+      "publishedAt": "2026-09-25T17:09:23.601Z",
       "markets": {
         "batonrouge": {
           "CBS": {
@@ -968,6 +968,10 @@
           "CBS": {
             "SUN_LATE": "2026-W03-BAL-DAL",
             "SUN_EARLY": "2026-W03-CIN-PIT"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W03-LAC-BUF",
+            "SUN_LATE": "none"
           }
         },
         "atlanta": {
@@ -1125,6 +1129,10 @@
           "CBS": {
             "SUN_LATE": "2026-W03-BAL-DAL",
             "SUN_EARLY": "2026-W03-KC-MIA"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W03-LAC-BUF",
+            "SUN_LATE": "none"
           }
         },
         "columbus": {
@@ -1151,6 +1159,10 @@
           "CBS": {
             "SUN_LATE": "2026-W03-BAL-DAL",
             "SUN_EARLY": "2026-W03-KC-MIA"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W03-LAC-BUF",
+            "SUN_LATE": "none"
           }
         },
         "desmoines": {
@@ -1176,6 +1188,10 @@
           "CBS": {
             "SUN_LATE": "2026-W03-BAL-DAL",
             "SUN_EARLY": "2026-W03-CIN-PIT"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W03-LAC-BUF",
+            "SUN_LATE": "none"
           }
         },
         "fortmyers": {
@@ -1262,6 +1278,10 @@
           "CBS": {
             "SUN_LATE": "2026-W03-BAL-DAL",
             "SUN_EARLY": "2026-W03-CIN-PIT"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W03-SEA-WAS",
+            "SUN_LATE": "none"
           }
         },
         "houston": {
@@ -1582,6 +1602,10 @@
           "CBS": {
             "SUN_LATE": "2026-W03-BAL-DAL",
             "SUN_EARLY": "2026-W03-KC-MIA"
+          },
+          "FOX": {
+            "SUN_LATE": "2026-W03-ARI-SF",
+            "SUN_EARLY": "none"
           }
         },
         "sanantonio": {
@@ -1705,6 +1729,10 @@
           "CBS": {
             "SUN_LATE": "2026-W03-BAL-DAL",
             "SUN_EARLY": "2026-W03-CIN-PIT"
+          },
+          "FOX": {
+            "SUN_LATE": "2026-W03-ARI-SF",
+            "SUN_EARLY": "none"
           }
         },
         "tulsa": {
