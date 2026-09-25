@@ -1,3 +1,5 @@
-A new app icon, and that's the whole update.
+A list view for the week. Tap the list button next to Mine/All and the whole Sunday fits on one screen — kickoff time, matchup, both teams' records and the network, one line per game.
 
-Nothing else changed. Everything from the last release — live scores and the quarter while the games are on, final scores, and both teams' records on every matchup — works exactly as it did.
+Scores are on it. While the games are on you see where each one stands and which quarter it's in; finals stay there the rest of the week. Tap any row for the full card with your local channel number and station.
+
+The cards are still there. The button switches between them.
