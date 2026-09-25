@@ -1,7 +1,7 @@
 {
   "version": 1,
   "season": 2026,
-  "generatedAt": "2026-09-19T23:29:07.323Z",
+  "generatedAt": "2026-09-25T15:39:06.039Z",
   "weeks": {
     "1": {
       "source": "observed off-air, Hartford-New Haven DMA, 2026-09-13",
@@ -926,6 +926,462 @@
           "CBS": {
             "SUN_EARLY": "2026-W02-CIN-HOU",
             "SUN_LATE": "none"
+          }
+        }
+      }
+    },
+    "3": {
+      "source": "506sports 2026-09-25: CBS late map in full, plus the CBS early and FOX UPDATES lines. CBS early, FOX early and FOX late are unread - the full-country maps do not resolve those at DMA level.",
+      "publishedAt": "2026-09-25T15:39:06.039Z",
+      "markets": {
+        "batonrouge": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-LV-NO"
+          }
+        },
+        "mobile": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-LV-NO"
+          }
+        },
+        "albany": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "albuquerque": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "atlanta": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "austin": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "bakersfield": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "birmingham": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "birmingham2": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "boise": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "boston": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "buffalo": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "burlington": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "charlestonsc": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "charlestonwv": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "charlotte": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "chattanooga": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "chicago": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "cincinnati": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "cleveland": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "coloradosprings": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "columbus": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "dayton": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "denver": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "desmoines": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "detroit": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "elpaso": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "fortmyers": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "fresno": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "grandrapids": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "greenbay": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "greensboro": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "greenvillesc": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "harrisburg": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "hartford": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "honolulu": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "houston": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "indianapolis": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "jacksonville": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "kansascity": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "knoxville": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "lexington": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "littlerock": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "losangeles": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "louisville": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "madison": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "memphis": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "miami": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "milwaukee": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "minneapolis": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "myrtlebeach": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "nashville": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          },
+          "FOX": {
+            "SUN_LATE": "2026-W03-MIN-TB",
+            "SUN_EARLY": "none"
+          }
+        },
+        "newyork": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "norfolk": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "oklahomacity": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "omaha": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "orlando": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "palmsprings": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "philadelphia": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL",
+            "SUN_EARLY": "2026-W03-CIN-PIT"
+          }
+        },
+        "phoenix": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "pittsburgh": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "portland": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "portlandme": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "providence": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "raleigh": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "richmond": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "roanoke": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "rochesterny": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "sacramento": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "saltlake": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "sanantonio": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "sandiego": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "sanfrancisco": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "savannah": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "scranton": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "seattle": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "spokane": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "springfieldmo": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "stlouis": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "syracuse": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "tampa": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "toledo": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "tucson": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "tulsa": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "washington": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "westpalm": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "wichita": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "youngstown": {
+          "CBS": {
+            "SUN_LATE": "2026-W03-BAL-DAL"
+          }
+        },
+        "dallas": {
+          "CBS": {
+            "SUN_EARLY": "2026-W03-CIN-PIT"
           }
         }
       }
