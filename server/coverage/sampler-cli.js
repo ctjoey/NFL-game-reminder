@@ -20,6 +20,7 @@ import fs from 'node:fs';
 import { decodePNG, pixelAt } from './png.js';
 import { MARKET_LATLON, OFF_MAP, fitProjection } from './geo.js';
 import { sampleMap, verifySampling, SAMPLER_DEFAULTS } from './mapSampler.js';
+import { parseMapPage, pendingMaps } from './mapPage.js';
 
 const args = process.argv.slice(2);
 const cmd = args[0];
@@ -201,6 +202,111 @@ async function watch() {
   }
 }
 
+/// Read every map on a week's page and produce one draft for the whole week.
+///
+/// Exits 0 with an empty draft when the maps are not up yet - on a Wednesday that is the normal
+/// answer, not a failure. Exits non-zero when a map is up but cannot be trusted, because the one
+/// thing worse than no coverage is coverage nobody checked.
+async function ingest() {
+  const year = flag('year', String(new Date().getUTCFullYear()));
+  const week = Number(flag('week') ?? die('--week is required'));
+  const season = Number(flag('season', year));
+  const gamesFile = flag('games') ?? die('--games is required: the live schedule to resolve against');
+  const raw = JSON.parse(fs.readFileSync(gamesFile, 'utf8'));
+  const all = (Array.isArray(raw) ? raw : raw.games || []).filter((g) => g.week === week);
+  if (!all.length) die(`no week ${week} games in ${gamesFile}`);
+
+  const pageUrl = flag('url', `https://506sports.com/nfl.php?yr=${year}&wk=${week}`);
+  const res = await fetch(pageUrl, { headers: { 'user-agent': UA } });
+  if (!res.ok) die(`GET ${pageUrl} -> HTTP ${res.status}`);
+  const html = await res.text();
+
+  const { sections, problems } = parseMapPage(html, all);
+  if (problems.length) { for (const p of problems) console.error(`  ${p}`); die('Refusing to read a page I cannot parse.'); }
+  if (!sections.length) {
+    const pending = pendingMaps(html);
+    console.error(pending.length
+      ? `Week ${week}: ${pending.length} map(s) written but not posted yet (${pending.join(', ')}).`
+      : `Week ${week}: no maps on the page yet.`);
+    process.stdout.write(`${JSON.stringify({ week, season, source: 'no maps published', slots: [] }, null, 2)}\n`);
+    return;
+  }
+
+  const base = new URL(pageUrl);
+  const fetchImage = async (src) => {
+    const r = await fetch(new URL(src, base).href, { headers: { 'user-agent': UA } });
+    if (!r.ok) throw new Error(`${src}: HTTP ${r.status}`);
+    return decodePNG(Buffer.from(await r.arrayBuffer()));
+  };
+  const swatchCache = new Map();
+  const swatchColour = async (src) => {
+    if (!swatchCache.has(src)) {
+      const img = await fetchImage(src);
+      swatchCache.set(src, pixelAt(img, img.width / 2, img.height / 2));
+    }
+    return swatchCache.get(src);
+  };
+
+  // Not being calibrated yet is a known state, not a crash. Say what is missing, emit nothing,
+  // and let the run pass - the maps being up is the news, and a red pipeline every Wednesday
+  // until someone measures nine anchor points would just train everyone to ignore it.
+  if (!fs.existsSync(calibrationFile())) {
+    console.error(`::warning::Week ${week}: ${sections.length} map(s) are published, but there is `
+      + `no calibration at ${calibrationFile()}, so they cannot be read yet.`);
+    process.stdout.write(`${JSON.stringify({ week, season, source: 'not calibrated', slots: [] }, null, 2)}\n`);
+    return;
+  }
+  const fit = loadCalibration();
+  const teamMarkets = {};
+  for (const [key, m] of Object.entries(JSON.parse(fs.readFileSync(flag('markets', 'ios/NFLGameReminder/Resources/markets.json'), 'utf8')).markets)) {
+    for (const team of m.teams || []) teamMarkets[team] = key;
+  }
+
+  const slots = [];
+  const notes = [];
+  for (const section of sections) {
+    const legend = [];
+    for (const e of section.entries) legend.push({ key: e.gameId, rgb: await swatchColour(e.swatch) });
+    const img = await fetchImage(section.src);
+    const results = sampleMap({
+      img, legend, projection: fit.project, markets: Object.keys(MARKET_LATLON),
+      offMapKey: flag('offmap', null),
+    });
+
+    const games = section.entries.map((e) => {
+      const g = all.find((x) => x.id === e.gameId);
+      return { key: e.gameId, away: g.away, home: g.home };
+    });
+    const v = verifySampling(results, games, teamMarkets);
+    notes.push(`${section.src}: ${v.summary}`);
+    if (!v.ok) {
+      for (const w of v.wrong) console.error(`  ${w.market}: read ${w.got}, but ${w.team} plays ${w.expect}`);
+      die(`Refusing to emit ${section.src}: the projection is not aimed at the map it is reading.`);
+    }
+
+    const windowOf = Object.fromEntries(section.entries.map((e) => [e.gameId, e.window]));
+    for (const [market, r] of Object.entries(results)) {
+      if (!r.key) continue;
+      const window = windowOf[r.key];
+      slots.push({ market, network: section.network, window, choose: r.key });
+      // A single-header shows one game per market, so the other window carries nothing. Saying so
+      // is better than leaving it blank: the app can state that nothing airs rather than guess.
+      if (section.singleHeader) {
+        const other = window === 'SUN_EARLY' ? 'SUN_LATE' : 'SUN_EARLY';
+        slots.push({ market, network: section.network, window: other, choose: 'none' });
+      }
+    }
+  }
+
+  for (const n of notes) console.error(n);
+  console.error(`${slots.length} entr(ies) from ${sections.length} map(s).`);
+  process.stdout.write(`${JSON.stringify({
+    week, season,
+    source: flag('source', `506sports week ${week}, sampled ${new Date().toISOString().slice(0, 10)}`),
+    slots,
+  }, null, 2)}\n`);
+}
+
 async function calibrate() {
   const img = decodePNG(await load(flag('image')));
   const anchors = parseAnchors(flag('anchors'));
@@ -225,8 +331,10 @@ async function calibrate() {
   if (off.length) console.error(`WARNING: ${off.length} market(s) project off the image: ${off.map((o) => o.m).join(', ')}`);
 }
 
+function calibrationFile() { return flag('calibration', 'server/coverage/map-calibration.json'); }
+
 function loadCalibration() {
-  const file = flag('calibration', 'server/coverage/map-calibration.json');
+  const file = calibrationFile();
   if (!fs.existsSync(file)) die(`no calibration at ${file}. Run \`calibrate\` first.`);
   const cal = JSON.parse(fs.readFileSync(file, 'utf8'));
   const anchors = Object.entries(cal.anchors).map(([market, [x, y]]) => ({ market, x, y }));
@@ -292,9 +400,9 @@ async function sample() {
   for (const o of open) console.error(`  ${o}`);
 }
 
-const commands = { probe, watch, calibrate, sample };
+const commands = { probe, watch, calibrate, sample, ingest };
 if (!commands[cmd]) {
-  console.error('usage: sampler-cli.js <probe|watch|calibrate|sample> [...]');
+  console.error('usage: sampler-cli.js <probe|watch|calibrate|sample|ingest> [...]');
   console.error(fs.readFileSync(new URL(import.meta.url), 'utf8').split('\n').slice(1, 18).join('\n'));
   process.exit(1);
 }
