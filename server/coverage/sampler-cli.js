@@ -86,6 +86,20 @@ async function probe() {
   console.log(`-- images (${imgs.length}) --`);
   for (const src of imgs.slice(0, 40)) console.log(`   ${src}`);
 
+  // The captured src is what a regex thinks the src is. When the URL built from it 404s, the tag
+  // itself is the only thing worth looking at - lazy-loading attributes, a srcset, a CDN host or
+  // a query string all hide behind a naive capture.
+  const mapTags = [...html.matchAll(/<img[^>]*>/gi)].map((m) => m[0])
+    .filter((t) => /CBS|FOX|NBC|\d{2}-/i.test(t));
+  console.log(`\n-- raw tags that look like maps (${mapTags.length}) --`);
+  for (const t of mapTags.slice(0, 8)) console.log(`   ${t}`);
+
+  const at = html.search(/<img[^>]*(CBS-E|CBS|FOX)[^>]*>/i);
+  if (at >= 0) {
+    console.log('\n-- raw HTML around the first map --');
+    console.log(html.slice(Math.max(0, at - 400), at + 400).replace(/\n+/g, '\n').trim());
+  }
+
   const swatches = [...html.matchAll(/background(?:-color)?\s*:\s*(#[0-9a-f]{3,6}|rgba?\([^)]*\))/gi)].map((m) => m[1]);
   console.log(`\n-- inline background colours (${swatches.length}) --`);
   console.log(`   ${[...new Set(swatches)].slice(0, 40).join('  ')}`);
