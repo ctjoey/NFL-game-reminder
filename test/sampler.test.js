@@ -9,7 +9,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import zlib from 'node:zlib';
 import { decodePNG, pixelAt } from '../server/coverage/png.js';
-import { MARKET_LATLON, fitProjection, boxProjection, searchProjection } from '../server/coverage/geo.js';
+import { MARKET_LATLON, fitProjection, boxProjection, conicProjection, searchProjection } from '../server/coverage/geo.js';
 import { samplePoint, sampleMap, verifySampling } from '../server/coverage/mapSampler.js';
 
 // MARK: - a PNG encoder, so the test can hand the decoder something real
@@ -246,8 +246,13 @@ test('the projection can be found by search, with nobody measuring anything', ()
   assert.equal(hits, constraints.length,
     `should satisfy every home-market assertion, got ${hits}/${constraints.length}`);
 
+  // The fixture is drawn dead flat, so the search must come back flat. A free cone constant can
+  // satisfy all sixteen assertions with the wrong shape, and then reads other markets confidently
+  // wrong - so the conic only wins when it satisfies a constraint the flat model cannot.
+  assert.equal(best.box.n, 0, `a flat map should be read flat, got cone ${best.box.n}`);
+
   // And the projection it found is good enough to read the rest of the map with.
-  const found = boxProjection(best.box);
+  const found = conicProjection(best.box);
   const results = sampleMap({ img: IMG, legend: LEGEND, projection: found, markets: Object.keys(MARKET_LATLON) });
   let confident = 0, wrong = 0;
   for (const market of Object.keys(MARKET_LATLON)) {
@@ -293,4 +298,43 @@ test('verification passes on a good fit and fails on a map read through the wron
   const bad = sampleMap({ img: IMG, legend: LEGEND, markets: Object.values(teamMarkets), projection: shifted.project });
   const fail = verifySampling(bad, games, teamMarkets);
   assert.equal(fail.ok, false, 'a misaimed projection must not be allowed to publish');
+});
+
+
+test('the conic model is the box model when the cone is flat', () => {
+  const box = { lonW: -125, lonE: -66, latN: 50, latS: 24 };
+  const flat = conicProjection({ ...box, n: 0 });
+  for (const market of Object.keys(MARKET_LATLON)) {
+    const [lat, lon] = MARKET_LATLON[market];
+    const p = flat(market);
+    assert.ok(Math.abs(p.x - (lon - box.lonW) / (box.lonE - box.lonW)) < 1e-12, market);
+    assert.ok(Math.abs(p.y - (box.latN - lat) / (box.latN - box.latS)) < 1e-12, market);
+  }
+  // Omitting the cone entirely means flat, so a calibration written before it existed still reads.
+  assert.deepEqual(conicProjection(box)('denver'), flat('denver'));
+  assert.deepEqual(boxProjection(box)('denver'), flat('denver'));
+});
+
+test('a cone leans the meridians and bows the parallels, and still frames the same edges', () => {
+  const box = { lonW: -125, lonE: -66, latN: 50, latS: 24, n: 0.4 };
+  const p = conicProjection(box);
+  const at = (lat, lon) => { MARKET_LATLON.__probe = [lat, lon]; return p('__probe'); };
+
+  // The framing keeps its meaning: the edge meridians at the central parallel and the edge
+  // parallels on the central meridian are still 0 and 1.
+  assert.ok(Math.abs(at(37.5, -125).x - 0) < 1e-9);
+  assert.ok(Math.abs(at(37.5, -66).x - 1) < 1e-9);
+  assert.ok(Math.abs(at(50, -96).y - 0) < 1e-9);
+  assert.ok(Math.abs(at(24, -96).y - 1) < 1e-9);
+
+  // Meridians lean in towards the north: the same longitude is further from centre down south.
+  const west = -120;
+  assert.ok(at(47, west).x > at(30, west).x, 'the western edge should lean inward going north');
+  // Parallels bow: the arcs are centred on the apex away to the north, so the middle of a
+  // parallel is its lowest point and the ends ride up. The 49th on a US conic map sags over the
+  // Dakotas and lifts over Washington and Maine, which is the shape to check for.
+  assert.ok(at(45, -125).y < at(45, -96).y, 'a parallel should ride up at its ends');
+  assert.ok(at(45, -66).y < at(45, -96).y, 'and at the other end too');
+
+  delete MARKET_LATLON.__probe;
 });

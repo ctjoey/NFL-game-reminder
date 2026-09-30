@@ -18,7 +18,7 @@
 // draft, which leaves the slot open - the behaviour we already decided is the honest one.
 import fs from 'node:fs';
 import { decodePNG, pixelAt } from './png.js';
-import { MARKET_LATLON, OFF_MAP, fitProjection, boxProjection, searchProjection } from './geo.js';
+import { MARKET_LATLON, OFF_MAP, fitProjection, conicProjection, searchProjection } from './geo.js';
 import { sampleMap, samplePoint, verifySampling, SAMPLER_DEFAULTS } from './mapSampler.js';
 import { parseMapPage, pendingMaps, sectionKind } from './mapPage.js';
 
@@ -279,10 +279,10 @@ async function ingest() {
       die(`Refusing to calibrate on ${found.hits}/${found.total}. A projection that cannot place `
         + `a team's own market cannot be trusted to place anyone else's.`);
     }
-    fit = { project: boxProjection(found.box), box: found.box };
+    fit = { project: conicProjection(found.box), box: found.box };
     if (flag('save') !== undefined) {
       fs.writeFileSync(calibrationFile(), `${JSON.stringify({
-        version: 1, model: 'box', box: found.box,
+        version: 2, model: 'conic', box: found.box,
         note: 'Found by search, scored on the home-market rule. Every ingest re-verifies it, so a '
             + 'map 506 reprojects fails loudly rather than drifting.',
         foundAt: new Date().toISOString(), score: `${found.hits}/${found.total}`,
@@ -363,7 +363,7 @@ function loadCalibration() {
   const file = calibrationFile();
   if (!fs.existsSync(file)) die(`no calibration at ${file}. Run \`calibrate\` first.`);
   const cal = JSON.parse(fs.readFileSync(file, 'utf8'));
-  if (cal.box) return { project: boxProjection(cal.box), box: cal.box, model: 'box' };
+  if (cal.box) return { project: conicProjection({ n: 0, ...cal.box }), box: cal.box, model: cal.model ?? 'box' };
   const anchors = Object.entries(cal.anchors).map(([market, [x, y]]) => ({ market, x, y }));
   return fitProjection(anchors, { quadratic: cal.model === 'affine' ? false : null });
 }
@@ -415,8 +415,9 @@ function calibrateBySearch(sections, constraints, log = () => {}) {
   };
 
   const best = searchProjection(score, {
-    onProgress: (pass, b) => log(`  pass ${pass + 1}: ${Math.floor(b.hits / 1000)}/${constraints.length} `
-      + `constraints, mean purity ${((b.hits % 1000) / 100).toFixed(3)}`),
+    onProgress: (label, pass, b) => log(`  ${label} pass ${pass + 1}: `
+      + `${Math.floor(b.hits / 1000)}/${constraints.length} constraints, `
+      + `mean purity ${((b.hits % 1000) / 100).toFixed(3)}, cone ${b.box.n.toFixed(3)}`),
   });
   return { box: best.box, hits: Math.floor(best.hits / 1000), total: constraints.length };
 }
