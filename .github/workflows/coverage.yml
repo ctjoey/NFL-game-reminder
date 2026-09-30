@@ -19,8 +19,21 @@ on:
     # Wednesday 5pm Eastern, which is when 506 usually has the week's maps up. GitHub cron is UTC
     # and has never heard of daylight saving, so both are listed: 21:00 is 5pm EDT, 22:00 is 5pm
     # EST. One of the two is an hour off for half the season and runs a second, harmless check.
+    #
+    # The rest are catch-up. GitHub's scheduler is best effort and can be very late - the two
+    # runs this workflow has had on a schedule both landed just under four hours after the time
+    # they asked for. Waiting politely for one firing means a week where nobody gets the maps, so
+    # the ask is repeated hourly into the small hours. That is safe to do because the job is
+    # idempotent: the first run to find published maps writes them, and every run after that sees
+    # the week already has entries and exits without touching anything.
     - cron: '0 21 * * 3'
     - cron: '0 22 * * 3'
+    - cron: '0 23 * * 3'
+    - cron: '0 0 * * 4'
+    - cron: '0 1 * * 4'
+    - cron: '0 2 * * 4'
+    - cron: '0 3 * * 4'
+    - cron: '0 11 * * 4'
     - cron: '0 15 * * 4'   # Thursdays - the nag, if we still have not published by then
   workflow_dispatch:
     inputs:
