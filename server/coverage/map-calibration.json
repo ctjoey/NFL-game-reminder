@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "model": "conic",
+  "box": {
+    "lonW": -126.5,
+    "lonE": -64.5,
+    "latN": 54.25999999999999,
+    "latS": 22.990000000000002,
+    "n": 0.14200000000000002
+  },
+  "note": "Found by search, scored on the home-market rule. Every ingest re-verifies it and searches again if it has stopped working, so a map 506 reprojects costs a minute rather than a week.",
+  "foundAt": "2026-09-30T21:31:31.441Z",
+  "score": "24/24"
+}
