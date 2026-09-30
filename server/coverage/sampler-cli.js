@@ -82,9 +82,19 @@ async function probe() {
   const html = await res.text();
   console.log(`${html.length} bytes\n`);
 
-  const imgs = [...html.matchAll(/<img[^>]+src=["']([^"']+)["'][^>]*>/gi)].map((m) => m[1]);
-  console.log(`-- images (${imgs.length}) --`);
+  // Commented-out images are how this page says "the maps are not drawn yet": the week's game
+  // list and announcers go up first, with the map tags left in the source behind <!-- -->. A
+  // scraper that ignores comments reports four 404s and looks like a bug in itself.
+  const live = html.replace(/<!--[\s\S]*?-->/g, '');
+  const srcOf = (h) => [...h.matchAll(/<img[^>]+src=["']([^"']+)["'][^>]*>/gi)].map((m) => m[1]);
+  const imgs = srcOf(live);
+  const pending = srcOf(html).filter((s) => !imgs.includes(s));
+  console.log(`-- images (${imgs.length} live) --`);
   for (const src of imgs.slice(0, 40)) console.log(`   ${src}`);
+  if (pending.length) {
+    console.log(`\n-- ${pending.length} image(s) commented out: not published yet --`);
+    for (const src of pending.slice(0, 20)) console.log(`   ${src}`);
+  }
 
   // The captured src is what a regex thinks the src is. When the URL built from it 404s, the tag
   // itself is the only thing worth looking at - lazy-loading attributes, a srcset, a CDN host or
