@@ -16,7 +16,12 @@ on:
       - 'ios/NFLGameReminder/Resources/coverage-*.json'
       - '.github/workflows/coverage.yml'
   schedule:
-    - cron: '0 15 * * 4'   # Thursdays, 15:00 UTC - after the midweek maps are out
+    # Wednesday 5pm Eastern, which is when 506 usually has the week's maps up. GitHub cron is UTC
+    # and has never heard of daylight saving, so both are listed: 21:00 is 5pm EDT, 22:00 is 5pm
+    # EST. One of the two is an hour off for half the season and runs a second, harmless check.
+    - cron: '0 21 * * 3'
+    - cron: '0 22 * * 3'
+    - cron: '0 15 * * 4'   # Thursdays - the nag, if we still have not published by then
   workflow_dispatch:
     inputs:
       probe_week:
@@ -38,6 +43,32 @@ jobs:
         with:
           node-version: '20'
       - run: node server/coverage/sampler-cli.js probe --week "${{ inputs.probe_week }}"
+
+  # Wednesday's job is to notice, not to complain: it says whether 506 has drawn the week's maps
+  # yet. The Thursday nag below is the escalation if they are up and we still have not published.
+  watch:
+    name: Have the maps been posted?
+    if: github.event_name == 'schedule' && github.event.schedule != '0 15 * * 4'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Which week is in play
+        id: wk
+        run: |
+          node server/coverage/feed-cli.js fetch --out /tmp/games.json || true
+          if [ -s /tmp/games.json ]; then
+            echo "week=$(node server/coverage/feed-cli.js week --games /tmp/games.json)" >> "$GITHUB_OUTPUT"
+          else
+            echo "week=$(node server/coverage/feed-cli.js week)" >> "$GITHUB_OUTPUT"
+          fi
+      # --alert makes this fail when the maps are up, because a scheduled run that passes is
+      # silent, and silence is the wrong answer to "the thing you were waiting for is ready".
+      - name: Check 506
+        run: node server/coverage/sampler-cli.js watch --week "${{ steps.wk.outputs.week }}" --alert
 
   feed:
     name: Validate and publish checks
@@ -139,10 +170,15 @@ jobs:
             echo "::warning::live schedule unavailable; candidate list would only describe the seed"
           fi
 
+      # Only the Thursday run nags. On Wednesday the maps may legitimately not be drawn yet, and a
+      # check that cries wolf on a schedule is a check people learn to ignore.
       - name: A map is published for the week now in play
-        # Only nags on the schedule, or on demand. A push mid-week should not fail for a map that
-        # is not out yet.
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        # On demand, or on the Thursday cron only. A push mid-week should not fail for a map that
+        # is not out yet, and neither should Wednesday's watch run - the maps are often not drawn
+        # until Wednesday evening, and a check that cries wolf is a check people learn to ignore.
+        if: >-
+          github.event_name == 'workflow_dispatch' ||
+          (github.event_name == 'schedule' && github.event.schedule == '0 15 * * 4')
         run: |
           if [ ! -s /tmp/games.json ]; then
             echo "::error::Could not pull the live schedule, so the weekly map check did not run. This is not a pass - re-run once the source is reachable."

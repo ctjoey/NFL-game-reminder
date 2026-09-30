@@ -163,6 +163,44 @@ async function probe() {
   console.log('\nHand the map URL and the swatch colours to `sample`.');
 }
 
+/// Has 506 drawn this week's maps yet?
+///
+/// The page goes up early with the week's games and announcers, and the map tags sit inside an
+/// HTML comment until the maps are actually drawn. So "published" is not "the page exists" - it is
+/// "the image tag is live and the file answers".
+async function watch() {
+  const year = flag('year', String(new Date().getUTCFullYear()));
+  const week = flag('week') ?? die('--week is required');
+  const url = flag('url', `https://506sports.com/nfl.php?yr=${year}&wk=${week}`);
+  const res = await fetch(url, { headers: { 'user-agent': UA } });
+  if (!res.ok) die(`GET ${url} -> HTTP ${res.status}`);
+  const html = await res.text();
+
+  const live = html.replace(/<!--[\s\S]*?-->/g, '');
+  const maps = (h) => [...h.matchAll(/<img[^>]+src=["']([^"']*\d{2}-(?:CBS-E|CBS-L|CBS|FOX)[^"']*\.png)["']/gi)]
+    .map((m) => m[1]);
+  const published = [...new Set(maps(live))];
+  const pending = [...new Set(maps(html))].filter((m) => !published.includes(m));
+
+  const line = published.length
+    ? `506 has published ${published.length} map(s) for week ${week}: ${published.join(', ')}`
+    : pending.length
+      ? `Week ${week} maps are drawn but not yet posted - ${pending.length} tag(s) still commented out.`
+      : `No map tags on the week ${week} page at all yet.`;
+  console.log(line);
+  for (const m of pending) console.log(`  pending: ${m}`);
+
+  const summary = process.env.GITHUB_STEP_SUMMARY;
+  if (summary) fs.appendFileSync(summary, `### Coverage maps, week ${week}\n\n${line}\n`);
+
+  // Exit non-zero when there is something to act on. A scheduled run that succeeds is silent, and
+  // silence is the wrong response to "the maps you have been waiting for are up".
+  if (published.length && flag('alert') !== undefined) {
+    console.error(`::error::Week ${week} maps are up and the feed has no entries for it yet.`);
+    process.exit(1);
+  }
+}
+
 async function calibrate() {
   const img = decodePNG(await load(flag('image')));
   const anchors = parseAnchors(flag('anchors'));
@@ -254,9 +292,9 @@ async function sample() {
   for (const o of open) console.error(`  ${o}`);
 }
 
-const commands = { probe, calibrate, sample };
+const commands = { probe, watch, calibrate, sample };
 if (!commands[cmd]) {
-  console.error('usage: sampler-cli.js <probe|calibrate|sample> [...]');
+  console.error('usage: sampler-cli.js <probe|watch|calibrate|sample> [...]');
   console.error(fs.readFileSync(new URL(import.meta.url), 'utf8').split('\n').slice(1, 18).join('\n'));
   process.exit(1);
 }
