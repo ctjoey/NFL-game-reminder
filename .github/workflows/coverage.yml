@@ -25,6 +25,20 @@ on:
         default: ''
 
 jobs:
+  # Its own job so its output stands alone: the point of a probe is to be read, and buried under
+  # sixty passing tests it is not. Read-only, manual, and it cannot fail the rest of the workflow.
+  probe:
+    name: Probe the published map page
+    if: inputs.probe_week != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node server/coverage/sampler-cli.js probe --week "${{ inputs.probe_week }}"
+
   feed:
     name: Validate and publish checks
     runs-on: ubuntu-latest
@@ -36,14 +50,6 @@ jobs:
           node-version: '20'
           cache: npm
       - run: npm ci
-
-      # The sandbox this was written in cannot reach 506, so the sampler's page adapter has to be
-      # finished from a run that can. This prints the image URLs, the legend colours and the game
-      # lines; it changes nothing and is skipped unless a week is passed in.
-      - name: Probe the 506 page (manual runs only)
-        if: inputs.probe_week != ''
-        continue-on-error: true
-        run: node server/coverage/sampler-cli.js probe --week "${{ inputs.probe_week }}"
 
       - name: Unit tests
         run: npm test
