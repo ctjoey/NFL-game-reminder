@@ -119,8 +119,13 @@ jobs:
         run: |
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/coverage-2026.json ios/NFLGameReminder/Resources/coverage-2026.json \
-                  server/coverage/map-calibration.json
+          git add docs/coverage-2026.json ios/NFLGameReminder/Resources/coverage-2026.json
+          # Only if there is one. A run that reused a saved calibration writes no new file, and
+          # losing a week's coverage to a missing file that was never going to change is the
+          # wrong trade - this step already failed that way once, after a clean read.
+          if [ -f server/coverage/map-calibration.json ]; then
+            git add server/coverage/map-calibration.json
+          fi
           git diff --cached --quiet && { echo "nothing changed"; exit 0; }
           git commit -m "Week ${{ steps.wk.outputs.week }} coverage, read from the published maps
 

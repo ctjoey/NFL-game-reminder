@@ -28,6 +28,10 @@ const flag = (name, fallback = undefined) => {
   const i = args.indexOf(`--${name}`);
   return i >= 0 && args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : fallback;
 };
+/// A flag with no value. `flag()` cannot see one: `--save --week 4` reads the next token, finds
+/// `--week`, and returns the fallback - so `--save` looked unset and the calibration was never
+/// written, which then broke the commit that expected the file.
+const has = (name) => args.includes(`--${name}`);
 const die = (msg) => { console.error(msg); process.exit(1); };
 const UA = 'GameDial coverage sampler (+https://github.com/ctjoey/NFL-game-reminder)';
 
@@ -263,66 +267,85 @@ async function ingest() {
     console.error(`${section.src}: ${section.img.width}x${section.img.height}, ${section.entries.length} game(s)`);
   }
 
-  let fit;
-  if (fs.existsSync(calibrationFile())) {
-    fit = loadCalibration();
-  } else {
-    // No anchors, and nobody available to measure them. Search for the projection instead, scored
-    // on the one thing already known to be true about any coverage map.
+  /// Read every map through one projection, or return null if any of them disagrees with the
+  /// home-market rule. Never writes anything: a reading that does not verify is not a reading.
+  const readAll = (project) => {
+    const slots = [];
+    const notes = [];
+    for (const section of sections) {
+      const results = sampleMap({
+        img: section.img, legend: section.legend, projection: project,
+        markets: Object.keys(MARKET_LATLON), offMapKey: flag('offmap', null),
+      });
+
+      const games = section.entries.map((e) => {
+        const g = all.find((x) => x.id === e.gameId);
+        return { key: e.gameId, away: g.away, home: g.home };
+      });
+      const v = verifySampling(results, games, teamMarkets);
+      notes.push(`${section.src}: ${v.summary}`);
+      if (!v.ok) {
+        for (const w of v.wrong) console.error(`  ${w.market}: read ${w.got}, but ${w.team} plays ${w.expect}`);
+        console.error(`${section.src}: the projection is not aimed at the map it is reading.`);
+        return null;
+      }
+
+      const windowOf = Object.fromEntries(section.entries.map((e) => [e.gameId, e.window]));
+      for (const [market, r] of Object.entries(results)) {
+        if (!r.key) continue;
+        const window = windowOf[r.key];
+        slots.push({ market, network: section.network, window, choose: r.key });
+        // A single-header shows one game per market, so the other window carries nothing. Saying
+        // so is better than leaving it blank: the app can state that nothing airs rather than guess.
+        if (section.singleHeader) {
+          const other = window === 'SUN_EARLY' ? 'SUN_LATE' : 'SUN_EARLY';
+          slots.push({ market, network: section.network, window: other, choose: 'none' });
+        }
+      }
+    }
+    return { slots, notes };
+  };
+
+  /// No anchors, and nobody available to measure them. Search for the projection instead, scored
+  /// on the one thing already known to be true about any coverage map.
+  const searchForFit = () => {
     const constraints = constraintsFor(sections, all, teamMarkets);
-    console.error(`No calibration on disk. Searching, scored on ${constraints.length} home and away markets:`);
+    console.error(`Searching for the projection, scored on ${constraints.length} home and away markets:`);
     const found = calibrateBySearch(sections, constraints, (l) => console.error(l));
     const rate = found.hits / found.total;
     console.error(`  best: ${found.hits}/${found.total} (${(rate * 100).toFixed(0)}%) `
-      + `box ${JSON.stringify(Object.fromEntries(Object.entries(found.box).map(([k, v]) => [k, +v.toFixed(2)])))}`);
+      + `box ${JSON.stringify(Object.fromEntries(Object.entries(found.box).map(([k, v]) => [k, +v.toFixed(3)])))}`);
     if (found.total < 8 || rate < 0.9) {
       die(`Refusing to calibrate on ${found.hits}/${found.total}. A projection that cannot place `
         + `a team's own market cannot be trusted to place anyone else's.`);
     }
-    fit = { project: conicProjection(found.box), box: found.box };
-    if (flag('save') !== undefined) {
+    return found;
+  };
+
+  let read = null;
+  if (fs.existsSync(calibrationFile())) {
+    read = readAll(loadCalibration().project);
+    // A saved calibration that stops working is not a dead end. 506 could recrop or reproject at
+    // any point in the season, and a week that refuses with no way forward is a week nobody gets.
+    // The search costs twenty seconds and is checked against the same rule, so try it.
+    if (!read) console.error('The saved calibration no longer reads these maps. Searching again.');
+  }
+  if (!read) {
+    const found = searchForFit();
+    read = readAll(conicProjection(found.box));
+    if (!read) die('Refusing to emit: no projection reads these maps consistently.');
+    if (has('save')) {
       fs.writeFileSync(calibrationFile(), `${JSON.stringify({
         version: 2, model: 'conic', box: found.box,
-        note: 'Found by search, scored on the home-market rule. Every ingest re-verifies it, so a '
-            + 'map 506 reprojects fails loudly rather than drifting.',
+        note: 'Found by search, scored on the home-market rule. Every ingest re-verifies it and '
+            + 'searches again if it has stopped working, so a map 506 reprojects costs a minute '
+            + 'rather than a week.',
         foundAt: new Date().toISOString(), score: `${found.hits}/${found.total}`,
       }, null, 2)}\n`);
       console.error(`Wrote ${calibrationFile()}.`);
     }
   }
-
-  const slots = [];
-  const notes = [];
-  for (const section of sections) {
-    const results = sampleMap({
-      img: section.img, legend: section.legend, projection: fit.project,
-      markets: Object.keys(MARKET_LATLON), offMapKey: flag('offmap', null),
-    });
-
-    const games = section.entries.map((e) => {
-      const g = all.find((x) => x.id === e.gameId);
-      return { key: e.gameId, away: g.away, home: g.home };
-    });
-    const v = verifySampling(results, games, teamMarkets);
-    notes.push(`${section.src}: ${v.summary}`);
-    if (!v.ok) {
-      for (const w of v.wrong) console.error(`  ${w.market}: read ${w.got}, but ${w.team} plays ${w.expect}`);
-      die(`Refusing to emit ${section.src}: the projection is not aimed at the map it is reading.`);
-    }
-
-    const windowOf = Object.fromEntries(section.entries.map((e) => [e.gameId, e.window]));
-    for (const [market, r] of Object.entries(results)) {
-      if (!r.key) continue;
-      const window = windowOf[r.key];
-      slots.push({ market, network: section.network, window, choose: r.key });
-      // A single-header shows one game per market, so the other window carries nothing. Saying so
-      // is better than leaving it blank: the app can state that nothing airs rather than guess.
-      if (section.singleHeader) {
-        const other = window === 'SUN_EARLY' ? 'SUN_LATE' : 'SUN_EARLY';
-        slots.push({ market, network: section.network, window: other, choose: 'none' });
-      }
-    }
-  }
+  const { slots, notes } = read;
 
   for (const n of notes) console.error(n);
   console.error(`${slots.length} entr(ies) from ${sections.length} map(s).`);
