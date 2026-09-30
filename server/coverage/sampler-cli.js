@@ -17,7 +17,7 @@
 // has to learn about any of this. A market the sampler is not sure about is simply absent from the
 // draft, which leaves the slot open - the behaviour we already decided is the honest one.
 import fs from 'node:fs';
-import { decodePNG } from './png.js';
+import { decodePNG, pixelAt } from './png.js';
 import { MARKET_LATLON, OFF_MAP, fitProjection } from './geo.js';
 import { sampleMap, verifySampling, SAMPLER_DEFAULTS } from './mapSampler.js';
 
@@ -98,7 +98,26 @@ async function probe() {
     .split('\n').map((s) => s.trim()).filter(Boolean);
   console.log(`\n-- text lines mentioning "@" or "vs" (${text.length} total) --`);
   for (const line of text.filter((l) => /\s(@|vs\.?)\s/i.test(l)).slice(0, 40)) console.log(`   ${line}`);
-  console.log('\nHand the image URL and the legend colours to `sample`.');
+  // Fetch the swatches and the maps themselves, so one run yields everything `sample` needs:
+  // the palette 506 draws with, and the pixel size each map is published at.
+  const base = new URL(url);
+  const resolve = (src) => (/^https?:/i.test(src) ? src : new URL(src, base).href);
+  const unique = [...new Set(imgs)].filter((s) => /\.png$/i.test(s));
+  console.log('\n-- image details --');
+  for (const src of unique) {
+    try {
+      const r = await fetch(resolve(src), { headers: { 'user-agent': UA } });
+      if (!r.ok) { console.log(`   ${src}: HTTP ${r.status}`); continue; }
+      const img = decodePNG(Buffer.from(await r.arrayBuffer()));
+      const mid = pixelAt(img, img.width / 2, img.height / 2);
+      const hexOf = (p) => `#${p.map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+      const note = img.width < 60 && img.height < 60
+        ? `swatch ${hexOf(mid)}`                       // a legend chip: the middle is the colour
+        : `map ${img.width}x${img.height}`;
+      console.log(`   ${src.padEnd(34)} ${note}`);
+    } catch (e) { console.log(`   ${src}: ${e.message}`); }
+  }
+  console.log('\nHand the map URL and the swatch colours to `sample`.');
 }
 
 async function calibrate() {
