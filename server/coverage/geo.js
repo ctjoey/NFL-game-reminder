@@ -139,3 +139,60 @@ export function fitProjection(anchors, { quadratic = null } = {}) {
     meanResidual: residuals.reduce((a, b) => a + b, 0) / residuals.length,
   };
 }
+
+// MARK: - fitting without anchors
+
+/// A plain lon/lat box: x runs west to east, y north to south.
+export function boxProjection({ lonW, lonE, latN, latS }) {
+  return (market) => {
+    const ll = MARKET_LATLON[market];
+    if (!ll) return null;
+    return { x: (ll[1] - lonW) / (lonE - lonW), y: (latN - ll[0]) / (latN - latS) };
+  };
+}
+
+/**
+ * Find the projection by searching, scored on something already known to be true.
+ *
+ * Measuring anchor points by eye needs someone to look at the map. The home-market rule does not:
+ * a coverage map always gives a team's own market that team's game, so a projection can be scored
+ * by how many of those it gets right, and the best-scoring one is the aim. Two dozen assertions
+ * spread across the country is a lot to satisfy by accident.
+ *
+ * Coarse pass then fine pass around the winner. The model is a plain lon/lat box rather than the
+ * conic a US map really is - it is accurate enough at DMA scale, and where it is not, the
+ * sampler's purity test leaves the market open instead of guessing.
+ *
+ * @param score (project) => number of constraints satisfied
+ */
+export function searchProjection(score, { onProgress = null } = {}) {
+  const around = (centre, span, steps) =>
+    Array.from({ length: steps }, (_, i) => centre - span + (2 * span * i) / (steps - 1));
+
+  let best = null;
+  let grid = {
+    lonW: around(-121, 6, 7), lonE: around(-66, 6, 7),
+    latN: around(49.5, 3.5, 6), latS: around(24, 4, 6),
+  };
+
+  for (let pass = 0; pass < 3; pass += 1) {
+    for (const lonW of grid.lonW) for (const lonE of grid.lonE) {
+      if (lonE - lonW < 40) continue;                    // a box too narrow to be the country
+      for (const latN of grid.latN) for (const latS of grid.latS) {
+        if (latN - latS < 15) continue;
+        const box = { lonW, lonE, latN, latS };
+        const hits = score(boxProjection(box));
+        if (!best || hits > best.hits) best = { box, hits };
+      }
+    }
+    onProgress?.(pass, best);
+    // Tighten around the winner: each pass looks at a fifth of the previous span.
+    const b = best.box;
+    const span = [3, 1, 0.4][pass];
+    grid = {
+      lonW: around(b.lonW, span, 5), lonE: around(b.lonE, span, 5),
+      latN: around(b.latN, span * 0.7, 5), latS: around(b.latS, span * 0.7, 5),
+    };
+  }
+  return best;
+}

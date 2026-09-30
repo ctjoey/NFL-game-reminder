@@ -9,7 +9,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import zlib from 'node:zlib';
 import { decodePNG, pixelAt } from '../server/coverage/png.js';
-import { MARKET_LATLON, fitProjection } from '../server/coverage/geo.js';
+import { MARKET_LATLON, fitProjection, boxProjection, searchProjection } from '../server/coverage/geo.js';
 import { samplePoint, sampleMap, verifySampling } from '../server/coverage/mapSampler.js';
 
 // MARK: - a PNG encoder, so the test can hand the decoder something real
@@ -207,6 +207,58 @@ test('Hawaii is taken from the legend dot, never from a pixel', () => {
   assert.equal(withDot.honolulu.offMap, true);
   const without = sampleMap({ img: IMG, legend: LEGEND, projection: fit.project, markets: ['honolulu'] });
   assert.equal(without.honolulu.key, null, 'no swatch means no answer, not a pixel from the Pacific');
+});
+
+test('the projection can be found by search, with nobody measuring anything', () => {
+  // No anchors. Score a candidate projection the only way that needs no human: a coverage map
+  // always gives a team's own market that team's game, so count how many of those it gets right.
+  const teamMarkets = {
+    SEA: 'seattle', SF: 'sanfrancisco', DEN: 'denver', DAL: 'dallas', MIA: 'miami', TB: 'tampa',
+    NYG: 'newyork', NE: 'boston', CLE: 'cleveland', PIT: 'pittsburgh', CHI: 'chicago',
+    MIN: 'minneapolis', KC: 'kansascity', ATL: 'atlanta', PHI: 'philadelphia', HOU: 'houston',
+  };
+  const constraints = Object.values(teamMarkets).map((market) => ({ market, expect: gameFor(market) }));
+
+  // Constraint count alone is not enough: several nearby projections satisfy all of them while
+  // sitting a percent off, which is plenty to put a market inside its neighbour's region. So the
+  // score breaks those ties on how cleanly the whole map reads. A correctly aimed projection puts
+  // every market deep inside a colour; a shifted one strands some on boundaries. That signal
+  // needs no ground truth, so it is available for all 94 markets rather than just the 16.
+  const everywhere = Object.keys(MARKET_LATLON).filter((m) => m !== 'honolulu');
+  const score = (project) => {
+    let hits = 0;
+    for (const c of constraints) {
+      const p = project(c.market);
+      if (!p || p.x < 0 || p.x > 1 || p.y < 0 || p.y > 1) continue;
+      if (samplePoint(IMG, p, LEGEND, { radius: 0.004, minPurity: 0.6 }).key === c.expect) hits += 1;
+    }
+    let purity = 0;
+    for (const m of everywhere) {
+      const p = project(m);
+      if (!p || p.x < 0 || p.x > 1 || p.y < 0 || p.y > 1) continue;
+      purity += samplePoint(IMG, p, LEGEND, { radius: 0.004, minPurity: 0 }).purity;
+    }
+    return hits * 1000 + (purity / everywhere.length) * 100;
+  };
+
+  const best = searchProjection(score);
+  const hits = Math.floor(best.hits / 1000);
+  assert.equal(hits, constraints.length,
+    `should satisfy every home-market assertion, got ${hits}/${constraints.length}`);
+
+  // And the projection it found is good enough to read the rest of the map with.
+  const found = boxProjection(best.box);
+  const results = sampleMap({ img: IMG, legend: LEGEND, projection: found, markets: Object.keys(MARKET_LATLON) });
+  let confident = 0, wrong = 0;
+  for (const market of Object.keys(MARKET_LATLON)) {
+    if (market === 'honolulu') continue;
+    const r = results[market];
+    if (!r.key) continue;
+    confident += 1;
+    if (r.key !== gameFor(market)) wrong += 1;
+  }
+  assert.equal(wrong, 0, 'a searched-for projection must not produce confident wrong answers');
+  assert.ok(confident > 55, `should still read most of the map, read ${confident}`);
 });
 
 test('verification passes on a good fit and fails on a map read through the wrong projection', () => {

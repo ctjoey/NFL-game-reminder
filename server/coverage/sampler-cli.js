@@ -18,8 +18,8 @@
 // draft, which leaves the slot open - the behaviour we already decided is the honest one.
 import fs from 'node:fs';
 import { decodePNG, pixelAt } from './png.js';
-import { MARKET_LATLON, OFF_MAP, fitProjection } from './geo.js';
-import { sampleMap, verifySampling, SAMPLER_DEFAULTS } from './mapSampler.js';
+import { MARKET_LATLON, OFF_MAP, fitProjection, boxProjection, searchProjection } from './geo.js';
+import { sampleMap, samplePoint, verifySampling, SAMPLER_DEFAULTS } from './mapSampler.js';
 import { parseMapPage, pendingMaps } from './mapPage.js';
 
 const args = process.argv.slice(2);
@@ -247,30 +247,54 @@ async function ingest() {
     return swatchCache.get(src);
   };
 
-  // Not being calibrated yet is a known state, not a crash. Say what is missing, emit nothing,
-  // and let the run pass - the maps being up is the news, and a red pipeline every Wednesday
-  // until someone measures nine anchor points would just train everyone to ignore it.
-  if (!fs.existsSync(calibrationFile())) {
-    console.error(`::warning::Week ${week}: ${sections.length} map(s) are published, but there is `
-      + `no calibration at ${calibrationFile()}, so they cannot be read yet.`);
-    process.stdout.write(`${JSON.stringify({ week, season, source: 'not calibrated', slots: [] }, null, 2)}\n`);
-    return;
-  }
-  const fit = loadCalibration();
   const teamMarkets = {};
   for (const [key, m] of Object.entries(JSON.parse(fs.readFileSync(flag('markets', 'ios/NFLGameReminder/Resources/markets.json'), 'utf8')).markets)) {
     for (const team of m.teams || []) teamMarkets[team] = key;
   }
 
+  // Load every map and legend first: calibration is scored against all of them at once, and two
+  // dozen assertions spread across three maps is a much stronger signal than one map's worth.
+  for (const section of sections) {
+    section.legend = [];
+    for (const e of section.entries) section.legend.push({ key: e.gameId, rgb: await swatchColour(e.swatch) });
+    section.img = await fetchImage(section.src);
+    console.error(`${section.src}: ${section.img.width}x${section.img.height}, ${section.entries.length} game(s)`);
+  }
+
+  let fit;
+  if (fs.existsSync(calibrationFile())) {
+    fit = loadCalibration();
+  } else {
+    // No anchors, and nobody available to measure them. Search for the projection instead, scored
+    // on the one thing already known to be true about any coverage map.
+    const constraints = constraintsFor(sections, all, teamMarkets);
+    console.error(`No calibration on disk. Searching, scored on ${constraints.length} home and away markets:`);
+    const found = calibrateBySearch(sections, constraints, (l) => console.error(l));
+    const rate = found.hits / found.total;
+    console.error(`  best: ${found.hits}/${found.total} (${(rate * 100).toFixed(0)}%) `
+      + `box ${JSON.stringify(Object.fromEntries(Object.entries(found.box).map(([k, v]) => [k, +v.toFixed(2)])))}`);
+    if (found.total < 8 || rate < 0.9) {
+      die(`Refusing to calibrate on ${found.hits}/${found.total}. A projection that cannot place `
+        + `a team's own market cannot be trusted to place anyone else's.`);
+    }
+    fit = { project: boxProjection(found.box), box: found.box };
+    if (flag('save') !== undefined) {
+      fs.writeFileSync(calibrationFile(), `${JSON.stringify({
+        version: 1, model: 'box', box: found.box,
+        note: 'Found by search, scored on the home-market rule. Every ingest re-verifies it, so a '
+            + 'map 506 reprojects fails loudly rather than drifting.',
+        foundAt: new Date().toISOString(), score: `${found.hits}/${found.total}`,
+      }, null, 2)}\n`);
+      console.error(`Wrote ${calibrationFile()}.`);
+    }
+  }
+
   const slots = [];
   const notes = [];
   for (const section of sections) {
-    const legend = [];
-    for (const e of section.entries) legend.push({ key: e.gameId, rgb: await swatchColour(e.swatch) });
-    const img = await fetchImage(section.src);
     const results = sampleMap({
-      img, legend, projection: fit.project, markets: Object.keys(MARKET_LATLON),
-      offMapKey: flag('offmap', null),
+      img: section.img, legend: section.legend, projection: fit.project,
+      markets: Object.keys(MARKET_LATLON), offMapKey: flag('offmap', null),
     });
 
     const games = section.entries.map((e) => {
@@ -337,8 +361,62 @@ function loadCalibration() {
   const file = calibrationFile();
   if (!fs.existsSync(file)) die(`no calibration at ${file}. Run \`calibrate\` first.`);
   const cal = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (cal.box) return { project: boxProjection(cal.box), box: cal.box, model: 'box' };
   const anchors = Object.entries(cal.anchors).map(([market, [x, y]]) => ({ market, x, y }));
   return fitProjection(anchors, { quadratic: cal.model === 'affine' ? false : null });
+}
+
+/// Every "this market must show this game" assertion the week's maps make.
+function constraintsFor(sections, all, teamMarkets) {
+  const out = [];
+  for (const section of sections) {
+    for (const e of section.entries) {
+      const g = all.find((x) => x.id === e.gameId);
+      if (!g) continue;
+      for (const team of [g.away, g.home]) {
+        const market = teamMarkets[team];
+        if (market && !OFF_MAP.has(market)) out.push({ section, market, expect: e.gameId });
+      }
+    }
+  }
+  return out;
+}
+
+/// Work out the projection from the maps themselves, with no anchor points from anyone.
+function calibrateBySearch(sections, constraints, log = () => {}) {
+  const everywhere = Object.keys(MARKET_LATLON).filter((m) => !OFF_MAP.has(m));
+  const inside = (p) => p && p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1;
+
+  // Two signals, in order. Satisfying the home-market rule is the hard requirement. But several
+  // projections a percent apart satisfy all of it, and a percent is enough to drop a market
+  // inside its neighbour's region - that cost three wrong markets in testing. So ties break on
+  // how cleanly the whole map reads: a correctly aimed projection puts every market deep inside
+  // a colour, a shifted one strands some on boundaries. That needs no ground truth, so it speaks
+  // for all 94 markets rather than only the two dozen a team plays in.
+  const score = (project) => {
+    let hits = 0;
+    for (const c of constraints) {
+      const point = project(c.market);
+      if (!inside(point)) continue;
+      const r = samplePoint(c.section.img, point, c.section.legend, { radius: 0.004, minPurity: 0.6 });
+      if (r.key === c.expect) hits += 1;
+    }
+    let purity = 0, counted = 0;
+    const biggest = sections.reduce((a, b) => (b.entries.length > a.entries.length ? b : a), sections[0]);
+    for (const m of everywhere) {
+      const point = project(m);
+      if (!inside(point)) continue;
+      purity += samplePoint(biggest.img, point, biggest.legend, { radius: 0.004, minPurity: 0 }).purity;
+      counted += 1;
+    }
+    return hits * 1000 + (counted ? (purity / counted) * 100 : 0);
+  };
+
+  const best = searchProjection(score, {
+    onProgress: (pass, b) => log(`  pass ${pass + 1}: ${Math.floor(b.hits / 1000)}/${constraints.length} `
+      + `constraints, mean purity ${((b.hits % 1000) / 100).toFixed(3)}`),
+  });
+  return { box: best.box, hits: Math.floor(best.hits / 1000), total: constraints.length };
 }
 
 async function sample() {

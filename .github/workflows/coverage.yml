@@ -91,7 +91,7 @@ jobs:
             echo "Week ${{ steps.wk.outputs.week }} already has entries; leaving it alone."
             exit 0
           fi
-          node server/coverage/sampler-cli.js ingest \
+          node server/coverage/sampler-cli.js ingest --save \
             --week "${{ steps.wk.outputs.week }}" --games /tmp/games.json > /tmp/draft.json
           if [ "$(node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync("/tmp/draft.json","utf8")).slots.length))')" = "0" ]; then
             echo "No maps published yet - nothing to write."
@@ -110,7 +110,8 @@ jobs:
         run: |
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/coverage-2026.json ios/NFLGameReminder/Resources/coverage-2026.json
+          git add docs/coverage-2026.json ios/NFLGameReminder/Resources/coverage-2026.json \
+                  server/coverage/map-calibration.json
           git diff --cached --quiet && { echo "nothing changed"; exit 0; }
           git commit -m "Week ${{ steps.wk.outputs.week }} coverage, read from the published maps
 
