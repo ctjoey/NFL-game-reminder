@@ -100,14 +100,33 @@ async function probe() {
   for (const line of text.filter((l) => /\s(@|vs\.?)\s/i.test(l)).slice(0, 40)) console.log(`   ${line}`);
   // Fetch the swatches and the maps themselves, so one run yields everything `sample` needs:
   // the palette 506 draws with, and the pixel size each map is published at.
-  const base = new URL(url);
-  const resolve = (src) => (/^https?:/i.test(src) ? src : new URL(src, base).href);
+  // A <base href> changes what every relative src means, and 506's map srcs resolve to a 404
+  // without accounting for it. Rather than guess the right prefix, try the plausible ones and
+  // report which answered - the point of a probe is to come back with a fact.
+  const baseTag = /<base[^>]+href=["']([^"']+)["']/i.exec(html)?.[1];
+  const base = new URL(baseTag || url, url);
+  if (baseTag) console.log(`\n-- <base href> is ${base.href} --`);
+  const candidates = (src) => {
+    if (/^https?:/i.test(src)) return [src];
+    const host = new URL(url).origin;
+    return [...new Set([
+      new URL(src, base).href,
+      `${host}/nfl/${src}`,
+      `${host.replace('://', '://www.')}/${src}`,
+      `${host.replace('://', '://www.')}/nfl/${src}`,
+    ])];
+  };
   const unique = [...new Set(imgs)].filter((s) => /\.png$/i.test(s));
   console.log('\n-- image details --');
   for (const src of unique) {
     try {
-      const r = await fetch(resolve(src), { headers: { 'user-agent': UA } });
-      if (!r.ok) { console.log(`   ${src}: HTTP ${r.status}`); continue; }
+      let r = null, from = null;
+      for (const candidate of candidates(src)) {
+        const attempt = await fetch(candidate, { headers: { 'user-agent': UA } });
+        if (attempt.ok) { r = attempt; from = candidate; break; }
+      }
+      if (!r) { console.log(`   ${src}: not found at ${candidates(src).join(' | ')}`); continue; }
+      if (from !== candidates(src)[0]) console.log(`   ${src.padEnd(34)} -> ${from}`);
       const img = decodePNG(Buffer.from(await r.arrayBuffer()));
       const mid = pixelAt(img, img.width / 2, img.height / 2);
       const hexOf = (p) => `#${p.map((v) => v.toString(16).padStart(2, '0')).join('')}`;
