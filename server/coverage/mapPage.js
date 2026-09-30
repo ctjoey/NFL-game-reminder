@@ -11,7 +11,19 @@
 // comment is not a map - it is how the page says the week's maps are written but not yet drawn.
 import { TEAMS } from '../schedule/teams.js';
 
-const MAP_FILE = /(?:^|\/)(\d{2})-(CBS-E|CBS-L|CBS|FOX-E|FOX-L|FOX)\.png$/i;
+// Anything under this year's folder that names a network is a map. The revision suffix matters:
+// 506 redrew week 4's FOX map and posted it as 04-FOX-V2.png, and a matcher that insisted on
+// 04-FOX.png saw no FOX section at all - so the FOX games attached themselves to the CBS section
+// above them and none of them resolved. It refused rather than publishing that, which is the
+// system working, but the cause was two matchers disagreeing about what counts as a map.
+const MAP_FILE = /(?:^|\/)(\d{2})-(CBS|FOX)(-E|-L)?((?:-[A-Z0-9]+)*)\.png$/i;
+
+/// Anything that looks like it belongs to a map but did not classify. Reported rather than
+/// ignored, because a naming change we silently skip is a whole network's coverage missing.
+export function looksLikeMap(src) {
+  return /\/(?:19|20)\d{2}\/[^/]*\.png$/i.test(src.split('?')[0])
+      || /(?:^|\/)\d{2}-[A-Z]/i.test(src.split('?')[0]);
+}
 
 /// Which network and windows a map covers. A file marked -E or -L is one window of a doubleheader.
 /// An unmarked file is a single-header: one map, both windows, and each game's own label says
@@ -19,11 +31,12 @@ const MAP_FILE = /(?:^|\/)(\d{2})-(CBS-E|CBS-L|CBS|FOX-E|FOX-L|FOX)\.png$/i;
 export function sectionKind(src) {
   const m = MAP_FILE.exec(src.split('?')[0]);
   if (!m) return null;
-  const tag = m[2].toUpperCase();
-  const network = tag.startsWith('CBS') ? 'CBS' : 'FOX';
-  if (tag.endsWith('-E')) return { network, windows: ['SUN_EARLY'], singleHeader: false };
-  if (tag.endsWith('-L')) return { network, windows: ['SUN_LATE'], singleHeader: false };
-  return { network, windows: ['SUN_EARLY', 'SUN_LATE'], singleHeader: true };
+  const network = m[2].toUpperCase();
+  const window = (m[3] || '').toUpperCase();
+  const revision = (m[4] || '').replace(/^-/, '') || null;
+  if (window === '-E') return { network, windows: ['SUN_EARLY'], singleHeader: false, revision };
+  if (window === '-L') return { network, windows: ['SUN_LATE'], singleHeader: false, revision };
+  return { network, windows: ['SUN_EARLY', 'SUN_LATE'], singleHeader: true, revision };
 }
 
 /// Every token that could reasonably name a team on one of these pages.
@@ -76,6 +89,7 @@ export function parseMapPage(html, games) {
     if (m[1]) {
       const kind = sectionKind(m[1]);
       if (kind) sections.push({ src: m[1], ...kind, games: [] });
+      else if (looksLikeMap(m[1])) problems.push(`"${m[1]}" looks like a map but did not classify`);
       continue;
     }
     const block = m[2] ?? '';

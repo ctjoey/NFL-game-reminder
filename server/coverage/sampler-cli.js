@@ -20,7 +20,7 @@ import fs from 'node:fs';
 import { decodePNG, pixelAt } from './png.js';
 import { MARKET_LATLON, OFF_MAP, fitProjection, boxProjection, searchProjection } from './geo.js';
 import { sampleMap, samplePoint, verifySampling, SAMPLER_DEFAULTS } from './mapSampler.js';
-import { parseMapPage, pendingMaps } from './mapPage.js';
+import { parseMapPage, pendingMaps, sectionKind } from './mapPage.js';
 
 const args = process.argv.slice(2);
 const cmd = args[0];
@@ -178,8 +178,10 @@ async function watch() {
   const html = await res.text();
 
   const live = html.replace(/<!--[\s\S]*?-->/g, '');
-  const maps = (h) => [...h.matchAll(/<img[^>]+src=["']([^"']*\d{2}-(?:CBS-E|CBS-L|CBS|FOX)[^"']*\.png)["']/gi)]
-    .map((m) => m[1]);
+  // The same matcher the parser uses. When these two disagreed, one reported three maps published
+  // and the other quietly saw two.
+  const maps = (h) => [...h.matchAll(/<img[^>]+src=["']([^"']+)["']/gi)]
+    .map((m) => m[1]).filter((s) => sectionKind(s));
   const published = [...new Set(maps(live))];
   const pending = [...new Set(maps(html))].filter((m) => !published.includes(m));
 

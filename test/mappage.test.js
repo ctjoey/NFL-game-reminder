@@ -3,7 +3,7 @@
 // uses to say "drawn but not posted yet".
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseMapPage, pendingMaps, sectionKind } from '../server/coverage/mapPage.js';
+import { parseMapPage, pendingMaps, sectionKind, looksLikeMap } from '../server/coverage/mapPage.js';
 
 const g = (away, home, networks, window) => ({
   id: `2026-W04-${away}-${home}`, week: 4, away, home, networks, window,
@@ -36,11 +36,48 @@ ${game(4, 'NY Jets @ Chicago')}${game(5, 'Miami @ Minnesota (LATE)')}
 </body></html>`;
 
 test('a map filename says which network and which windows it covers', () => {
-  assert.deepEqual(sectionKind('2026/04-CBS-E.png'), { network: 'CBS', windows: ['SUN_EARLY'], singleHeader: false });
-  assert.deepEqual(sectionKind('2026/04-CBS-L.png'), { network: 'CBS', windows: ['SUN_LATE'], singleHeader: false });
-  assert.deepEqual(sectionKind('2026/04-FOX.png'), { network: 'FOX', windows: ['SUN_EARLY', 'SUN_LATE'], singleHeader: true });
+  assert.deepEqual(sectionKind('2026/04-CBS-E.png'),
+    { network: 'CBS', windows: ['SUN_EARLY'], singleHeader: false, revision: null });
+  assert.deepEqual(sectionKind('2026/04-CBS-L.png'),
+    { network: 'CBS', windows: ['SUN_LATE'], singleHeader: false, revision: null });
+  assert.deepEqual(sectionKind('2026/04-FOX.png'),
+    { network: 'FOX', windows: ['SUN_EARLY', 'SUN_LATE'], singleHeader: true, revision: null });
   assert.equal(sectionKind('nfl/swatches/1.png'), null);
   assert.equal(sectionKind('506 sports v3.png'), null);
+});
+
+test('a redrawn map keeps its meaning, whatever revision suffix 506 hangs off it', () => {
+  // 506 reposted week 4's FOX map as 04-FOX-V2.png. A matcher that insisted on the bare name
+  // saw no FOX section, so five FOX games attached to the CBS section above and none resolved.
+  assert.deepEqual(sectionKind('2026/04-FOX-V2.png'),
+    { network: 'FOX', windows: ['SUN_EARLY', 'SUN_LATE'], singleHeader: true, revision: 'V2' });
+  assert.deepEqual(sectionKind('2026/05-CBS-E-V3.png'),
+    { network: 'CBS', windows: ['SUN_EARLY'], singleHeader: false, revision: 'V3' });
+  assert.deepEqual(sectionKind('2026/04-CBS-L-FINAL.png'),
+    { network: 'CBS', windows: ['SUN_LATE'], singleHeader: false, revision: 'FINAL' });
+});
+
+test('a map-looking image we cannot classify is a problem, not a silent skip', () => {
+  // Reported rather than ignored: a naming change we pass over is a whole network missing.
+  assert.ok(looksLikeMap('2026/04-ABC-E.png'));
+  assert.ok(!looksLikeMap('nfl/swatches/1.png'));
+  assert.ok(!looksLikeMap('506 sports v3.png'));
+
+  const renamed = PAGE.replace("2026/04-FOX.png", '2026/04-ABC.png');
+  const { sections, problems } = parseMapPage(renamed, WEEK4);
+  assert.equal(sections.length, 2);
+  assert.ok(problems.some((p) => /04-ABC\.png" looks like a map/.test(p)),
+    `expected an unclassified-map problem, got ${JSON.stringify(problems)}`);
+});
+
+test('the parse survives 506 renaming the FOX map mid-week', () => {
+  const revised = PAGE.replace("2026/04-FOX.png", '2026/04-FOX-V2.png');
+  const { sections, problems } = parseMapPage(revised, WEEK4);
+  assert.deepEqual(problems, []);
+  assert.equal(sections.length, 3);
+  assert.equal(sections[2].revision, 'V2');
+  assert.deepEqual(sections[2].entries.map((e) => e.gameId),
+    ['2026-W04-LAR-PHI', '2026-W04-DAL-HOU', '2026-W04-GB-TB', '2026-W04-NYJ-CHI', '2026-W04-MIA-MIN']);
 });
 
 test('the page resolves to three sections with every game identified', () => {
