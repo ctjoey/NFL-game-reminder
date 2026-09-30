@@ -48,9 +48,13 @@ jobs:
   # yet. The Thursday nag below is the escalation if they are up and we still have not published.
   watch:
     name: Have the maps been posted?
-    if: github.event_name == 'schedule' && github.event.schedule != '0 15 * * 4'
+    # Also on demand. Not being able to run the weekly job by hand meant the only way to test it
+    # was to wait for Wednesday, which is a poor way to find out it does not work.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'schedule' && github.event.schedule != '0 15 * * 4')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     permissions:
       contents: write
     steps:
@@ -61,6 +65,11 @@ jobs:
       - name: Which week is in play
         id: wk
         run: |
+          if [ -n "${{ inputs.probe_week }}" ]; then
+            echo "week=${{ inputs.probe_week }}" >> "$GITHUB_OUTPUT"
+            node server/coverage/feed-cli.js fetch --out /tmp/games.json || true
+            exit 0
+          fi
           node server/coverage/feed-cli.js fetch --out /tmp/games.json || true
           if [ -s /tmp/games.json ]; then
             echo "week=$(node server/coverage/feed-cli.js week --games /tmp/games.json)" >> "$GITHUB_OUTPUT"
