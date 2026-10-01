@@ -244,7 +244,10 @@ async function ingest() {
   // place that knows them.
   const maps = sections.map((x) => x.src);
   const already = loadFeed(season).weeks?.[week];
-  const verdict = shouldReadWeek(already, maps);
+  // --force is for the case the recorded maps cannot speak to: the sampler itself got better.
+  // The maps are unchanged, so nothing here would ask to read them again, but the reading they
+  // produce is not the one they produced last time.
+  const verdict = has('force') ? { read: true, why: 'asked to read again' } : shouldReadWeek(already, maps);
   // A re-read replaces the week rather than merging into it. Merging is right when a week is
   // built up from several hand-read crops, but wrong for a revision: a market the new maps leave
   // uncertain would keep the answer the superseded map gave it. The exception is a page that is

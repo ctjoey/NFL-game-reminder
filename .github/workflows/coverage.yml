@@ -41,6 +41,10 @@ on:
         description: 'Probe 506 for this week and print the page structure (blank to skip)'
         type: string
         default: ''
+      reread:
+        description: 'Read the maps again even if this week was already read from them'
+        type: boolean
+        default: false
 
 jobs:
   # Its own job so its output stands alone: the point of a probe is to be read, and buried under
@@ -113,6 +117,7 @@ jobs:
           # alone, skips a week already read from these same maps, and reads again when 506 has
           # revised them - which it did to all three of week 4's within six hours.
           node server/coverage/sampler-cli.js ingest --save \
+            ${{ inputs.reread && '--force' || '' }} \
             --week "${{ steps.wk.outputs.week }}" --games /tmp/games.json > /tmp/draft.json
           if [ "$(node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync("/tmp/draft.json","utf8")).slots.length))')" = "0" ]; then
             echo "Nothing to write - see the sampler's reason above."
