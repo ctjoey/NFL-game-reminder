@@ -72,7 +72,10 @@ function apply() {
 
   const feed = loadFeed(season);
   if (!feed.weeks) feed.weeks = {};
-  const markets = { ...(feed.weeks[week]?.markets || {}) };
+  // A draft that says so replaces the week outright. See the note in the sampler: merging a
+  // revision into a superseded reading leaves whatever the new maps could not confirm.
+  const replace = flag('replace') !== undefined || draft.replace === true;
+  const markets = replace ? {} : { ...(feed.weeks[week]?.markets || {}) };
   let added = 0;
   for (const s of draft.slots || []) {
     if (!s.choose) continue;
@@ -81,7 +84,9 @@ function apply() {
     markets[s.market][s.network] = { ...(markets[s.market][s.network] || {}), [s.window]: s.choose };
     added += 1;
   }
-  feed.weeks[week] = { source, publishedAt: new Date().toISOString(), markets };
+  // Which map files this reading came from, so a later run can tell a revision from a repeat.
+  const maps = draft.maps || feed.weeks[week]?.maps;
+  feed.weeks[week] = { source, publishedAt: new Date().toISOString(), ...(maps ? { maps } : {}), markets };
   feed.generatedAt = new Date().toISOString();
 
   const v = validateFeed(feed, games());

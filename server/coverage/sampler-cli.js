@@ -21,6 +21,7 @@ import { decodePNG, pixelAt } from './png.js';
 import { MARKET_LATLON, OFF_MAP, fitProjection, conicProjection, searchProjection } from './geo.js';
 import { sampleMap, samplePoint, verifySampling, SAMPLER_DEFAULTS } from './mapSampler.js';
 import { parseMapPage, pendingMaps, sectionKind } from './mapPage.js';
+import { loadFeed, shouldReadWeek } from './coverageFeed.js';
 
 const args = process.argv.slice(2);
 const cmd = args[0];
@@ -238,6 +239,25 @@ async function ingest() {
     return;
   }
 
+  // Should this week be read at all? Asking here, rather than in the workflow that calls this,
+  // is the point: the answer depends on which map files are up right now, and this is the only
+  // place that knows them.
+  const maps = sections.map((x) => x.src);
+  const already = loadFeed(season).weeks?.[week];
+  const verdict = shouldReadWeek(already, maps);
+  // A re-read replaces the week rather than merging into it. Merging is right when a week is
+  // built up from several hand-read crops, but wrong for a revision: a market the new maps leave
+  // uncertain would keep the answer the superseded map gave it. The exception is a page that is
+  // temporarily short a map - fewer maps than last time cannot be the whole week, so merge.
+  const replace = Boolean(already?.markets && Object.keys(already.markets).length
+    && maps.length >= (already.maps?.length ?? 0));
+  if (!verdict.read) {
+    console.error(`Week ${week}: not reading - ${verdict.why}.`);
+    process.stdout.write(`${JSON.stringify({ week, season, source: verdict.why, maps, slots: [] }, null, 2)}\n`);
+    return;
+  }
+  console.error(`Week ${week}: reading - ${verdict.why}.`);
+
   const base = new URL(pageUrl);
   const fetchImage = async (src) => {
     const r = await fetch(new URL(src, base).href, { headers: { 'user-agent': UA } });
@@ -351,7 +371,9 @@ async function ingest() {
   console.error(`${slots.length} entr(ies) from ${sections.length} map(s).`);
   process.stdout.write(`${JSON.stringify({
     week, season,
-    source: flag('source', `506sports week ${week}, sampled ${new Date().toISOString().slice(0, 10)}`),
+    source: flag('source', `506sports week ${week}, sampled automatically ${new Date().toISOString().slice(0, 10)}`),
+    maps,
+    replace,
     slots,
   }, null, 2)}\n`);
 }

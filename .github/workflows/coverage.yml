@@ -99,8 +99,8 @@ jobs:
       #   against the map it read and refuses to emit if any disagree, so a projection aimed at the
       #   wrong place publishes nothing rather than publishing nonsense.
       #
-      #   A week that already has entries is left alone. Hand-read weeks are never overwritten by
-      #   a later automatic run.
+      #   A hand-read week is never overwritten by an automatic run. A week the sampler itself
+      #   read is re-read only when 506 has posted different map files than it was read from.
       #
       #   `apply` re-validates the whole feed against the live schedule before writing, and the
       #   commit carries only the two coverage files.
@@ -108,15 +108,14 @@ jobs:
         id: ingest
         run: |
           set -o pipefail
-          if node server/coverage/feed-cli.js status --games /tmp/games.json \
-               | grep -qE "^week +${{ steps.wk.outputs.week }} "; then
-            echo "Week ${{ steps.wk.outputs.week }} already has entries; leaving it alone."
-            exit 0
-          fi
+          # Whether to read at all is the sampler's call, not this file's: the answer depends on
+          # which map files are up right now, and only it has them. It leaves hand-read weeks
+          # alone, skips a week already read from these same maps, and reads again when 506 has
+          # revised them - which it did to all three of week 4's within six hours.
           node server/coverage/sampler-cli.js ingest --save \
             --week "${{ steps.wk.outputs.week }}" --games /tmp/games.json > /tmp/draft.json
           if [ "$(node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync("/tmp/draft.json","utf8")).slots.length))')" = "0" ]; then
-            echo "No maps published yet - nothing to write."
+            echo "Nothing to write - see the sampler's reason above."
             exit 0
           fi
           node server/coverage/feed-cli.js apply --week "${{ steps.wk.outputs.week }}" \

@@ -30,6 +30,40 @@ export const FEED_WINDOWS = ['SUN_EARLY', 'SUN_LATE'];
 /// back to the same prediction they make today. So publishing it is safe before the app ships.
 export const NO_GAME = 'none';
 
+/// A week whose entries came from the sampler rather than from somebody reading a map. Only
+/// these may be rewritten automatically; anything read by hand outranks the machine.
+export const SAMPLED_MARK = 'sampled automatically';
+
+/**
+ * Whether the sampler should read this week's maps, given what the feed already holds.
+ *
+ * The rule used to be "skip any week that has entries", which protected the hand-read weeks and
+ * was right about them. But 506 revises: within six hours of publishing week 4 it had reposted
+ * all three maps as -V2 and -V3, and a week that can never be re-read is a week that keeps
+ * showing the superseded answer forever. Networks move games between windows late, so the
+ * revision is usually the one that matters.
+ *
+ * So the feed records which map files a week was read from, and a different set means read again.
+ * Entries with no record and no sampler mark are somebody's hand work and are left alone.
+ *
+ * @param entry  the feed's record for the week, or undefined
+ * @param published  the map files on the page right now
+ * @returns {{read: boolean, why: string}}
+ */
+export function shouldReadWeek(entry, published) {
+  const maps = [...published].sort();
+  if (!entry || !Object.keys(entry.markets || {}).length) return { read: true, why: 'the week has no entries yet' };
+  if (!(entry.source || '').includes(SAMPLED_MARK)) {
+    return { read: false, why: 'the week was read by hand, which outranks the sampler' };
+  }
+  const was = [...(entry.maps || [])].sort();
+  if (!was.length) return { read: true, why: 'the week was sampled before the maps it came from were recorded' };
+  if (was.length === maps.length && was.every((m, i) => m === maps[i])) {
+    return { read: false, why: 'the same maps it was already read from' };
+  }
+  return { read: true, why: `506 has revised the maps (was ${was.join(', ')})` };
+}
+
 export function emptyFeed(season = 2026) {
   return { version: FEED_VERSION, season, generatedAt: new Date().toISOString(), weeks: {} };
 }

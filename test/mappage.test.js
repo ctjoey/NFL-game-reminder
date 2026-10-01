@@ -4,6 +4,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { parseMapPage, pendingMaps, sectionKind, looksLikeMap } from '../server/coverage/mapPage.js';
+import { shouldReadWeek } from '../server/coverage/coverageFeed.js';
 
 const g = (away, home, networks, window) => ({
   id: `2026-W04-${away}-${home}`, week: 4, away, home, networks, window,
@@ -126,4 +127,31 @@ test('a commented-out map is pending, not published', () => {
   assert.equal(sections.length, 2, 'the FOX map is not up yet');
   assert.deepEqual(pendingMaps(notYet), ['2026/04-FOX.png']);
   assert.deepEqual(pendingMaps(PAGE), [], 'nothing pending when every map is live');
+});
+
+// MARK: - when to read a week again
+
+test('a week is read when it has nothing, and left alone once it has been read', () => {
+  const sampled = { source: '506sports week 4, sampled automatically', maps: ['a.png', 'b.png'], markets: { boston: {} } };
+
+  assert.equal(shouldReadWeek(undefined, ['a.png']).read, true);
+  assert.equal(shouldReadWeek({ source: 'x', markets: {} }, ['a.png']).read, true);
+  assert.equal(shouldReadWeek(sampled, ['b.png', 'a.png']).read, false, 'order is not a revision');
+});
+
+test('a revised map is read again, and hand-read weeks never are', () => {
+  // 506 reposted all three of week 4's maps within six hours of the first reading. A week that
+  // can never be re-read keeps showing the superseded answer for the rest of the week.
+  const sampled = { source: '506sports week 4, sampled automatically', maps: ['04-CBS-E.png', '04-FOX.png'], markets: { boston: {} } };
+  const revised = shouldReadWeek(sampled, ['04-CBS-E-V2.png', '04-FOX.png']);
+  assert.equal(revised.read, true);
+  assert.match(revised.why, /revised/);
+
+  // Somebody reading a map by hand outranks the sampler, however stale the sampler thinks it is.
+  const byHand = { source: '506sports week 3 close-ups and zoom-ins', markets: { boston: {} } };
+  assert.equal(shouldReadWeek(byHand, ['03-CBS-E-V9.png']).read, false);
+
+  // And a week sampled before the map list was recorded is read again, not assumed current.
+  const older = { source: '506sports week 4, sampled automatically', markets: { boston: {} } };
+  assert.equal(shouldReadWeek(older, ['04-CBS-E.png']).read, true);
 });
