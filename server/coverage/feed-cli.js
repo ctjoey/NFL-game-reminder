@@ -28,13 +28,11 @@ import { loadSeed } from '../schedule/scheduleService.js';
 import { resolveWindowGame } from './coverageService.js';
 import { loadFeed, saveFeed, validateFeed, openSlots, emptyFeed, feedPath, FEED_WINDOWS } from './coverageFeed.js';
 import { listServices } from '../market/marketService.js';
+import { flags } from './args.js';
 
 const args = process.argv.slice(2);
+const { flag, has } = flags(args);
 const cmd = args[0];
-const flag = (name, fallback = undefined) => {
-  const i = args.indexOf(`--${name}`);
-  return i >= 0 && args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : fallback;
-};
 const season = Number(flag('season', 2026));
 const die = (msg) => { console.error(msg); process.exit(1); };
 
@@ -74,7 +72,7 @@ function apply() {
   if (!feed.weeks) feed.weeks = {};
   // A draft that says so replaces the week outright. See the note in the sampler: merging a
   // revision into a superseded reading leaves whatever the new maps could not confirm.
-  const replace = flag('replace') !== undefined || draft.replace === true;
+  const replace = has('replace') || draft.replace === true;
   const markets = replace ? {} : { ...(feed.weeks[week]?.markets || {}) };
   let added = 0;
   for (const s of draft.slots || []) {

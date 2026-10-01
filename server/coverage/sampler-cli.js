@@ -22,17 +22,11 @@ import { MARKET_LATLON, OFF_MAP, fitProjection, conicProjection, searchProjectio
 import { sampleMap, samplePoint, verifySampling, SAMPLER_DEFAULTS } from './mapSampler.js';
 import { parseMapPage, pendingMaps, sectionKind } from './mapPage.js';
 import { loadFeed, shouldReadWeek } from './coverageFeed.js';
+import { flags } from './args.js';
 
 const args = process.argv.slice(2);
+const { flag, has } = flags(args);
 const cmd = args[0];
-const flag = (name, fallback = undefined) => {
-  const i = args.indexOf(`--${name}`);
-  return i >= 0 && args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : fallback;
-};
-/// A flag with no value. `flag()` cannot see one: `--save --week 4` reads the next token, finds
-/// `--week`, and returns the fallback - so `--save` looked unset and the calibration was never
-/// written, which then broke the commit that expected the file.
-const has = (name) => args.includes(`--${name}`);
 const die = (msg) => { console.error(msg); process.exit(1); };
 const UA = 'GameDial coverage sampler (+https://github.com/ctjoey/NFL-game-reminder)';
 
@@ -203,7 +197,17 @@ async function watch() {
 
   // Exit non-zero when there is something to act on. A scheduled run that succeeds is silent, and
   // silence is the wrong response to "the maps you have been waiting for are up".
-  if (published.length && flag('alert') !== undefined) {
+  //
+  // Two bugs lived in this one `if`. It asked for `--alert` with `flag()`, which reads the token
+  // after the name; `--alert` is written last, so there was no token, and the nag could never
+  // fire - it has been silent all season for want of an argument. And it never looked at the
+  // feed, so once that was fixed it would have failed every run on a week that is published and
+  // fine. The thing worth shouting about is a map that is up and unread, which needs both halves.
+  if (!has('alert')) return;
+  const season = Number(flag('season', year));
+  const entry = loadFeed(season).weeks?.[Number(week)];
+  const unread = !Object.keys(entry?.markets || {}).length;
+  if (published.length && unread) {
     console.error(`::error::Week ${week} maps are up and the feed has no entries for it yet.`);
     process.exit(1);
   }
@@ -410,7 +414,7 @@ async function ingest() {
 async function calibrate() {
   const img = decodePNG(await load(flag('image')));
   const anchors = parseAnchors(flag('anchors'));
-  const fit = fitProjection(anchors, { quadratic: flag('affine') !== undefined ? false : null });
+  const fit = fitProjection(anchors, { quadratic: has('affine') ? false : null });
 
   const out = {
     version: 1,
