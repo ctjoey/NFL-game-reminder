@@ -311,10 +311,36 @@ async function ingest() {
       }
 
       const windowOf = Object.fromEntries(section.entries.map((e) => [e.gameId, e.window]));
-      for (const [market, r] of Object.entries(results)) {
-        if (!r.key) continue;
-        const window = windowOf[r.key];
-        slots.push({ market, network: section.network, window, choose: r.key });
+
+      // A team's own market gets that team's game. That is not a reading of the map, it is the
+      // rule the reading is checked against - so where the map cannot be read at that point, the
+      // rule still holds and the answer is known. Tampa went blank on the revised FOX map and
+      // was left with nothing, when the Buccaneers playing at home settles it.
+      //
+      // Only where it settles it. Two teams can share a market, and if both are on the same map
+      // in the same window the market is split between them and the rule says nothing - so the
+      // assertion is made only when exactly one game on this map claims the market.
+      const claims = {};
+      for (const e of section.entries) {
+        const g = all.find((x) => x.id === e.gameId);
+        for (const team of [g.away, g.home]) {
+          const market = teamMarkets[team];
+          if (!market || OFF_MAP.has(market)) continue;
+          (claims[market] ||= new Set()).add(e.gameId);
+        }
+      }
+      const chosen = Object.fromEntries(Object.entries(results).filter(([, r]) => r.key).map(([m, r]) => [m, r.key]));
+      const asserted = [];
+      for (const [market, ids] of Object.entries(claims)) {
+        if (chosen[market] || ids.size !== 1) continue;
+        chosen[market] = [...ids][0];
+        asserted.push(market);
+      }
+      if (asserted.length) notes.push(`  ${section.src}: ${asserted.join(', ')} from the home-market rule, not the pixels`);
+
+      for (const [market, key] of Object.entries(chosen)) {
+        const window = windowOf[key];
+        slots.push({ market, network: section.network, window, choose: key });
         // A single-header shows one game per market, so the other window carries nothing. Saying
         // so is better than leaving it blank: the app can state that nothing airs rather than guess.
         if (section.singleHeader) {

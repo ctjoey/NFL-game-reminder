@@ -338,3 +338,41 @@ test('a cone leans the meridians and bows the parallels, and still frames the sa
 
   delete MARKET_LATLON.__probe;
 });
+
+test('a home market that cannot be read is still counted, not quietly excused', () => {
+  // Reporting 9/9 where it had been 10/10 made a market going unreadable look like a cleaner
+  // result than before. A projection that drifted off the map reads nothing anywhere, and
+  // nothing out of nothing must never score full marks.
+  const games = [
+    { key: 'G1', away: 'GB', home: 'TB' },
+    { key: 'G2', away: 'NE', home: 'BUF' },
+    { key: 'G3', away: 'DAL', home: 'PHI' },
+  ];
+  const teamMarkets = {
+    GB: 'greenbay', TB: 'tampa', NE: 'boston', BUF: 'buffalo', DAL: 'dallas', PHI: 'philadelphia',
+  };
+  const read = (over) => verifySampling({
+    greenbay: { key: 'G1' }, tampa: { key: 'G1' }, boston: { key: 'G2' }, buffalo: { key: 'G2' },
+    dallas: { key: 'G3' }, philadelphia: { key: 'G3' }, ...over,
+  }, games, teamMarkets);
+
+  assert.match(read({}).summary, /^6\/6 /);
+  assert.deepEqual(read({}).unread, []);
+
+  const blind = read({ tampa: { key: null } });
+  assert.match(blind.summary, /^5\/6 /, `denominator must stay 6, got "${blind.summary}"`);
+  assert.match(blind.summary, /tampa/);
+  assert.deepEqual(blind.unread, ['tampa']);
+  assert.equal(blind.ok, true, 'one unreadable market is uncertainty, not a wrong answer');
+
+  // A wrong answer still fails, and reads as wrong rather than as one fewer.
+  assert.equal(read({ tampa: { key: 'G2' } }).ok, false);
+
+  // Read nothing at all and it fails, rather than passing 0/0.
+  const nothing = verifySampling(
+    Object.fromEntries(Object.values(teamMarkets).map((m) => [m, { key: null }])),
+    games, teamMarkets,
+  );
+  assert.equal(nothing.ok, false, 'too little evidence is not a pass');
+  assert.match(nothing.summary, /^0\/6 /);
+});

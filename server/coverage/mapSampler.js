@@ -169,12 +169,21 @@ export function verifySampling(results, games, teamMarkets) {
   }
   const decided = checks.filter((c) => c.status !== 'unsampled');
   const wrong = decided.filter((c) => c.status === 'wrong');
+  const unread = checks.filter((c) => c.status === 'unsampled');
+  // The denominator is every market the rule speaks for, not just the ones that could be read.
+  // Counting only the readable ones made a market going unreadable look like 9/9 where it had
+  // been 10/10 - a quieter number than before, reported as a cleaner result. An unread market is
+  // still not a failure, since a label drawn over a city is a fair reason to be unsure, but it
+  // has to be said out loud: a projection that drifted off the map reads nothing anywhere, and
+  // nothing out of nothing should never score full marks.
   return {
     ok: decided.length >= 4 && wrong.length === 0,
     checks,
     decided: decided.length,
+    unread: unread.map((c) => c.market),
     wrong,
-    summary: `${decided.length - wrong.length}/${decided.length} home and away markets show their own team's game`,
+    summary: `${decided.length - wrong.length}/${checks.length} home and away markets show their own team's game`
+      + (unread.length ? ` (${unread.length} could not be read: ${unread.map((c) => c.market).join(', ')})` : ''),
   };
 }
 
