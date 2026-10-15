@@ -1,5 +1,5 @@
-A list view for the week. Tap the list button next to Mine/All and the whole Sunday fits on one screen — kickoff time, matchup, both teams' records and the network, one line per game.
+Your local games are now in green. On the week list, the CBS and FOX games your own station is showing stand out at a glance, and a week turning green means that week's TV maps are in. The maps update every Wednesday, with no app update needed.
 
-Scores are on it. While the games are on you see where each one stands and which quarter it's in; finals stay there the rest of the week. Tap any row for the full card with your local channel number and station.
+Settings opens on About, with a new step explaining the Wednesday update. The location section now asks "Where are you watching?"
 
-The cards are still there. The button switches between them.
+Tapping a game alert now opens that game's card, even when the app was closed.
