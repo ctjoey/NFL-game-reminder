@@ -45,7 +45,7 @@ SHOTS = [
     # A real phone, not the simulator: week 6 as it looked in West Palm Beach once that week's
     # maps were read. Names under captures/ are files kept in this folder, so a CI run that
     # regenerates the set keeps them.
-    ("captures/week6-west-palm", [("Prepare for the ", TEXT), ("week ahead", ACCENT)],
+    ("captures/week6-west-palm (original, no headline)", [("Prepare for the ", TEXT), ("week ahead", ACCENT)],
      "See what's showing in your area"),
 ]
 
@@ -144,7 +144,7 @@ def main(src, dst):
         if not os.path.exists(raw):
             print(f"MISSING {raw} - skipped")
             continue
-        label = os.path.basename(name) if "/" in name else name[3:]
+        label = os.path.basename(name).split(" (")[0] if "/" in name else name[3:]
         out = os.path.join(dst, f"{i:02d}-{label}.png")
         compose(raw, runs, sub, out)
         made += 1
