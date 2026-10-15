@@ -1,7 +1,7 @@
 {
   "version": 1,
   "season": 2026,
-  "generatedAt": "2026-10-14T23:32:45.809Z",
+  "generatedAt": "2026-10-15T16:53:36.750Z",
   "weeks": {
     "1": {
       "source": "observed off-air, Hartford-New Haven DMA, 2026-09-13",
@@ -3622,7 +3622,7 @@
     },
     "6": {
       "source": "506sports week 6, sampled automatically",
-      "publishedAt": "2026-10-14T23:32:45.809Z",
+      "publishedAt": "2026-10-15T16:53:36.750Z",
       "maps": [
         "2026/06-CBS-E-V2.png",
         "2026/06-CBS-L.png",
@@ -4443,6 +4443,16 @@
             "SUN_LATE": "none"
           }
         },
+        "westpalm": {
+          "CBS": {
+            "SUN_EARLY": "2026-W06-PIT-TB",
+            "SUN_LATE": "2026-W06-BUF-LV"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W06-CHI-ATL",
+            "SUN_LATE": "none"
+          }
+        },
         "wichita": {
           "CBS": {
             "SUN_EARLY": "2026-W06-PIT-TB",
@@ -4487,11 +4497,6 @@
           }
         },
         "syracuse": {
-          "CBS": {
-            "SUN_LATE": "2026-W06-BUF-LV"
-          }
-        },
-        "westpalm": {
           "CBS": {
             "SUN_LATE": "2026-W06-BUF-LV"
           }
