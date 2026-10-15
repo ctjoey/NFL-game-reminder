@@ -3,3 +3,5 @@ Your local games are now in green. On the week list, the CBS and FOX games your 
 Settings opens on About, with a new step explaining the Wednesday update. The location section now asks "Where are you watching?"
 
 Tapping a game alert now opens that game's card, even when the app was closed.
+
+Fixed: opening Settings could switch your TV market to the one your ZIP code belongs to, even after you had picked a different one.
