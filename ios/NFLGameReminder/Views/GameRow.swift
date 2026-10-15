@@ -49,7 +49,7 @@ struct GameRowView: View {
             .accessibilityLabel(card.followed ? "Stop reminding me" : "Remind me")
         }
         .padding(.leading, 10).padding(.trailing, 8).padding(.vertical, 8)
-        .opacity(card.followed ? 1 : 0.78)
+        .opacity(card.canWatch ? 1 : 0.78)
     }
 
     /// Kickoff, not a countdown. A row is read against the other rows around it, so the same shape
@@ -70,7 +70,7 @@ struct GameRowView: View {
     private var matchup: some View {
         HStack(spacing: 4) {
             team(card.game.away, records.away)
-            Text("at").font(.system(size: 10)).foregroundStyle(card.onLocalStation ? Theme.onAir.opacity(0.7) : Theme.textDim)
+            Text("at").font(.system(size: 10)).foregroundStyle(card.canWatch ? Theme.onAir.opacity(0.7) : Theme.textDim)
             team(card.game.home, records.home)
             Spacer(minLength: 0)
         }
@@ -81,7 +81,7 @@ struct GameRowView: View {
         HStack(spacing: 3) {
             Text(Teams.short(id))
                 .font(.system(size: 14, weight: .bold, design: .rounded))
-                .foregroundStyle(card.onLocalStation ? Theme.onAir : Theme.text)
+                .foregroundStyle(card.canWatch ? Theme.onAir : Theme.text)
             if showScores, let record {
                 Text("(\(record))")
                     .font(.system(size: 11, weight: .semibold, design: .rounded))

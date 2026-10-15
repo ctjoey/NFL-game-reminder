@@ -19,7 +19,7 @@ struct SettingsView: View {
                         step(1, "Select your market and your TV provider.")
                         step(2, "Pick the teams you want to follow.")
                         step(3, "Set alerts to remind you when pregame coverage or kickoff starts.")
-                        step(4, "Every Wednesday the app updates with that week's TV maps, and the games on your local station turn green.")
+                        step(4, "Games you can watch with your TV provider and services show in green. Every Wednesday the app updates with that week's TV maps, so your local CBS and FOX games turn green too.")
                     }
                     .padding(.vertical, 2)
                     Text("Changes save as you make them.").font(.caption).foregroundStyle(.secondary)

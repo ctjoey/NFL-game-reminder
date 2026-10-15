@@ -26,8 +26,8 @@ ON_AIR = (0x45, 0xD5, 0x41)      # Theme.onAir - the icon's TV light, games on y
 # carry the two things this release added that nobody else does: your games in green, and scores.
 # Each headline is (text, colour) runs so one word can carry the accent.
 SHOTS = [
-    ("06-every-game-list", [("Your local games", TEXT), (" in green", ON_AIR)],
-     "See at a glance which games your own station is showing"),
+    ("06-every-game-list", [("Games you can watch", TEXT), (" in green", ON_AIR)],
+     "See at a glance what's on your TV and your services"),
     ("01-this-week", [("Live scores", ACCENT), (" on every game", TEXT)],
      "Where each game stands and which quarter it's in"),
     ("02-game-details", [("Tap", ACCENT), (" to open the full card", TEXT)],

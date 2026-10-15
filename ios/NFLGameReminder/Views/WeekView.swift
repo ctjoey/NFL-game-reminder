@@ -216,7 +216,7 @@ struct GameCardView: View {
                 .stroke(card.followed ? Theme.team(card.game.home).opacity(0.5) : Theme.hairline,
                         lineWidth: card.followed ? 1.5 : 1)
         )
-        .opacity(card.followed ? 1 : 0.82)
+        .opacity(card.canWatch ? 1 : 0.82)
     }
 
     private var countdown: Countdown { Countdown(to: card.game.kickoff, tz: tz) }
@@ -277,7 +277,7 @@ struct GameCardView: View {
                 .frame(width: 4, height: 19)
             Text(name)
                 .font(.system(size: 21, weight: .heavy, design: .rounded))
-                .foregroundStyle(card.onLocalStation ? Theme.onAir : Theme.text)
+                .foregroundStyle(card.canWatch ? Theme.onAir : Theme.text)
             // Dimmer and smaller than the name: the matchup is what you came for, the record is
             // context. Hidden with the scores, because a record gives the result away too.
             if showScores, let record {

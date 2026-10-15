@@ -333,6 +333,22 @@ struct GameCard: Identifiable, Equatable {
     var onLocalStation: Bool {
         game.isRegional && inMarket.airs == true && inMarket.confidence == .confirmed
     }
+
+    /// A game this user can actually watch, with what they have: shown in green and at full
+    /// brightness on the week list, everything else dimmed.
+    ///
+    /// A Sunday CBS/FOX game counts when it is confirmed on their own station and they can tune
+    /// that station in, or when Sunday Ticket carries it out of market. Any other game - Thursday,
+    /// Sunday and Monday nights, a streaming exclusive - counts when their provider, antenna or
+    /// services carry it. Following a game does not make it watchable, so it no longer brightens
+    /// a row on its own: the bell already says which games are followed.
+    var canWatch: Bool {
+        guard access.ok else { return false }
+        if game.isRegional {
+            return onLocalStation || access.ways.contains { $0.network == "SundayTicket" }
+        }
+        return true
+    }
 }
 
 struct PlannedAlert: Identifiable, Equatable, Codable {

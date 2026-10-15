@@ -135,6 +135,24 @@ final class EngineTests: XCTestCase {
         XCTAssertFalse(CardBuilder.build(snf, user: pitUser, all: games, catalog: catalog).onLocalStation)
     }
 
+    // Green on the list is "you can watch this", not "this is on your station": national games
+    // count when the user has the network, local ones only when confirmed and tunable.
+    func testGreenMeansYouCanWatchIt() {
+        let local = CardBuilder.build(game("2026-W01-ATL-PIT"), user: pitUser, all: games, catalog: catalog)
+        XCTAssertTrue(local.canWatch, "a home team's game on a provider that carries FOX")
+        let other = CardBuilder.build(game("2026-W01-CHI-CAR"), user: pitUser, all: games, catalog: catalog)
+        XCTAssertFalse(other.canWatch, "a regional game the local station is not showing")
+        let snf = games.first { $0.window == "SNF" }!
+        XCTAssertTrue(CardBuilder.build(snf, user: pitUser, all: games, catalog: catalog).canWatch, "Sunday night on a provider that carries NBC")
+
+        var noTV = UserProfile(); noTV.tz = "America/New_York"; noTV.market = "pittsburgh"
+        XCTAssertFalse(CardBuilder.build(snf, user: noTV, all: games, catalog: catalog).canWatch, "no provider, no antenna, nothing to watch it on")
+
+        var ticket = pitUser; ticket.services = ["SundayTicket"]
+        XCTAssertTrue(CardBuilder.build(game("2026-W01-CHI-CAR"), user: ticket, all: games, catalog: catalog).canWatch,
+                      "Sunday Ticket carries the out-of-market game")
+    }
+
     func testPublishedMapOutranksAnAffinityGuess() {
         let k = Date(timeIntervalSince1970: 1_789_000_000)
         var week2 = foxWeek2()
