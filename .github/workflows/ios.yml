@@ -108,8 +108,15 @@ jobs:
           shoot () {   # <screen> <output name>
             xcrun simctl terminate "$UDID" "$BID" || true
             SIMCTL_CHILD_SCREENSHOT="$1" xcrun simctl launch "$UDID" "$BID"
-            sleep 15
-            xcrun simctl io "$UDID" screenshot "screenshots/raw/$2.png"
+            # A slow launch photographs the white launch screen (about 80 KB; a real screen is
+            # well over 250 KB). Give it longer and shoot again rather than ship a blank.
+            for wait in 15 20 30; do
+              sleep "$wait"
+              xcrun simctl io "$UDID" screenshot "screenshots/raw/$2.png"
+              [ "$(stat -f%z "screenshots/raw/$2.png")" -gt 150000 ] && return 0
+              echo "$2 looks blank after ${wait}s; trying again"
+            done
+            echo "::warning::$2 still looks blank after three tries"
           }
           shoot week     01-this-week
           shoot detail   02-game-details

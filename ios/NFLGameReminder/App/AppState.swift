@@ -67,7 +67,11 @@ final class AppState: ObservableObject {
     var screenshotDetailGameId: String? {
         let week = schedule.week(ScreenshotMode.showcaseWeek)
         let mine = Set(user.follow.teams)
-        return (week.first { $0.liveScore != nil && (mine.contains($0.away) || mine.contains($0.home)) }
+        // On the viewer's own station by preference: the card then shows their channel, not a
+        // "not on your local station" warning.
+        let local = { (g: Game) in self.card(g.id)?.onLocalStation == true }
+        return (week.first { $0.liveScore != nil && (mine.contains($0.away) || mine.contains($0.home)) && local($0) }
+                ?? week.first { $0.liveScore != nil && (mine.contains($0.away) || mine.contains($0.home)) }
                 ?? week.first { $0.liveScore != nil }
                 ?? week.first)?.id
     }

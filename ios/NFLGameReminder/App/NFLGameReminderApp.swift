@@ -77,7 +77,7 @@ struct RootView: View {
         switch screen {
         case .alerts: tab = 1
         case .settings: tab = 2
-        case .detail: state.deepLinkGameId = state.screenshotDetailGameId
+        case .detail: break   // picked after the sync below, from the full season
         case .weekall, .weeklist: state.showAllGames = true
         case .finals: state.selectedWeek = ScreenshotMode.showcaseWeek - 1; state.showAllGames = true
         case .setup: break
@@ -85,6 +85,9 @@ struct RootView: View {
         }
         // Explicitly, rather than leaning on the scene-phase change: on a cold launch that can fire
         // before the observer is attached, and the capture would photograph the bundled sample.
-        Task { await state.syncAndReplan() }
+        Task {
+            await state.syncAndReplan()
+            if screen == .detail { state.deepLinkGameId = state.screenshotDetailGameId }
+        }
     }
 }
