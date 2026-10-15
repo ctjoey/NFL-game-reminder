@@ -117,6 +117,23 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(other.instead?.id, "2026-W02-ATL-PIT")
     }
 
+    // The green in the week list. Only a game the map (or a home team) puts on your own station:
+    // not the game it displaced, not a guess, and not a national game that is on everywhere.
+    func testOnlyAGameConfirmedOnYourStationIsMarkedGreen() {
+        let week2 = foxWeek2()
+        var u = UserProfile(); u.tz = "America/New_York"; u.market = "hartford"
+        let published = map("hartford", "FOX", "SUN_EARLY", "2026-W02-ATL-PIT")
+        XCTAssertTrue(CardBuilder.build(week2[0], user: u, all: week2, catalog: catalog, published: published).onLocalStation)
+        XCTAssertFalse(CardBuilder.build(week2[1], user: u, all: week2, catalog: catalog, published: published).onLocalStation,
+                       "the game the map says is not on your station")
+        XCTAssertFalse(CardBuilder.build(week2[0], user: u, all: week2, catalog: catalog).onLocalStation,
+                       "without a map this is only a guess")
+        XCTAssertTrue(CardBuilder.build(game("2026-W01-ATL-PIT"), user: pitUser, all: games, catalog: catalog).onLocalStation,
+                      "a home team's game always airs locally")
+        let snf = games.first { $0.window == "SNF" }!
+        XCTAssertFalse(CardBuilder.build(snf, user: pitUser, all: games, catalog: catalog).onLocalStation)
+    }
+
     func testPublishedMapOutranksAnAffinityGuess() {
         let k = Date(timeIntervalSince1970: 1_789_000_000)
         var week2 = foxWeek2()

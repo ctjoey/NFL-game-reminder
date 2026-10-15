@@ -271,7 +271,7 @@ struct GameCardView: View {
                 .frame(width: 4, height: 19)
             Text(name)
                 .font(.system(size: 21, weight: .heavy, design: .rounded))
-                .foregroundStyle(Theme.text)
+                .foregroundStyle(card.onLocalStation ? Theme.onAir : Theme.text)
             // Dimmer and smaller than the name: the matchup is what you came for, the record is
             // context. Hidden with the scores, because a record gives the result away too.
             if showScores, let record {

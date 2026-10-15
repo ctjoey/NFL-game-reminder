@@ -22,6 +22,8 @@ enum Theme {
     static let surfaceRaised = Color(hex: "1E2942")
     static let hairline = Color(hex: "2A3852")
     static let accent = Color(hex: "FFB74D")
+    /// The power light on the app icon's TV. Marks a game that is on the user's own station.
+    static let onAir = Color(hex: "45D541")
     static let text = Color(hex: "F2F5FA")
     static let textDim = Color(hex: "94A6C4")
     static let ok = Color(hex: "4ED88A")

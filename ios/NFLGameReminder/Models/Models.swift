@@ -314,6 +314,17 @@ struct GameCard: Identifiable, Equatable {
     var watchLine: String
     var plannedAlerts: [PlannedAlert]
     var changes: [ScheduleChange]
+
+    /// A regional CBS/FOX game known to be on the user's own station: read off the published
+    /// coverage map, or a home team's game, which always airs locally. These are the games the
+    /// week list picks out in green, so a glance says what is actually on your TV - and a week
+    /// that turns green says the map has been read.
+    ///
+    /// Regional only. A national game is on everywhere, so marking it would say nothing, and an
+    /// unconfirmed guess must never look like an answer.
+    var onLocalStation: Bool {
+        game.isRegional && inMarket.airs == true && inMarket.confidence == .confirmed
+    }
 }
 
 struct PlannedAlert: Identifiable, Equatable, Codable {

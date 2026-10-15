@@ -70,7 +70,7 @@ struct GameRowView: View {
     private var matchup: some View {
         HStack(spacing: 4) {
             team(card.game.away, records.away)
-            Text("at").font(.system(size: 10)).foregroundStyle(Theme.textDim)
+            Text("at").font(.system(size: 10)).foregroundStyle(card.onLocalStation ? Theme.onAir.opacity(0.7) : Theme.textDim)
             team(card.game.home, records.home)
             Spacer(minLength: 0)
         }
@@ -81,7 +81,7 @@ struct GameRowView: View {
         HStack(spacing: 3) {
             Text(Teams.short(id))
                 .font(.system(size: 14, weight: .bold, design: .rounded))
-                .foregroundStyle(Theme.text)
+                .foregroundStyle(card.onLocalStation ? Theme.onAir : Theme.text)
             if showScores, let record {
                 Text("(\(record))")
                     .font(.system(size: 11, weight: .semibold, design: .rounded))
