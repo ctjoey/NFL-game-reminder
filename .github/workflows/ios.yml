@@ -149,7 +149,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.store_images
         run: |
           n=$(ls ios/screenshots/store/*.png 2>/dev/null | wc -l | tr -d ' ')
-          if [ "$n" != "8" ]; then echo "::error::expected 8 framed screenshots, got $n"; exit 1; fi
+          if [ "$n" != "9" ]; then echo "::error::expected 9 framed screenshots, got $n"; exit 1; fi
           rm -rf marketing/store-screenshots && mkdir -p marketing/store-screenshots
           cp ios/screenshots/store/*.png marketing/store-screenshots/
           git config user.name  'github-actions[bot]'
