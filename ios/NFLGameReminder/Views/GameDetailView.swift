@@ -17,10 +17,13 @@ struct GameDetailView: View {
                         section("Planned alerts") { alerts(card) }
                         if !card.changes.isEmpty { section("What changed") { changes(card) } }
                         #if DEBUG
-                        Button("Simulate a flex to Sunday night on NBC") {
-                            Task { await state.simulateFlex(gameId: card.id) }
+                        // Not in the store capture, which runs a Debug build.
+                        if !ScreenshotMode.isActive {
+                            Button("Simulate a flex to Sunday night on NBC") {
+                                Task { await state.simulateFlex(gameId: card.id) }
+                            }
+                            .font(.footnote).foregroundStyle(Theme.accent)
                         }
-                        .font(.footnote).foregroundStyle(Theme.accent)
                         #endif
                         Color.clear.frame(height: 20)
                     }

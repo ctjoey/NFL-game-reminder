@@ -107,7 +107,7 @@ jobs:
           mkdir -p screenshots/raw
           shoot () {   # <screen> <output name>
             xcrun simctl terminate "$UDID" "$BID" || true
-            SIMCTL_CHILD_SCREENSHOT="$1" xcrun simctl launch "$UDID" "$BID"
+            SIMCTL_CHILD_SCREENSHOT="$1" SIMCTL_CHILD_TZ=America/New_York xcrun simctl launch "$UDID" "$BID"
             # A slow launch photographs the white launch screen (about 80 KB; a real screen is
             # well over 250 KB). Give it longer and shoot again rather than ship a blank.
             for wait in 15 20 30; do
