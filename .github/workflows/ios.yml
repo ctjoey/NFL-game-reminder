@@ -157,7 +157,11 @@ jobs:
           git add marketing/store-screenshots
           git diff --cached --quiet && { echo "nothing changed"; exit 0; }
           git commit -m "App Store screenshots, framed from build ${{ github.run_number }}"
-          git push
+          # The branch can move during a 25-minute run (copy edits, the coverage job), and a push
+          # from a stale checkout is rejected. These files are only ever written here, so a rebase
+          # onto whatever landed meanwhile is safe.
+          git pull --rebase origin "${{ github.ref_name }}"
+          git push origin "HEAD:${{ github.ref_name }}"
       - name: Upload the App Store screenshot set on its own
         if: always()
         continue-on-error: true
