@@ -46,6 +46,10 @@ struct LocationSection: View {
                 .keyboardType(.numberPad)
                 .textContentType(.postalCode)
                 .onChange(of: draft.zip) { _, z in
+                    // Only a ZIP the user typed moves the market. Settings loads the saved profile
+                    // into its draft, which changes the ZIP from blank to the saved one; treating
+                    // that as typing replaced a market picked by hand every time Settings opened.
+                    guard z != state.user.zip else { return }
                     if z.count >= 5, let m = state.catalog.market(forZip: z) {
                         draft.market = m.id
                         marketHint = "\(m.name): CBS \(m.affiliates["CBS"]?.call ?? "") · FOX \(m.affiliates["FOX"]?.call ?? "") · NBC \(m.affiliates["NBC"]?.call ?? "") · ABC \(m.affiliates["ABC"]?.call ?? "")"
