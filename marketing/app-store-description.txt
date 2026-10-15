@@ -1,19 +1,25 @@
-Not sure which channel is actually showing your team? GameDial knows, and it tells you the exact channel in your area.
+It's Sunday, it's 12:58, and you're flipping channels trying to find the game. GameDial fixes that.
 
-Enter your ZIP code and pick your TV or streaming service, and you get the game airing on your local stations. It doesn't just say "it's on CBS." It says CBS 4, WFOR — the one in your market.
+Tell it your ZIP code and how you watch TV, and it shows you every game of the week and exactly where to find it. Not just "it's on FOX." It tells you FOX 8, WJW, the station in your town.
 
-REMINDERS
-Get an alert when network coverage begins, or set it earlier to plan out your day — your call. You'll also know when a game isn't being shown in your area, and the moment one gets flexed.
+GREEN MEANS YOU CAN WATCH IT
+Open the week and the games you can actually watch are in green. That's the ones on your local station, plus the national games on the channels and streaming services you have. Everything else is dimmed, so you're not getting your hopes up for a game your station isn't carrying.
 
-YOUR MARKET
-Regional games change block by block across this country. GameDial knows which matchup your station is carrying, confirmed once the networks publish the week's map.
+UPDATED EVERY WEDNESDAY
+The networks split up the Sunday afternoon games region by region, and the maps come out midweek. GameDial reads them every Wednesday, and your local games turn green on their own. No app update needed.
 
-TRAVELING?
-Find out whether your team will be on TV when you get to town. Change your market and the channel numbers follow.
+SCORES AT A GLANCE
+Live scores and the quarter while the games are on, final scores the rest of the week, and both teams' records on every game. Recording a game? One switch in Settings hides all of it.
 
-LIVE SCORES
-Scores and the quarter while the games are on, finals when they're over, and both teams' records on every matchup. They never arrive as a notification, and one switch hides them if you're recording.
+TAP ANY GAME
+Tap a game to open the full card: your channel number, your station, when the pregame show starts and every way you can watch it.
 
-No account. No sign-up. Everything stays on your phone.
+REMINDERS THAT HELP
+Get a heads-up when pregame coverage starts, or 30 minutes before kickoff, or both. If a game gets moved or flexed to another night, you'll hear about it. And if your team's game isn't on your local station, GameDial tells you, and tells you what's on instead.
+
+ON THE ROAD?
+Change your market and everything follows: the games, the stations and the channel numbers. Handy in a hotel room.
+
+Setup takes about a minute. No account, no sign-up, no ads. Your settings stay on your phone.
 
 Not affiliated with or endorsed by the National Football League or any television network. Team and network names are used only to identify games and broadcasts.
