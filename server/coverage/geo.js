@@ -182,16 +182,30 @@ export function conicProjection({ lonW, lonE, latN, latS, n = 0 }) {
   // different units here (the map is not square), and a ratio is the only honest way across.
   const beta = n / Math.cos(PHI0 * RAD);
 
-  return (market) => {
-    const ll = MARKET_LATLON[market];
-    if (!ll) return null;
+  const at = (ll) => {
     const dphi = (ll[0] - PHI0) * RAD;
     if (n === 0) return { x: cx + p * (ll[1] - LAM0) * RAD, y: cy - q * dphi };
     const theta = n * (ll[1] - LAM0) * RAD;
     const f = 1 - beta * dphi;                        // this arc, relative to the central one
     return { x: cx + p * f * Math.sin(theta), y: cy - (q / beta) * (1 - f * Math.cos(theta)) };
   };
+  const project = (market) => (MARKET_LATLON[market] ? at(MARKET_LATLON[market]) : null);
+  // Any point, not just a market's city: what lets a market be read somewhere other than where
+  // the projection is aimed (READ_AT).
+  project.latlon = at;
+  return project;
 }
+
+/// Where to read a market when its city is the wrong place to look. The city still anchors the
+/// projection search - moving it there changes what the search converges on - but the reading
+/// happens here.
+///
+/// West Palm Beach sits on the beach and against the Miami line, so a sample there took in ocean
+/// and coastline and the market went unread every week from week 4 on. Martin County, inland, is
+/// the middle of the DMA.
+export const READ_AT = {
+  westpalm: [27.05, -80.45],
+};
 
 /// The cylindrical case, kept by name because that is what a saved calibration may still say.
 export function boxProjection(box) {

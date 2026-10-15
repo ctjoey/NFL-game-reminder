@@ -21,7 +21,7 @@
 // a dozen regional games that is two dozen independent assertions about whether the projection is
 // aimed correctly, checkable before any of the output is believed.
 import { pixelAt } from './png.js';
-import { MARKET_LATLON, OFF_MAP } from './geo.js';
+import { MARKET_LATLON, OFF_MAP, READ_AT } from './geo.js';
 
 /// Squared distance in RGB. Good enough here: the legend colours 506 picks are far apart by
 /// construction, because a human has to tell them apart at a glance too.
@@ -132,7 +132,7 @@ export function sampleMap({ img, legend, projection, markets, offMapKey = null, 
         : { key: null, purity: 0, offMap: true, reason: 'drawn as a legend dot; no swatch supplied' };
       continue;
     }
-    const point = projection(market);
+    const point = READ_AT[market] && projection.latlon ? projection.latlon(READ_AT[market]) : projection(market);
     if (!point) { results[market] = { key: null, purity: 0, reason: 'no coordinates for this market' }; continue; }
     if (point.x < 0 || point.x > 1 || point.y < 0 || point.y > 1) {
       results[market] = { key: null, purity: 0, reason: 'projects outside the image' };

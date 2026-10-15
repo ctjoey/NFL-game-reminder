@@ -153,6 +153,19 @@ final class EngineTests: XCTestCase {
                       "Sunday Ticket carries the out-of-market game")
     }
 
+    // The only game in a slot is not everyone's game on a single-header week: when the map shows
+    // other markets getting nothing, an unread market gets a likely answer, not a confirmed one.
+    func testOnlyCandidateIsNotConfirmedWhenOthersGetNothing() {
+        let k = Date(timeIntervalSince1970: 1_789_000_000)
+        let late = [Game(id: "2026-W02-ARI-LAR", week: 2, kickoff: k, away: "ARI", home: "LAR", networks: ["FOX"], window: "SUN_LATE")]
+        let open = CoverageEngine.windowGame(games: late, week: 2, marketKey: "westpalm", network: "FOX", window: "SUN_LATE", catalog: catalog)
+        XCTAssertEqual(open.confidence, .confirmed, "no map: one game in the slot is the slot")
+        let r = CoverageEngine.windowGame(games: late, week: 2, marketKey: "westpalm", network: "FOX", window: "SUN_LATE", catalog: catalog,
+                                          published: map("miami", "FOX", "SUN_LATE", CoverageWeek.noGame))
+        XCTAssertEqual(r.game?.id, "2026-W02-ARI-LAR")
+        XCTAssertEqual(r.confidence, .likely)
+    }
+
     func testPublishedMapOutranksAnAffinityGuess() {
         let k = Date(timeIntervalSince1970: 1_789_000_000)
         var week2 = foxWeek2()

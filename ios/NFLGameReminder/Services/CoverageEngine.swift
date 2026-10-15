@@ -29,7 +29,15 @@ enum CoverageEngine {
         if let m = market {
             for t in m.teams { if let g = candidates.first(where: { $0.home == t || $0.away == t }) { return .init(game: g, confidence: .confirmed, reason: "\(Teams.short(t)) game always airs in \(m.name)") } }
         }
-        if candidates.count == 1 { return .init(game: candidates[0], confidence: .confirmed, reason: "Only \(network) game in this window") }
+        if candidates.count == 1 {
+            // One game in the slot is everyone's game only if every market gets one. On a
+            // single-header week the map shows most of the country getting nothing, so for a
+            // market the map did not settle it is a likely answer, not a confirmed one.
+            let someGetNothing = published[String(week)]?.markets.values.contains { $0[network]?[window] == CoverageWeek.noGame } ?? false
+            return someGetNothing
+                ? .init(game: candidates[0], confidence: .likely, reason: "Only \(network) game in this window, but not every market gets it")
+                : .init(game: candidates[0], confidence: .confirmed, reason: "Only \(network) game in this window")
+        }
         if let m = market {
             for t in m.affinity { if let g = candidates.first(where: { $0.home == t || $0.away == t }) { return .init(game: g, confidence: .likely, reason: "\(m.name) usually receives \(Teams.short(t)) games") } }
         }

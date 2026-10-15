@@ -9,7 +9,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import zlib from 'node:zlib';
 import { decodePNG, pixelAt } from '../server/coverage/png.js';
-import { MARKET_LATLON, fitProjection, boxProjection, conicProjection, searchProjection } from '../server/coverage/geo.js';
+import { MARKET_LATLON, fitProjection, boxProjection, conicProjection, searchProjection, READ_AT } from '../server/coverage/geo.js';
 import { samplePoint, sampleMap, verifySampling } from '../server/coverage/mapSampler.js';
 
 // MARK: - a PNG encoder, so the test can hand the decoder something real
@@ -375,4 +375,13 @@ test('a home market that cannot be read is still counted, not quietly excused', 
   );
   assert.equal(nothing.ok, false, 'too little evidence is not a pass');
   assert.match(nothing.summary, /^0\/6 /);
+});
+
+test('West Palm Beach is read inland, not on the beach where its city is', () => {
+  // The city's own point sampled ocean and coastline and left the market unread every week.
+  const project = conicProjection({ lonW: LON0, lonE: LON1, latN: LAT0, latS: LAT1 });
+  const r = sampleMap({ img: IMG, legend: LEGEND, projection: project, markets: ['westpalm'] }).westpalm;
+  const city = project('westpalm');
+  assert.ok(r.point.x < city.x, 'the reading point is west of the city, inland');
+  assert.deepEqual(r.point, project.latlon(READ_AT.westpalm));
 });

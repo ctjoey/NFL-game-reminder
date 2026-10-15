@@ -77,7 +77,15 @@ export function resolveWindowGame({ games, week, marketKey, network, window, ove
       if (g) return { game: g, confidence: 'confirmed', reason: `${TEAMS[t]?.short || t} game always airs in ${market.name}`, candidates };
     }
   }
-  if (candidates.length === 1) return { game: candidates[0], confidence: 'confirmed', reason: `Only ${network} game in this window`, candidates };
+  if (candidates.length === 1) {
+    // One game in the slot is everyone's game only if every market gets one. On a single-header
+    // week the map shows most of the country getting nothing, so for a market the map did not
+    // settle it is a likely answer, not a confirmed one.
+    const someGetNothing = Object.values(overrides?.[String(week)] || {}).some((m) => m?.[network]?.[window] === NO_GAME);
+    return someGetNothing
+      ? { game: candidates[0], confidence: 'likely', reason: `Only ${network} game in this window, but not every market gets it`, candidates }
+      : { game: candidates[0], confidence: 'confirmed', reason: `Only ${network} game in this window`, candidates };
+  }
   if (market) {
     for (const t of market.affinity || []) {
       const g = candidates.find((c) => c.home === t || c.away === t);
