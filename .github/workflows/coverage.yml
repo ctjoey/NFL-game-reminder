@@ -16,16 +16,16 @@ on:
       - 'ios/NFLGameReminder/Resources/coverage-*.json'
       - '.github/workflows/coverage.yml'
   schedule:
-    # Wednesday 5pm Eastern, which is when 506 usually has the week's maps up. GitHub cron is UTC
-    # and has never heard of daylight saving, so both are listed: 21:00 is 5pm EDT, 22:00 is 5pm
-    # EST. One of the two is an hour off for half the season and runs a second, harmless check.
+    # Wednesday 4pm Eastern. GitHub cron is UTC and has never heard of daylight saving, so both
+    # are listed: 20:00 is 4pm EDT, 21:00 is 4pm EST. One of the two is an hour off for half the
+    # season and runs a second, harmless check.
     #
-    # The rest are catch-up. GitHub's scheduler is best effort and can be very late - the two
-    # runs this workflow has had on a schedule both landed just under four hours after the time
-    # they asked for. Waiting politely for one firing means a week where nobody gets the maps, so
-    # the ask is repeated hourly into the small hours. That is safe to do because the job is
-    # idempotent: the first run to find published maps writes them, and every run after that sees
-    # the week already has entries and exits without touching anything.
+    # The rest are catch-up. GitHub's scheduler is best effort and can be very late - week 6's
+    # 5pm asks were not delivered until 7:32pm. Waiting politely for one firing means a week where
+    # nobody gets the maps, so the ask is repeated hourly into the small hours. That is safe to do
+    # because the job is idempotent: the first run to find published maps writes them, and every
+    # run after that sees the week already has entries and exits without touching anything.
+    - cron: '0 20 * * 3'
     - cron: '0 21 * * 3'
     - cron: '0 22 * * 3'
     - cron: '0 23 * * 3'
@@ -43,6 +43,10 @@ on:
         default: ''
       reread:
         description: 'Read the maps again even if this week was already read from them'
+        type: boolean
+        default: false
+      test_notice:
+        description: 'Post the "week published" notice for the current week, to check it arrives'
         type: boolean
         default: false
 
@@ -74,6 +78,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
+      issues: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -151,6 +156,45 @@ jobs:
           Markets the sampler was unsure about are absent, which leaves them as
           estimates in the app rather than confident mistakes."
           git push
+
+      # A run that published says so. The commit alone was silent, so the only way to know the
+      # week was in was to go and look. An issue notifies the repo owner by email and in the
+      # GitHub app. If it cannot be posted the step fails, which notifies the same way.
+      - name: Tell the owner the week is published
+        if: steps.ingest.outputs.changed == '1' || inputs.test_notice
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WEEK: ${{ steps.wk.outputs.week }}
+          TEST: ${{ inputs.test_notice && '1' || '' }}
+        run: |
+          node -e '
+            const f = JSON.parse(require("fs").readFileSync("docs/coverage-2026.json", "utf8"));
+            const wk = process.env.WEEK, w = f.weeks[wk];
+            if (!w) { console.error("::error::week " + wk + " is not in the feed"); process.exit(1); }
+            const m = w.markets;
+            const entries = Object.values(m).reduce((n, nets) => n + Object.values(nets).reduce((k, win) => k + Object.keys(win).length, 0), 0);
+            const game = id => id === "none" ? "no game" : id.replace(/^\d{4}-W\d+-/, "").replace("-", " at ");
+            const lines = [];
+            for (const [mk, label] of [["hartford", "Hartford-New Haven"], ["newyork", "New York"]]) {
+              const nets = m[mk]; if (!nets) continue;
+              lines.push("", "**" + label + "**");
+              for (const net of ["CBS", "FOX"]) for (const win of ["SUN_EARLY", "SUN_LATE"])
+                if (nets[net]?.[win]) lines.push("- " + net + " " + (win === "SUN_EARLY" ? "1pm" : "4pm") + ": " + game(nets[net][win]));
+            }
+            const body = [
+              (process.env.TEST ? "_Test of the notice - nothing new was published by this run._\n\n" : "") +
+              "@" + process.env.GITHUB_REPOSITORY_OWNER + " week " + wk + " TV coverage is live: **" + entries + " entries across " + Object.keys(m).length + " markets**, read from " + (w.maps || []).join(", ") + ".",
+              "", "The app picks it up on its next refresh (within 6 hours, or straight away on a fresh launch).",
+              "", ...lines,
+              "", "Run: " + process.env.GITHUB_SERVER_URL + "/" + process.env.GITHUB_REPOSITORY + "/actions/runs/" + process.env.GITHUB_RUN_ID,
+            ].join("\n");
+            require("fs").writeFileSync("/tmp/notice.md", body);
+          '
+          title="Week ${WEEK} TV coverage published${TEST:+ (test)}"
+          if ! gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body-file /tmp/notice.md; then
+            echo "::error::Week ${WEEK} published, but the notice could not be posted (are Issues turned on for this repo?)."
+            exit 1
+          fi
 
       # If the maps are up and nothing was written, somebody needs to look. Only then: a run that
       # published cleanly should be silent, and a Wednesday with no maps yet is not news.
