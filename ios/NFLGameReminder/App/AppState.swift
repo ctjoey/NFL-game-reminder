@@ -31,7 +31,7 @@ final class AppState: ObservableObject {
             // otherwise blank the very thing the screenshot is there to show. This is the seed, so
             // it is thin; syncAndReplan replaces it with the real season a moment later, and it is
             // what the capture falls back to if the network is down.
-            s.overrideGames(ScreenshotMode.stage(ScheduleStore.loadSeed(season: s.season)), lastSync: Date())
+            s.overrideGames(ScreenshotMode.stage(ScheduleStore.loadSeed(season: s.season)), lastSync: Clock.now())
         } else if let data = UserDefaults.standard.data(forKey: Self.userKey), var u = try? JSONDecoder().decode(UserProfile.self, from: data) {
             u.migrateRetiredProvider()
             user = u
@@ -93,7 +93,7 @@ final class AppState: ObservableObject {
             // previous pass would be shifted a second time.
             schedule.overrideGames(ScheduleStore.loadSeed(season: schedule.season), lastSync: nil)
             _ = await schedule.sync()
-            schedule.overrideGames(ScreenshotMode.stage(schedule.games), lastSync: Date())
+            schedule.overrideGames(ScreenshotMode.stage(schedule.games), lastSync: Clock.now())
             await replan()
             return
         }

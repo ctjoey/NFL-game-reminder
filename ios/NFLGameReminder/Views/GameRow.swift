@@ -19,7 +19,7 @@ struct GameRowView: View {
     private var records: (away: String?, home: String?) { Records.matchup(card.game, in: state.schedule.games) }
     private var liveIsFresh: Bool {
         guard let synced = state.schedule.lastSync else { return false }
-        return Date().timeIntervalSince(synced) < ScheduleStore.liveFreshness
+        return Clock.now().timeIntervalSince(synced) < ScheduleStore.liveFreshness
     }
 
     var body: some View {

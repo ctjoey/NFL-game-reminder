@@ -55,13 +55,12 @@ enum ScreenshotMode {
 // after it has ended. CI runs whenever it runs - a Tuesday morning, the off-season - so capturing
 // "whatever is happening right now" gives a different, usually empty, picture every time.
 //
-// Rather than freeze the clock (which would mean threading a fake `now` through every view), this
-// slides the whole season by one constant offset so that the showcase week's Sunday-afternoon
-// kickoff sits 100 minutes in the past. One shift, applied to every game, so the shape of a week -
-// Thursday night, Sunday early and late, Sunday night, Monday - survives intact. The capture then
-// lands mid-afternoon on a Sunday: Thursday's game is final, the 1pm games are live, the late
-// games are still to come, and the two previous weeks are complete, which is where the records
-// come from.
+// So the capture moves the app's clock (`Clock.offset`) to 100 minutes after the showcase week's
+// first Sunday-afternoon kickoff, and leaves the season alone. Every date and kickoff on screen is
+// the real one - Sunday Sep 27, 1:00 pm - and the capture lands mid-afternoon on that Sunday:
+// Thursday's game is final, the 1pm games are live, the late games are still to come, and the two
+// previous weeks are complete, which is where the records come from. (Moving the season instead,
+// as this used to, put kickoffs at whatever time of day CI happened to run: 5:46 am.)
 //
 // The scores themselves are invented, and they are the only invented thing here. Everything else -
 // matchups, networks, coverage, the relative times - is the real schedule.
@@ -74,12 +73,13 @@ extension ScreenshotMode {
     /// quarter, short enough that nothing has ended yet.
     private static let intoTheWindow: TimeInterval = 100 * 60
 
-    static func stage(_ games: [Game], now: Date = Date()) -> [Game] {
+    static func stage(_ games: [Game]) -> [Game] {
         guard let anchor = anchor(games) else { return games }
-        let delta = now.addingTimeInterval(-intoTheWindow).timeIntervalSince(anchor)
+        // Move the clock, not the season: every date and kickoff on screen stays the real one.
+        Clock.offset = anchor.addingTimeInterval(intoTheWindow).timeIntervalSince(Date())
+        let now = Clock.now()
         return games.map { g in
             var g = g
-            g.kickoff = g.kickoff.addingTimeInterval(delta)
             let elapsed = now.timeIntervalSince(g.kickoff)
             // Four hours matches the threshold the countdown pill already uses for "FINAL", so the
             // pill and the score line can never disagree about whether a game is over.

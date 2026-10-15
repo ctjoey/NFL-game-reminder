@@ -65,17 +65,18 @@ struct Countdown {
     let color: Color
     let urgent: Bool
 
-    init(to date: Date, now: Date = Date(), tz: TimeZone) {
+    init(to date: Date, now: Date = Clock.now(), tz: TimeZone) {
         var cal = Calendar(identifier: .gregorian); cal.timeZone = tz
         let mins = Int(date.timeIntervalSince(now) / 60)
+        // Days counted from `now`, not from the device's own today, so a caller's clock is the one used.
+        let days = cal.dateComponents([.day], from: cal.startOfDay(for: now), to: cal.startOfDay(for: date)).day ?? 0
         if mins < -240 { label = "FINAL"; color = Theme.textDim; urgent = false }
         else if mins < 0 { label = "ON NOW"; color = Theme.bad; urgent = true }
         else if mins < 60 { label = "IN \(max(1, mins)) MIN"; color = Theme.bad; urgent = true }
         else if mins < 60 * 12 { label = "IN \(mins / 60) HR"; color = Theme.warn; urgent = true }
-        else if cal.isDateInToday(date) { label = "TODAY"; color = Theme.warn; urgent = true }
-        else if cal.isDateInTomorrow(date) { label = "TOMORROW"; color = Theme.warn; urgent = false }
+        else if days == 0 { label = "TODAY"; color = Theme.warn; urgent = true }
+        else if days == 1 { label = "TOMORROW"; color = Theme.warn; urgent = false }
         else {
-            let days = cal.dateComponents([.day], from: cal.startOfDay(for: now), to: cal.startOfDay(for: date)).day ?? 0
             label = days <= 7 ? "IN \(days) DAYS" : cal.weekdaySymbols[cal.component(.weekday, from: date) - 1].uppercased()
             color = Theme.textDim; urgent = false
         }

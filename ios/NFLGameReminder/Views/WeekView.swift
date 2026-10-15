@@ -57,10 +57,16 @@ struct WeekView: View {
             .toolbarBackground(Theme.bgTop, for: .navigationBar)
             .refreshable { await state.syncAndReplan() }
             .sheet(item: $detail) { c in GameDetailView(cardId: c.id) }
-            .onChange(of: state.deepLinkGameId) { _, id in
-                if let id, let c = state.card(id) { state.selectedWeek = c.game.week; detail = c; state.deepLinkGameId = nil }
-            }
+            .onChange(of: state.deepLinkGameId) { _, id in openDeepLink(id) }
+            // And on first appearance: a link set before this screen existed - a notification
+            // tapped on a cold launch, or the store capture's detail shot - never registers as a
+            // change, so it would otherwise wait unopened.
+            .onAppear { openDeepLink(state.deepLinkGameId) }
         }
+    }
+
+    private func openDeepLink(_ id: String?) {
+        if let id, let c = state.card(id) { state.selectedWeek = c.game.week; detail = c; state.deepLinkGameId = nil }
     }
 
     /// A day as one panel with hairlines between games, rather than a stack of separate objects.
@@ -187,7 +193,7 @@ struct GameCardView: View {
     /// the screen sitting there, which is exactly when a stale number would mislead.
     private var liveIsFresh: Bool {
         guard let synced = state.schedule.lastSync else { return false }
-        return Date().timeIntervalSince(synced) < ScheduleStore.liveFreshness
+        return Clock.now().timeIntervalSince(synced) < ScheduleStore.liveFreshness
     }
 
     var body: some View {

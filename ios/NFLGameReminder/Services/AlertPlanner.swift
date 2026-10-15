@@ -30,7 +30,7 @@ enum AlertPlanner {
         return nil
     }
 
-    static func plan(user: UserProfile, games: [Game], now: Date = Date(), lateWindowMinutes: Int = 45, catalog: Catalog = .shared) -> [PlannedAlert] {
+    static func plan(user: UserProfile, games: [Game], now: Date = Clock.now(), lateWindowMinutes: Int = 45, catalog: Catalog = .shared) -> [PlannedAlert] {
         let a = user.alerts
         let tz = user.timeZone
         var out: [PlannedAlert] = []

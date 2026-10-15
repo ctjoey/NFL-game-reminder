@@ -62,6 +62,9 @@ final class ScheduleStore: ObservableObject {
     func overrideGames(_ staged: [Game], lastSync when: Date?) {
         games = staged.sorted { $0.kickoff < $1.kickoff }
         lastSync = when
+        // A staged season has no history: "moved to..." notes from the seed-to-live diff are not
+        // changes anyone would have seen.
+        changes = []
     }
 
     private func persist() {
@@ -73,7 +76,7 @@ final class ScheduleStore: ObservableObject {
     var weeks: [Int] { Array(Set(games.map(\.week))).sorted() }
     func week(_ n: Int) -> [Game] { games.filter { $0.week == n }.sorted { $0.kickoff < $1.kickoff } }
     func game(_ id: String) -> Game? { games.first { $0.id == id } }
-    func currentWeek(now: Date = Date()) -> Int {
+    func currentWeek(now: Date = Clock.now()) -> Int {
         for w in weeks { if let last = week(w).map(\.kickoff).max(), last.addingTimeInterval(4 * 3600) > now { return w } }
         return weeks.last ?? 1
     }
@@ -105,7 +108,7 @@ final class ScheduleStore: ObservableObject {
         let liveKeys = Set(live.map(\.matchKey)), liveWeeks = Set(live.map(\.week))
         let kept = games.filter { !liveKeys.contains($0.matchKey) && !liveWeeks.contains($0.week) }
         games = (live + kept).sorted { $0.kickoff < $1.kickoff }
-        self.source = source; lastSync = Date(); lastError = nil
+        self.source = source; lastSync = Clock.now(); lastError = nil
         // Going from the bundled seed to the live feed is a data-source upgrade, not a schedule
         // change; recording it would tell users games "moved" when nothing did.
         let wasSeed = previousSource == "seed" && source != "seed"
@@ -142,7 +145,7 @@ final class ScheduleStore: ObservableObject {
     /// full season only matters for a flex in some future week, which does not happen in the
     /// minutes you are watching one.
     func refresh() async -> [ScheduleChange] {
-        let stale = lastSync.map { Date().timeIntervalSince($0) > 6 * 3600 } ?? true
+        let stale = lastSync.map { Clock.now().timeIntervalSince($0) > 6 * 3600 } ?? true
         return stale || games.isEmpty ? await sync() : await syncWeek(currentWeek())
     }
 

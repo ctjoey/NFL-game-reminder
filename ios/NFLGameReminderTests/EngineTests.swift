@@ -9,6 +9,7 @@ final class EngineTests: XCTestCase {
         catalog = Catalog(bundle: Bundle.main)
         XCTAssertFalse(games.isEmpty, "seed should load from the app bundle")
     }
+    override func tearDown() { Clock.offset = 0 }   // staging moves the clock; never leak it into the next test
     func game(_ id: String) -> Game { games.first { $0.id == id }! }
     var pitUser: UserProfile { var u = UserProfile(); u.tz = "America/New_York"; u.market = "pittsburgh"; u.provider = "directv"; u.services = ["Prime"]; u.follow.teams = ["PIT"]; return u }
 
@@ -347,9 +348,10 @@ final class EngineTests: XCTestCase {
     // The store screenshots are a permanent asset, so the season they are shot against has to look
     // the same whenever CI happens to run - a Tuesday in March included.
     func testScreenshotStagingPutsTheCaptureInTheMiddleOfSundayAfternoon() {
-        let now = Date()
-        let staged = ScreenshotMode.stage(games, now: now)
-        XCTAssertEqual(staged.count, games.count, "staging moves the season, it does not edit the slate")
+        let staged = ScreenshotMode.stage(games)
+        let now = Clock.now()
+        XCTAssertEqual(staged.count, games.count, "staging sets the scene, it does not edit the slate")
+        XCTAssertEqual(staged.map(\.kickoff), games.map(\.kickoff), "every kickoff on screen is the real one")
 
         let week = staged.filter { $0.week == ScreenshotMode.showcaseWeek }
         let early = week.filter { $0.window == "SUN_EARLY" }
@@ -379,13 +381,8 @@ final class EngineTests: XCTestCase {
         let table = Records.before(early[0].kickoff, in: staged)
         for t in played { XCTAssertEqual(table[t]?.played, true, "\(t) finished a game before the showcase week") }
 
-        // The shape of the week survives: one shift for the whole season, not a per-game fiction.
-        let realGap = games.first { $0.id == week[0].id }!.kickoff.timeIntervalSince(
-            games.first { $0.id == week[1].id }!.kickoff)
-        XCTAssertEqual(week[0].kickoff.timeIntervalSince(week[1].kickoff), realGap, accuracy: 1)
-
         // Same build, same scoreboard - Swift's own hashing is seeded per process and would not be.
-        XCTAssertEqual(ScreenshotMode.stage(games, now: now).map(\.finalScore),
+        XCTAssertEqual(ScreenshotMode.stage(games).map(\.finalScore),
                        staged.map(\.finalScore))
     }
 

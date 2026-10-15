@@ -56,7 +56,8 @@ struct AlertsView: View {
             }
             Text("Only for the games you follow. Nothing else is ever sent.")
                 .font(.footnote).foregroundStyle(Theme.textDim)
-            if !state.notifications.authorized {
+            // Not in the store capture: the simulator never grants notifications, and the shot is of the alerts.
+            if !state.notifications.authorized, !ScreenshotMode.isActive {
                 HStack(spacing: 7) {
                     Image(systemName: "bell.slash.fill").foregroundStyle(Theme.bad)
                     Text("Notifications are off. Turn them on in Settings to actually receive these.")

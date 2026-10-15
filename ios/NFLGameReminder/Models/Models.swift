@@ -1,5 +1,13 @@
 import Foundation
 
+/// The app's idea of "now". Always the real time, except while the store-listing capture is
+/// running, when it is set to a Sunday afternoon of the showcase week so the screenshots show the
+/// real schedule - real dates, 1:00 pm kickoffs - with games live and final around it.
+enum Clock {
+    nonisolated(unsafe) static var offset: TimeInterval = 0
+    static func now() -> Date { Date().addingTimeInterval(offset) }
+}
+
 // MARK: - Schedule
 
 /// How a game that has already been played finished.
@@ -125,7 +133,7 @@ struct ScheduleChange: Codable, Identifiable, Equatable {
     /// and the history stays on the detail screen for anyone who wants it.
     static let noticeWindow: TimeInterval = 14 * 24 * 3600
 
-    func isRecent(now: Date = Date()) -> Bool { now.timeIntervalSince(at) < Self.noticeWindow }
+    func isRecent(now: Date = Clock.now()) -> Bool { now.timeIntervalSince(at) < Self.noticeWindow }
 
     /// What changed, in words, rather than "kickoff 2026-09-13T20:20Z → 2026-09-14T00:20Z".
     func headline(tz: TimeZone) -> String {

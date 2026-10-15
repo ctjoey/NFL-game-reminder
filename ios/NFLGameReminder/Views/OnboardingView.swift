@@ -126,7 +126,7 @@ struct AlertsSection: View {
     /// The rundown goes out before the week's first kickoff, so a day late in the week can land
     /// in the past and send nothing. Showing the real next send time saves the guesswork.
     private var nextRundown: Date? {
-        state.plan.filter { $0.kind == .weekly && $0.fireAt > Date() }.map(\.fireAt).min()
+        state.plan.filter { $0.kind == .weekly && $0.fireAt > Clock.now() }.map(\.fireAt).min()
     }
 
     private var followedCount: Int {
