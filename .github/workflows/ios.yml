@@ -18,6 +18,10 @@ on:
         description: 'Archive, sign and upload to TestFlight'
         type: boolean
         default: false
+      store_images:
+        description: 'Commit the framed App Store screenshots to marketing/store-screenshots'
+        type: boolean
+        default: false
 
 concurrency:
   group: ios-${{ github.ref }}
@@ -27,6 +31,8 @@ jobs:
   build-and-test:
     name: Build + test (Simulator)
     runs-on: macos-26
+    permissions:
+      contents: write
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
@@ -111,6 +117,8 @@ jobs:
           shoot settings 04-settings
           shoot weekall  05-every-game
           shoot weeklist 06-every-game-list
+          shoot finals   07-final-scores
+          shoot setup    08-setup
           xcrun simctl shutdown "$UDID" || true
           xcrun simctl delete "$UDID" || true
           ls -l screenshots/raw
@@ -122,9 +130,27 @@ jobs:
               sips -s format png --resampleHeightWidth "${px#*x}" "${px%x*}" "$f" --out "$dir/$(basename "$f")"
             done
           done
+          # The listing set: each capture framed with a headline, at Apple's 6.9-inch size.
+          python3 -m pip install --quiet --break-system-packages pillow || python3 -m pip install --quiet --user pillow
+          python3 ../marketing/store-art/compose.py screenshots/raw screenshots/store
           rm -rf screenshots/raw
           find screenshots -name '*.png' | sort
           find screenshots -name '*.png' -exec sips -g pixelWidth -g pixelHeight {} +
+      # On request only: the framed set goes into the repo, so it can be handed over without
+      # anyone needing to download a build artifact.
+      - name: Commit the framed store screenshots
+        if: github.event_name == 'workflow_dispatch' && inputs.store_images
+        run: |
+          n=$(ls ios/screenshots/store/*.png 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$n" != "8" ]; then echo "::error::expected 8 framed screenshots, got $n"; exit 1; fi
+          rm -rf marketing/store-screenshots && mkdir -p marketing/store-screenshots
+          cp ios/screenshots/store/*.png marketing/store-screenshots/
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add marketing/store-screenshots
+          git diff --cached --quiet && { echo "nothing changed"; exit 0; }
+          git commit -m "App Store screenshots, framed from build ${{ github.run_number }}"
+          git push
       - name: Upload the App Store screenshot set on its own
         if: always()
         continue-on-error: true

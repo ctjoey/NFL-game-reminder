@@ -4,7 +4,13 @@ import Foundation
 /// screenshot is a real render of the shipping UI in a known state, rather than an empty first-run
 /// screen. The flag can only arrive as a launch argument, so nothing here can reach a real user.
 enum ScreenshotMode {
-    enum Screen: String { case week, weekall, weeklist, detail, alerts, settings }
+    enum Screen: String {
+        case week, weekall, weeklist, detail, alerts, settings
+        /// The week before the showcase as a list: every game final, so the score column is full.
+        case finals
+        /// The first-run form, filled in, for the "set up in a minute" shot.
+        case setup
+    }
 
     static var screen: Screen? {
         // simctl forwards SIMCTL_CHILD_SCREENSHOT to the app as SCREENSHOT. That path is
@@ -21,7 +27,8 @@ enum ScreenshotMode {
     /// and every alert type on so the Alerts screen has something to show.
     static var demoProfile: UserProfile {
         var u = UserProfile()
-        u.onboarded = true
+        // The setup shot photographs the first-run form, which only shows before onboarding.
+        u.onboarded = screen != .setup
         u.tz = "America/New_York"
         u.zip = "44077"
         u.market = "cleveland"

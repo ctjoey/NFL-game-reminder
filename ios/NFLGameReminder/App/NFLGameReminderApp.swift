@@ -73,12 +73,14 @@ struct RootView: View {
         guard let screen = ScreenshotMode.screen else { return }
         state.selectedWeek = ScreenshotMode.showcaseWeek
         // The layout lives in UserDefaults, so the capture sets it the same way a person would.
-        UserDefaults.standard.set(screen == .weeklist, forKey: WeekView.compactLayoutKey)
+        UserDefaults.standard.set(screen == .weeklist || screen == .finals, forKey: WeekView.compactLayoutKey)
         switch screen {
         case .alerts: tab = 1
         case .settings: tab = 2
         case .detail: state.deepLinkGameId = state.screenshotDetailGameId
         case .weekall, .weeklist: state.showAllGames = true
+        case .finals: state.selectedWeek = ScreenshotMode.showcaseWeek - 1; state.showAllGames = true
+        case .setup: break
         case .week: break
         }
         // Explicitly, rather than leaning on the scene-phase change: on a cold launch that can fire

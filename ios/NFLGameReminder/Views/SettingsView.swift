@@ -11,6 +11,26 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                Section("About") {
+                    Wordmark()
+                    Text("Whether you're home or on the road, you can find out what games are showing and where to find them in your area.")
+                        .font(.subheadline)
+                    VStack(alignment: .leading, spacing: 6) {
+                        step(1, "Select your market and your TV provider.")
+                        step(2, "Pick the teams you want to follow.")
+                        step(3, "Set alerts to remind you when pregame coverage or kickoff starts.")
+                        step(4, "Every Wednesday the app updates with that week's TV maps, and the games on your local station turn green.")
+                    }
+                    .padding(.vertical, 2)
+                    Text("Changes save as you make them.").font(.caption).foregroundStyle(.secondary)
+                    Text("Schedule: \(state.schedule.games.count) games from \(state.schedule.source)\(state.schedule.lastSync.map { ", synced \($0.formatted(date: .abbreviated, time: .shortened))" } ?? "")").font(.caption)
+                    if let e = state.schedule.lastError { Text("Last sync error: \(e)").font(.caption).foregroundStyle(.orange) }
+                    Text("No ads. No account. Data stays on this device.").font(.caption).foregroundStyle(.secondary)
+                    // Worth a line: without it there is no way to tell a TestFlight build from the
+                    // App Store one, which makes "is this fixed yet?" unanswerable from the phone.
+                    Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?") (\(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"))")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
                 LocationSection(draft: $draft, marketHint: $marketHint)
                 ChannelNumbersSection(draft: $draft)
                 FollowSection(draft: $draft)
@@ -38,25 +58,6 @@ struct SettingsView: View {
                 }
                 Section {
                     Button("Delete my data", role: .destructive) { draft = UserProfile(); commit() }
-                }
-                Section("About") {
-                    Wordmark()
-                    Text("Whether you're home or on the road, you can find out what games are showing and where to find them in your area.")
-                        .font(.subheadline)
-                    VStack(alignment: .leading, spacing: 6) {
-                        step(1, "Select your market and your TV provider.")
-                        step(2, "Pick the teams you want to follow.")
-                        step(3, "Set alerts to remind you when pregame coverage or kickoff starts.")
-                    }
-                    .padding(.vertical, 2)
-                    Text("Changes save as you make them.").font(.caption).foregroundStyle(.secondary)
-                    Text("Schedule: \(state.schedule.games.count) games from \(state.schedule.source)\(state.schedule.lastSync.map { ", synced \($0.formatted(date: .abbreviated, time: .shortened))" } ?? "")").font(.caption)
-                    if let e = state.schedule.lastError { Text("Last sync error: \(e)").font(.caption).foregroundStyle(.orange) }
-                    Text("No ads. No account. Data stays on this device.").font(.caption).foregroundStyle(.secondary)
-                    // Worth a line: without it there is no way to tell a TestFlight build from the
-                    // App Store one, which makes "is this fixed yet?" unanswerable from the phone.
-                    Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?") (\(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"))")
-                        .font(.caption).foregroundStyle(.secondary)
                 }
             }
             .dismissableKeyboard()

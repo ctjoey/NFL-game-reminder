@@ -28,6 +28,9 @@ struct OnboardingView: View {
             }
             .dismissableKeyboard()
             .navigationTitle("Set up in 60 seconds")
+            // Store-listing capture: a filled-in form, not an empty one. Setting the ZIP fills in
+            // the market line the same way typing it would.
+            .onAppear { if ScreenshotMode.screen == .setup { draft = ScreenshotMode.demoProfile } }
             .alert("Pick your TV market", isPresented: $showMarketError) { Button("OK") {} } message: { Text("Enter a ZIP code or choose a market so we can find your channels.") }
         }
     }
@@ -38,7 +41,7 @@ struct LocationSection: View {
     @Binding var draft: UserProfile
     @Binding var marketHint: String
     var body: some View {
-        Section("Where you watch") {
+        Section("Where are you watching?") {
             TextField("ZIP code", text: $draft.zip)
                 .keyboardType(.numberPad)
                 .textContentType(.postalCode)
