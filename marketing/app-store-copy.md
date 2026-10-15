@@ -52,6 +52,11 @@ serve, and an install that arrives expecting to watch the game leaves a one-star
 
 ## Promotional text (170) - swap this weekly, it needs no review
 
+New in 1.0.7:
+
+> Every game you can watch now shows up in green. Your local CBS and FOX games update every
+> Wednesday, so you'll know by Sunday exactly what's on and where to find it.
+
 Week in play:
 
 > Sunday's slate is up. See which CBS and FOX games your market gets, when coverage starts,
