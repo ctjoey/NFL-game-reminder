@@ -1,17 +1,7 @@
 # In-App Events: the first batch, ready to paste
 
-**Before you start, two corrections to the plan you were given.**
-
-*It said 15 approved and 10 live.* The real caps are **10 events in an approved/published state
-at once, and only 5 shown on your product page**. So there is no point batching 15 - batch four
-or five and top up.
-
-*It treated the deep link as step zero.* It is, and it was missing: the app had a handler for
-incoming links but no registered URL scheme, so nothing could ever reach it. That is now built
-(`gamedial://week/3`, `gamedial://game/<id>`, `gamedial://alerts`) but it is **not in the live
-build** - 1.0.1 (67) shipped before it. Until 1.0.2 is out, **leave the deep-link field blank**.
-An event whose link the live app cannot honour is worse than an event with no link: a reviewer
-taps it, nothing happens, and the event is rejected.
+Deep links work in the live app (`gamedial://week/7`, `gamedial://game/<id>`,
+`gamedial://alerts`), so every event below can open GameDial straight to its week.
 
 ## Fields, and what Apple actually does with them
 
@@ -37,37 +27,41 @@ Regenerate with `python3 marketing/event-art/make-art.py` if the palette ever ch
 - "Minor updates, bug fixes, or routine improvements do not qualify." Every event below is
   pegged to a real dated moment for exactly this reason.
 
-## Batch 1 - submit now
+## Batch 1 - weeks 7 to 9 (refreshed for 1.0.7)
 
-Windows run Thursday evening to Tuesday small hours so the event is live across TNF, Sunday and
-MNF, rather than only during the window it is named for. All times Eastern.
+The first batch (weeks 3 to 5) has run. These replace it, and lead with what is new: the games you
+can watch in green, and the maps read every Wednesday. Same windows as before, Thursday evening to
+the Tuesday small hours, all times Eastern.
 
-### 1. Week 3 Coverage Map
-- **Reference name:** 2026 W03 Sunday regional coverage
-- **Event name:** Week 3 Coverage Map
-- **Short description:** The CBS and FOX games your market gets
-- **Long description:** Sunday's regional map is in. See which games your area receives, when coverage starts, and the channel.
+Submit week 7 now and week 8 by Monday Oct 19. Week 9 starts more than 14 days out, so Apple will
+not take it until **Thursday Oct 22**.
+
+### 1. Week 7: Your Games in Green
+- **Reference name:** 2026 W07 games you can watch
+- **Event name:** Week 7: Your Games in Green
+- **Short description:** See which games are on your TV this week
+- **Long description:** Sunday's games you can watch are in green: your local CBS and FOX games, plus the ones on your services.
 - **Badge:** Live Event · **Priority:** Normal
-- **Runs:** Thu Sep 24, 6:00 pm - Tue Sep 29, 2:00 am
-- **Deep link:** (blank until 1.0.2 is live) then `gamedial://week/3`
+- **Runs:** Thu Oct 22, 6:00 pm - Tue Oct 27, 2:00 am
+- **Deep link:** `gamedial://week/7`
 
-### 2. Week 4 Sunday Channels
-- **Reference name:** 2026 W04 Sunday regional coverage
-- **Event name:** Week 4 Sunday Channels
-- **Short description:** Both windows, mapped to your market
-- **Long description:** One o'clock and four o'clock are different games in different cities. Check which two you get before kickoff.
+### 2. Week 8 Maps Are In
+- **Reference name:** 2026 W08 Wednesday coverage maps
+- **Event name:** Week 8 Maps Are In
+- **Short description:** Your local Sunday games, updated Wednesday
+- **Long description:** The regional maps came out Wednesday. Your 1 and 4 o'clock games are in, with your station and channel.
 - **Badge:** Live Event · **Priority:** Normal
-- **Runs:** Thu Oct 1, 6:00 pm - Tue Oct 6, 2:00 am
-- **Deep link:** `gamedial://week/4`
+- **Runs:** Thu Oct 29, 6:00 pm - Tue Nov 3, 2:00 am
+- **Deep link:** `gamedial://week/8`
 
-### 3. Week 5 Doubleheader Sunday
-- **Reference name:** 2026 W05 doubleheader
-- **Event name:** Doubleheader Sunday
-- **Short description:** One network gets both windows. Which one?
-- **Long description:** On doubleheader weeks a single network carries your afternoon. Find out which, and what it is showing.
+### 3. Week 9: What's On Near You
+- **Reference name:** 2026 W09 games on near you
+- **Event name:** Week 9: What's On Near You
+- **Short description:** Every game this week, and where to find it
+- **Long description:** Home or on the road, see which games your area gets, the channel to turn to and when coverage starts.
 - **Badge:** Live Event · **Priority:** Normal
-- **Runs:** Thu Oct 8, 6:00 pm - Tue Oct 13, 2:00 am
-- **Deep link:** `gamedial://week/5`
+- **Runs:** Thu Nov 5, 6:00 pm - Tue Nov 10, 2:00 am
+- **Deep link:** `gamedial://week/9`
 
 ## Batch 2 - the tentpoles, submit ~12 days before each
 
