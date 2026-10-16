@@ -55,6 +55,14 @@ enum Teams {
         return aliases[a]
     }
     static func short(_ id: String) -> String { all[id]?.short ?? id }
+
+    /// The teams with no game in a week, by nickname. Empty for a week with no games at all: that
+    /// is a schedule that has not loaded, not a league-wide bye.
+    static func onBye(week: Int, games: [Game]) -> [String] {
+        let playing = Set(games.filter { $0.week == week }.flatMap { [$0.away, $0.home] })
+        guard !playing.isEmpty else { return [] }
+        return all.keys.filter { !playing.contains($0) }.sorted { short($0) < short($1) }
+    }
     static func name(_ id: String) -> String { all[id]?.name ?? id }
     static func market(_ id: String) -> String? { all[id]?.market }
     static func accentHex(_ id: String) -> String { all[id]?.accent ?? "FFB74D" }

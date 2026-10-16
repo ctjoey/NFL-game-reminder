@@ -166,6 +166,19 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(r.confidence, .likely)
     }
 
+    // The bye list is every team without a game that week, and nothing at all for a week that has
+    // not loaded - an empty schedule is not 32 teams on a bye.
+    func testByeTeamsAreTheOnesWithoutAGame() {
+        let k = Date(timeIntervalSince1970: 1_789_000_000)
+        let week = Teams.all.keys.sorted().filter { !["CHI", "DET"].contains($0) }
+        var slate: [Game] = []
+        for i in stride(from: 0, to: week.count - 1, by: 2) {
+            slate.append(Game(id: "2026-W07-\(week[i])-\(week[i + 1])", week: 7, kickoff: k, away: week[i], home: week[i + 1], networks: ["FOX"], window: "SUN_EARLY"))
+        }
+        XCTAssertEqual(Teams.onBye(week: 7, games: slate), ["Bears", "Lions"])
+        XCTAssertEqual(Teams.onBye(week: 8, games: slate), [], "no games loaded is not a league-wide bye")
+    }
+
     func testPublishedMapOutranksAnAffinityGuess() {
         let k = Date(timeIntervalSince1970: 1_789_000_000)
         var week2 = foxWeek2()

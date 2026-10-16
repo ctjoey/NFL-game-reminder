@@ -1,7 +1,3 @@
-Your local games are now in green. On the week list, the CBS and FOX games your own station is showing stand out at a glance, and a week turning green means that week's TV maps are in. The maps update every Wednesday, with no app update needed.
+Bye weeks at a glance. On the All view, the teams with no game that week are listed at the bottom, so you're not hunting for a team that isn't playing.
 
-Settings opens on About, with a new step explaining the Wednesday update. The location section now asks "Where are you watching?"
-
-Tapping a game alert now opens that game's card, even when the app was closed.
-
-Fixed: opening Settings could switch your TV market to the one your ZIP code belongs to, even after you had picked a different one.
+Pinch to zoom. Spread two fingers on the week list to make everything bigger, and pinch back to shrink it. The app remembers the size you pick.

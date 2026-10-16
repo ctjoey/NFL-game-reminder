@@ -9,6 +9,11 @@ struct WeekView: View {
     @EnvironmentObject var state: AppState
     @State private var detail: GameCard?
     @AppStorage(WeekView.compactLayoutKey) private var compact = false
+    /// Pinch to zoom. Kept per device like the layout, so the size someone chose is there the
+    /// next time they open the app.
+    static let zoomKey = "weekZoom"
+    @AppStorage(WeekView.zoomKey) private var zoom = 1.0
+    @State private var pinchStart: Double?
 
     private var tz: TimeZone { state.user.timeZone }
 
@@ -20,7 +25,8 @@ struct WeekView: View {
                 .sorted { $0.key < $1.key }
 
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 14, pinnedViews: []) {
+                ZoomLayout(zoom: zoom) {
+                VStack(alignment: .leading, spacing: 14) {
                     controlBar(cards: cards)
 
                     if state.schedule.source == "seed" {
@@ -45,11 +51,31 @@ struct WeekView: View {
                             }
                         }
                     }
+                    // Only on All: on Mine the list is the user's own games, and a bye is about the
+                    // league. Not on the seed either, which is a sample that would put most of the
+                    // league on a bye.
+                    if state.showAllGames, state.schedule.source != "seed" {
+                        let byes = Teams.onBye(week: state.selectedWeek, games: state.schedule.games)
+                        if !byes.isEmpty { byeSection(byes) }
+                    }
                     Color.clear.frame(height: 12)
                 }
                 .padding(.horizontal, 14)
                 .padding(.top, 4)
+                .scaleEffect(zoom, anchor: .topLeading)
+                }
             }
+            // Pinch out to make everything bigger, pinch in to bring it back. Simultaneous, so a
+            // finger that is scrolling still scrolls.
+            .simultaneousGesture(
+                MagnifyGesture()
+                    .onChanged { v in
+                        let start = pinchStart ?? zoom
+                        pinchStart = start
+                        zoom = min(1.8, max(1.0, start * v.magnification))
+                    }
+                    .onEnded { _ in pinchStart = nil }
+            )
             .background { Theme.background.ignoresSafeArea() }
             .scrollContentBackground(.hidden)
             .navigationBarTitleDisplayMode(.inline)
@@ -129,6 +155,25 @@ struct WeekView: View {
         .padding(.bottom, 2)
     }
 
+
+    /// Teams with no game this week, as one quiet line of names at the foot of the All list.
+    private func byeSection(_ teams: [String]) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("ON A BYE")
+                .font(.system(size: 12, weight: .heavy, design: .rounded)).tracking(1.2)
+                .foregroundStyle(Theme.textDim)
+            Text(teams.map(Teams.short).joined(separator: " · "))
+                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .foregroundStyle(Theme.text)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 14).padding(.vertical, 12)
+        .background(Theme.surface, in: RoundedRectangle(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Theme.hairline, lineWidth: 1))
+        .padding(.top, 4)
+        .accessibilityElement(children: .combine)
+    }
 
     private func statChip(_ value: String, _ label: String, _ color: Color) -> some View {
         HStack(spacing: 5) {
@@ -439,4 +484,28 @@ struct GameCardView: View {
             .padding(.leading, 17).padding(.trailing, 14).padding(.top, 6).padding(.bottom, 12)
         }
     }
+}
+
+/// Draws its content larger without letting it run off the side of the screen: the content is laid
+/// out at a narrower width and then scaled up to fill the real one, so lines re-wrap the way they
+/// do when text is zoomed in Safari rather than the page having to be panned sideways. Reports the
+/// scaled height, so the scroll view scrolls the whole of it.
+struct ZoomLayout: Layout {
+    var zoom: CGFloat
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        guard let child = subviews.first else { return .zero }
+        let width = proposal.width ?? 390
+        let inner = child.sizeThatFits(.init(width: width / zoom, height: nil))
+        return CGSize(width: width, height: inner.height * zoom)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        guard let child = subviews.first else { return }
+        child.place(at: bounds.origin, anchor: .topLeading, proposal: .init(width: bounds.width / zoom, height: nil))
+    }
+}
+
+extension ZoomLayout {
+    init(zoom: Double) { self.zoom = CGFloat(zoom) }
 }
