@@ -175,7 +175,7 @@ final class EngineTests: XCTestCase {
         for i in stride(from: 0, to: week.count - 1, by: 2) {
             slate.append(Game(id: "2026-W07-\(week[i])-\(week[i + 1])", week: 7, kickoff: k, away: week[i], home: week[i + 1], networks: ["FOX"], window: "SUN_EARLY"))
         }
-        XCTAssertEqual(Teams.onBye(week: 7, games: slate), ["Bears", "Lions"])
+        XCTAssertEqual(Teams.onBye(week: 7, games: slate), ["CHI", "DET"], "team ids, in nickname order: Bears, Lions")
         XCTAssertEqual(Teams.onBye(week: 8, games: slate), [], "no games loaded is not a league-wide bye")
     }
 

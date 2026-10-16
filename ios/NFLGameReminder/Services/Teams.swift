@@ -56,7 +56,7 @@ enum Teams {
     }
     static func short(_ id: String) -> String { all[id]?.short ?? id }
 
-    /// The teams with no game in a week, by nickname. Empty for a week with no games at all: that
+    /// The ids of the teams with no game in a week, sorted by nickname. Empty for a week with no games at all: that
     /// is a schedule that has not loaded, not a league-wide bye.
     static func onBye(week: Int, games: [Game]) -> [String] {
         let playing = Set(games.filter { $0.week == week }.flatMap { [$0.away, $0.home] })
