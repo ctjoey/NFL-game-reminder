@@ -9,10 +9,9 @@ struct WeekView: View {
     @EnvironmentObject var state: AppState
     @State private var detail: GameCard?
     @AppStorage(WeekView.compactLayoutKey) private var compact = false
-    /// Pinch to zoom. Kept per device like the layout, so the size someone chose is there the
-    /// next time they open the app.
-    static let zoomKey = "weekZoom"
-    @AppStorage(WeekView.zoomKey) private var zoom = 1.0
+    /// Pinch to zoom, like a magnifier. Not remembered: a page that opens already enlarged and
+    /// scrolled to its top-left corner looks broken, not zoomed.
+    @State private var zoom = 1.0
     @State private var pinchStart: Double?
 
     private var tz: TimeZone { state.user.timeZone }
@@ -24,8 +23,11 @@ struct WeekView: View {
             let groups = Dictionary(grouping: shown) { TimeFormat.dayKey($0.game.kickoff, tz: tz) }
                 .sorted { $0.key < $1.key }
 
-            ScrollView {
-                ZoomLayout(zoom: zoom) {
+            GeometryReader { geo in
+            // Both directions, so a zoomed page can be dragged sideways as well as up and down.
+            // basedOnSize keeps it from wobbling sideways when it is not zoomed.
+            ScrollView([.vertical, .horizontal]) {
+                ZoomLayout(zoom: zoom, width: geo.size.width) {
                 VStack(alignment: .leading, spacing: 14) {
                     controlBar(cards: cards)
 
@@ -65,6 +67,7 @@ struct WeekView: View {
                 .scaleEffect(zoom, anchor: .topLeading)
                 }
             }
+            .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
             // Pinch out to make everything bigger, pinch in to bring it back. Simultaneous, so a
             // finger that is scrolling still scrolls.
             .simultaneousGesture(
@@ -76,6 +79,7 @@ struct WeekView: View {
                     }
                     .onEnded { _ in pinchStart = nil }
             )
+            }
             .background { Theme.background.ignoresSafeArea() }
             .scrollContentBackground(.hidden)
             .navigationBarTitleDisplayMode(.inline)
@@ -486,26 +490,27 @@ struct GameCardView: View {
     }
 }
 
-/// Draws its content larger without letting it run off the side of the screen: the content is laid
-/// out at a narrower width and then scaled up to fill the real one, so lines re-wrap the way they
-/// do when text is zoomed in Safari rather than the page having to be panned sideways. Reports the
-/// scaled height, so the scroll view scrolls the whole of it.
+/// A magnifier for the week page: the content is laid out exactly as it is on screen, at the
+/// screen's own width, then drawn larger, and the scroll view gets the enlarged size in both
+/// directions so the user can drag around it - the page gets bigger without anything moving.
+///
+/// (The first try laid the content out narrower so it re-wrapped to fit. Each row has fixed
+/// columns for the time, the network and the bell, so the team names in the middle were squeezed
+/// to nothing.)
 struct ZoomLayout: Layout {
     var zoom: CGFloat
+    var width: CGFloat
+
+    init(zoom: Double, width: CGFloat) { self.zoom = CGFloat(zoom); self.width = width }
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         guard let child = subviews.first else { return .zero }
-        let width = proposal.width ?? 390
-        let inner = child.sizeThatFits(.init(width: width / zoom, height: nil))
-        return CGSize(width: width, height: inner.height * zoom)
+        let inner = child.sizeThatFits(.init(width: width, height: nil))
+        return CGSize(width: width * zoom, height: inner.height * zoom)
     }
 
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
         guard let child = subviews.first else { return }
-        child.place(at: bounds.origin, anchor: .topLeading, proposal: .init(width: bounds.width / zoom, height: nil))
+        child.place(at: bounds.origin, anchor: .topLeading, proposal: .init(width: width, height: nil))
     }
-}
-
-extension ZoomLayout {
-    init(zoom: Double) { self.zoom = CGFloat(zoom) }
 }

@@ -1,3 +1,3 @@
 Bye weeks at a glance. On the All view, the teams with no game that week are listed at the bottom, so you're not hunting for a team that isn't playing.
 
-Pinch to zoom. Spread two fingers on the week list to make everything bigger, and pinch back to shrink it. The app remembers the size you pick.
+Pinch to zoom. Spread two fingers on the week list to magnify it, drag to look around, and pinch back in to return to normal.
