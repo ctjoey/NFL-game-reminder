@@ -16,11 +16,13 @@ import sys
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 W, H = 1290, 2796
-BG_TOP, BG_BOTTOM = (0x12, 0x1E, 0x38), (0x05, 0x08, 0x10)
-TEXT = (0xF2, 0xF5, 0xFA)
-DIM = (0x94, 0xA6, 0xC4)
-ACCENT = (0xFF, 0xB7, 0x4D)      # Theme.accent - "Dial"
-ON_AIR = (0x45, 0xD5, 0x41)      # Theme.onAir - the icon's TV light, games on your station
+# Bright, not navy: the app is dark, and a dark frame around a dark screen made the whole set read
+# as murky on the store page. A light frame makes the phone the darkest, sharpest thing on it.
+BG_TOP, BG_BOTTOM = (0xFF, 0xFF, 0xFF), (0xE4, 0xEE, 0xFA)
+TEXT = (0x0D, 0x15, 0x26)        # the app's navy, for type on the light frame
+DIM = (0x46, 0x56, 0x74)
+ACCENT = (0xE8, 0x80, 0x0C)      # Theme.accent, deepened enough to read on white
+ON_AIR = (0x1E, 0xA8, 0x3A)      # Theme.onAir, deepened enough to read on white
 
 # Order is the order in the listing. The first two are the ones most people ever see, so they
 # carry the two things this release added that nobody else does: your games in green, and scores.
@@ -79,13 +81,11 @@ def background():
     d = ImageDraw.Draw(img)
     for y in range(H):
         d.line([(0, y), (W, y)], fill=lerp(BG_TOP, BG_BOTTOM, (y / (H - 1)) ** 0.9))
-    # A soft amber glow behind the headline, screened on so the hue survives the navy.
-    glow = Image.new("RGB", (W, H), (0, 0, 0))
-    gd = ImageDraw.Draw(glow)
-    gd.ellipse([W * 0.1, -H * 0.06, W * 0.9, H * 0.16], fill=(60, 38, 10))
-    glow = glow.filter(ImageFilter.GaussianBlur(160))
-    from PIL import ImageChops
-    return ImageChops.screen(img, glow)
+    # A soft green wash low on the frame, behind the phone: the app's colour for "you can watch it".
+    wash = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(wash).ellipse([-W * 0.3, H * 0.45, W * 1.3, H * 1.25], fill=70)
+    wash = wash.filter(ImageFilter.GaussianBlur(220))
+    return Image.composite(Image.new("RGB", (W, H), (0xC8, 0xF0, 0xD2)), img, wash)
 
 
 def headline(d, runs, y, size):
@@ -124,12 +124,12 @@ def compose(raw, runs, sub, out):
     ImageDraw.Draw(mask).rounded_rectangle([0, 0, sw_ - 1, sh_ - 1], radius, fill=255)
 
     shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    ImageDraw.Draw(shadow).rounded_rectangle([x - 6, top + 30, x + sw_ + 6, top + sh_ + 30], radius, fill=(0, 0, 0, 190))
+    ImageDraw.Draw(shadow).rounded_rectangle([x - 6, top + 30, x + sw_ + 6, top + sh_ + 30], radius, fill=(0x0D, 0x15, 0x26, 110))
     shadow = shadow.filter(ImageFilter.GaussianBlur(50))
     img = Image.alpha_composite(img.convert("RGBA"), shadow)
     bezel = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(bezel).rounded_rectangle([x - 14, top - 14, x + sw_ + 13, top + sh_ + 13], radius + 14,
-                                            fill=(0x0B, 0x10, 0x1C, 255), outline=(0x3A, 0x4E, 0x72, 255), width=4)
+                                            fill=(0x0B, 0x10, 0x1C, 255), outline=(0x0B, 0x10, 0x1C, 255), width=4)
     img = Image.alpha_composite(img, bezel)
     img.paste(shot, (x, top), mask)
     img.convert("RGB").save(out, "PNG", optimize=True)
