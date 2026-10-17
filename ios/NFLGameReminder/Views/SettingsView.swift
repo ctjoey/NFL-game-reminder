@@ -13,15 +13,18 @@ struct SettingsView: View {
             Form {
                 Section("About") {
                     Wordmark()
-                    Text("Whether you're home or on the road, you can find out what games are showing and where to find them in your area.")
+                    (Text("We dial you into your games. ").bold()
+                     + Text("Home or on the road, GameDial shows what's on in your area and exactly where to find it."))
                         .font(.subheadline)
                     VStack(alignment: .leading, spacing: 6) {
-                        step(1, "Select your market and your TV provider.")
-                        step(2, "Pick the teams you want to follow.")
-                        step(3, "Set alerts to remind you when pregame coverage or kickoff starts.")
-                        step(4, "Games you can watch with your TV provider and services show in green. Every Wednesday the app updates with that week's TV maps, so your local CBS and FOX games turn green too.")
+                        step(1, "Tell us where you're watching:", "your ZIP code and TV provider.")
+                        step(2, "Pick your teams", "to follow.")
+                        step(3, "Set alerts", "for pregame coverage or kickoff.")
+                        step(4, "Look for green.", "Green means you can watch it. Your local CBS and FOX games turn green every Wednesday, when the TV maps come out.")
                     }
                     .padding(.vertical, 2)
+                    Text("We do the dialing. You do the watching.")
+                        .font(.footnote.weight(.semibold)).foregroundStyle(Theme.onAir)
                     Text("Changes save as you make them.").font(.caption).foregroundStyle(.secondary)
                     Text("Schedule: \(state.schedule.games.count) games from \(state.schedule.source)\(state.schedule.lastSync.map { ", synced \($0.formatted(date: .abbreviated, time: .shortened))" } ?? "")").font(.caption)
                     if let e = state.schedule.lastError { Text("Last sync error: \(e)").font(.caption).foregroundStyle(.orange) }
@@ -79,14 +82,15 @@ struct SettingsView: View {
         }
     }
 
-    private func step(_ n: Int, _ text: String) -> some View {
+    /// A numbered step: what to do in bold, then the detail. Green circles, to match the "Dial".
+    private func step(_ n: Int, _ lead: String, _ rest: String) -> some View {
         HStack(alignment: .top, spacing: 9) {
             Text("\(n)")
                 .font(.system(size: 12, weight: .heavy, design: .rounded))
                 .foregroundStyle(Theme.bgTop)
                 .frame(width: 20, height: 20)
-                .background(Theme.accent, in: Circle())
-            Text(text).font(.subheadline)
+                .background(Theme.onAir, in: Circle())
+            (Text(lead).bold() + Text(" " + rest)).font(.subheadline)
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
         }
