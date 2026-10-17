@@ -1,3 +1,1 @@
-Bye weeks at a glance. On the All view, the teams with no game that week are listed at the bottom, so you're not hunting for a team that isn't playing.
-
-Pinch to zoom. Spread two fingers on the week list to magnify it, drag to look around, and pinch back in to return to normal.
+GameDial goes green. The "Dial" in our name now matches the green that marks the games you can watch.

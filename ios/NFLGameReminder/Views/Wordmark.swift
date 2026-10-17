@@ -10,7 +10,7 @@ import SwiftUI
 /// It matters at all because of word of mouth. Someone shows the app to a friend in a bar, and
 /// until now there was nothing anywhere on screen telling that friend what to go and search for.
 struct Wordmark: View {
-    /// Split so the second half can carry the accent colour. Tested against AppInfo.name, because
+    /// Split so the second half can carry the green. Tested against AppInfo.name, because
     /// two halves that no longer spell the product's name is a typo nobody would ever notice.
     static let head = "Game"
     static let tail = "Dial"
@@ -19,8 +19,9 @@ struct Wordmark: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            // Dial in the accent colour: the half of the name that says what the app does.
-            (Text(Self.head).foregroundStyle(Theme.text) + Text(Self.tail).foregroundStyle(Theme.accent))
+            // Dial in green, the colour of a game you can watch: the half of the name that says what
+            // the app does, in the colour that means it worked.
+            (Text(Self.head).foregroundStyle(Theme.text) + Text(Self.tail).foregroundStyle(Theme.onAir))
                 .font(.system(size: 27, weight: .heavy, design: .rounded))
                 .tracking(-0.4)
             if let tagline {
@@ -40,7 +41,7 @@ struct Wordmark: View {
 /// called.
 struct WordmarkInline: View {
     var body: some View {
-        (Text(Wordmark.head).foregroundStyle(Theme.text) + Text(Wordmark.tail).foregroundStyle(Theme.accent))
+        (Text(Wordmark.head).foregroundStyle(Theme.text) + Text(Wordmark.tail).foregroundStyle(Theme.onAir))
             .font(.system(size: 18, weight: .heavy, design: .rounded))
             .tracking(-0.2)
             .accessibilityLabel(AppInfo.name)
