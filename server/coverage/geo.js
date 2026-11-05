@@ -201,10 +201,13 @@ export function conicProjection({ lonW, lonE, latN, latS, n = 0 }) {
 /// happens here.
 ///
 /// West Palm Beach sits on the beach and against the Miami line, so a sample there took in ocean
-/// and coastline and the market went unread every week from week 4 on. Martin County, inland, is
-/// the middle of the DMA.
+/// and coastline and the market went unread every week from week 4 on. It is read from the
+/// Wellington area instead: inland of the coast, south of Orlando's region, north of Miami's.
+///
+/// (The first move, to Martin County at 27.05, -80.45, overshot into Orlando's region on 506's
+/// maps: weeks 7 and 8 read West Palm exactly as Orlando, game for game, and missed the Dolphins.)
 export const READ_AT = {
-  westpalm: [27.05, -80.45],
+  westpalm: [26.66, -80.25],
 };
 
 /// The cylindrical case, kept by name because that is what a saved calibration may still say.
