@@ -80,6 +80,7 @@ function matchTeam(text, candidates) {
 export function parseMapPage(html, games) {
   const live = html.replace(/<!--[\s\S]*?-->/g, '');
   const problems = [];
+  const notices = [];
   const sections = [];
 
   // One pass, in document order: a map image opens a section, game blocks fill it.
@@ -109,7 +110,24 @@ export function parseMapPage(html, games) {
       const [awayText, homeText] = matchup.split(/\s+(?:@|vs\.?)\s+/i);
       const away = awayText ? matchTeam(awayText, teams) : null;
       const home = homeText ? matchTeam(homeText, teams) : null;
-      const game = away && home ? pool.find((g) => g.away === away && g.home === home) : null;
+      let game = away && home ? pool.find((g) => g.away === away && g.home === home) : null;
+      // A game the map puts on this network but the schedule lists on another: a late network
+      // change the schedule has not caught up with (week 9's Lions at Dolphins, moved to CBS).
+      // It is not a parsing problem, and refusing the page for it cost every market its week.
+      // Keep it in the legend - its colour is on the map, and without it those pixels would read
+      // as the nearest other game - but mark it, so its markets are not published from it.
+      let elsewhere = false;
+      if (!game) {
+        const anyTeams = [...new Set(games.flatMap((g) => [g.away, g.home]))];
+        const a = awayText ? matchTeam(awayText, anyTeams) : null;
+        const h = homeText ? matchTeam(homeText, anyTeams) : null;
+        const moved = a && h ? games.filter((g) => g.away === a && g.home === h && section.windows.includes(g.window)) : [];
+        if (moved.length === 1) {
+          game = moved[0];
+          elsewhere = true;
+          notices.push(`${game.id} is on the ${section.network} map, but the schedule has it on ${(game.networks || []).join('/') || 'no network'} - left out, the rest of the week is read`);
+        }
+      }
       if (!game) { problems.push(`"${matchup}" did not resolve to one ${section.network} game`); return null; }
       const window = section.singleHeader
         ? (late ? 'SUN_LATE' : 'SUN_EARLY')
@@ -117,11 +135,35 @@ export function parseMapPage(html, games) {
       if (!section.singleHeader && game.window !== window) {
         problems.push(`${game.id} is a ${game.window} game but appears on the ${window} map`);
       }
-      return { gameId: game.id, swatch, window, late };
+      return elsewhere
+        ? { gameId: game.id, swatch, window, late, elsewhere: true, scheduledOn: game.networks || [] }
+        : { gameId: game.id, swatch, window, late };
     }).filter(Boolean);
   }
 
-  return { sections, problems };
+  return { sections, problems, notices };
+}
+
+/// The slots to publish, less the ones a network change the schedule has not caught up with would
+/// make wrong. For a game a map shows on one network while the schedule has it on another:
+///   - its own slots go, since the app files games by the schedule's network and would not
+///     find it there; and
+///   - in the markets that get it, the slot for the network and window the schedule puts it in
+///     goes too. The app still thinks the game is on that network, and a published "your station
+///     has another game" there would tell those viewers their own game is not on - for week 9 that
+///     was Miami being told the Dolphins were not on. Left open, the app falls back to its rules,
+///     and a team's own market still gets the team.
+export function dropMovedGames(slots, sections) {
+  const moved = new Map();
+  for (const s of sections) for (const e of s.entries || []) if (e.elsewhere) moved.set(e.gameId, e);
+  if (!moved.size) return slots;
+  const shadow = new Set();
+  for (const s of slots) {
+    const e = moved.get(s.choose);
+    if (!e) continue;
+    for (const net of e.scheduledOn) shadow.add(`${s.market}|${net}|${s.window}`);
+  }
+  return slots.filter((s) => !moved.has(s.choose) && !shadow.has(`${s.market}|${s.network}|${s.window}`));
 }
 
 /// Map images the page lists but has commented out: drawn in the source, not yet published.

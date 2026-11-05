@@ -20,7 +20,7 @@ import fs from 'node:fs';
 import { decodePNG, pixelAt } from './png.js';
 import { MARKET_LATLON, OFF_MAP, fitProjection, conicProjection, searchProjection } from './geo.js';
 import { sampleMap, samplePoint, verifySampling, SAMPLER_DEFAULTS } from './mapSampler.js';
-import { parseMapPage, pendingMaps, sectionKind } from './mapPage.js';
+import { parseMapPage, pendingMaps, sectionKind, dropMovedGames } from './mapPage.js';
 import { loadFeed, shouldReadWeek } from './coverageFeed.js';
 import { flags } from './args.js';
 
@@ -232,8 +232,11 @@ async function ingest() {
   if (!res.ok) die(`GET ${pageUrl} -> HTTP ${res.status}`);
   const html = await res.text();
 
-  const { sections, problems } = parseMapPage(html, all);
+  const { sections, problems, notices } = parseMapPage(html, all);
   if (problems.length) { for (const p of problems) console.error(`  ${p}`); die('Refusing to read a page I cannot parse.'); }
+  // Said loudly - a ::warning:: shows on the run's summary - because a game left out is a game
+  // the app is still guessing at.
+  for (const n of notices) console.error(`::warning::${n}`);
   if (!sections.length) {
     const pending = pendingMaps(html);
     console.error(pending.length
@@ -282,7 +285,7 @@ async function ingest() {
 
   const teamMarkets = {};
   for (const [key, m] of Object.entries(JSON.parse(fs.readFileSync(flag('markets', 'ios/NFLGameReminder/Resources/markets.json'), 'utf8')).markets)) {
-    for (const team of m.teams || []) teamMarkets[team] = key;
+    for (const team of m.teams || []) teamMarkets[team] ??= key;  // first market is the home; later ones (West Palm for the Dolphins) also always air it
   }
 
   // Load every map and legend first: calibration is scored against all of them at once, and two
@@ -398,7 +401,8 @@ async function ingest() {
       console.error(`Wrote ${calibrationFile()}.`);
     }
   }
-  const { slots, notes } = read;
+  const { notes } = read;
+  const slots = dropMovedGames(read.slots, sections);
 
   for (const n of notes) console.error(n);
   console.error(`${slots.length} entr(ies) from ${sections.length} map(s).`);
@@ -529,7 +533,7 @@ async function sample() {
     const all = Array.isArray(raw) ? raw : raw.games || [];
     const teamMarkets = {};
     for (const [key, m] of Object.entries(JSON.parse(fs.readFileSync(flag('markets', 'ios/NFLGameReminder/Resources/markets.json'), 'utf8')).markets)) {
-      for (const team of m.teams || []) teamMarkets[team] = key;
+      for (const team of m.teams || []) teamMarkets[team] ??= key;  // first market is the home; later ones (West Palm for the Dolphins) also always air it
     }
     const games = legend.map((l) => all.find((g) => g.id === l.key)).filter(Boolean)
       .map((g) => ({ key: g.id, away: g.away, home: g.home }));

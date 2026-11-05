@@ -3,7 +3,7 @@
 // uses to say "drawn but not posted yet".
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseMapPage, pendingMaps, sectionKind, looksLikeMap } from '../server/coverage/mapPage.js';
+import { parseMapPage, pendingMaps, sectionKind, looksLikeMap, dropMovedGames } from '../server/coverage/mapPage.js';
 import { shouldReadWeek } from '../server/coverage/coverageFeed.js';
 
 const g = (away, home, networks, window) => ({
@@ -154,4 +154,33 @@ test('a revised map is read again, and hand-read weeks never are', () => {
   // And a week sampled before the map list was recorded is read again, not assumed current.
   const older = { source: '506sports week 4, sampled automatically', markets: { boston: {} } };
   assert.equal(shouldReadWeek(older, ['04-CBS-E.png']).read, true);
+});
+
+// MARK: - a game the schedule has on another network
+
+test('a game the map moved to another network is kept for its colour and left out of the week', () => {
+  // Week 9: Lions at Dolphins on 506's CBS map while the schedule still had it on FOX. Refusing
+  // the page for it published nothing, for anyone.
+  const moved = PAGE.replace('Tennessee @ Baltimore', 'Dallas @ Houston');
+  const { sections, problems, notices } = parseMapPage(moved, WEEK4);
+  assert.deepEqual(problems, []);
+  assert.equal(notices.length, 1);
+  assert.match(notices[0], /DAL-HOU.*CBS map.*FOX/);
+  const e = sections[0].entries.find((x) => x.gameId === '2026-W04-DAL-HOU');
+  assert.equal(e.elsewhere, true, 'still in the legend, so its colour is read as itself');
+  assert.deepEqual(e.scheduledOn, ['FOX']);
+});
+
+test('a moved game publishes nothing for itself, or for the network the schedule puts it on there', () => {
+  const sections = [{ entries: [{ gameId: 'MOVED', window: 'SUN_EARLY', elsewhere: true, scheduledOn: ['FOX'] }] }];
+  const slots = [
+    { market: 'miami', network: 'CBS', window: 'SUN_EARLY', choose: 'MOVED' },
+    { market: 'miami', network: 'FOX', window: 'SUN_EARLY', choose: 'OTHER' },
+    { market: 'miami', network: 'FOX', window: 'SUN_LATE', choose: 'LATE' },
+    { market: 'boston', network: 'FOX', window: 'SUN_EARLY', choose: 'OTHER' },
+    { market: 'boston', network: 'CBS', window: 'SUN_EARLY', choose: 'KEPT' },
+  ];
+  assert.deepEqual(dropMovedGames(slots, sections).map((s) => `${s.market} ${s.network} ${s.window}`), [
+    'miami FOX SUN_LATE', 'boston FOX SUN_EARLY', 'boston CBS SUN_EARLY',
+  ]);
 });

@@ -1655,7 +1655,7 @@
       "rank": 55,
       "state": "FL",
       "tz": "America/New_York",
-      "teams": [],
+      "teams": ["MIA"],
       "affinity": [
         "MIA",
         "TB",

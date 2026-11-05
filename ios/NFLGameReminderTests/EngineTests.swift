@@ -179,6 +179,19 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Teams.onBye(week: 8, games: slate), [], "no games loaded is not a league-wide bye")
     }
 
+    // West Palm Beach always gets the Dolphins: with no map at all, a Miami home game in a window
+    // with other candidates is still confirmed on the local station there.
+    func testDolphinsAlwaysAirInWestPalm() {
+        let k = Date(timeIntervalSince1970: 1_789_000_000)
+        let early = [
+            Game(id: "2026-W09-DET-MIA", week: 9, kickoff: k, away: "DET", home: "MIA", networks: ["FOX"], window: "SUN_EARLY"),
+            Game(id: "2026-W09-NYG-PHI", week: 9, kickoff: k, away: "NYG", home: "PHI", networks: ["FOX"], window: "SUN_EARLY"),
+        ]
+        let r = CoverageEngine.gameInMarket(early[0], marketKey: "westpalm", all: early, catalog: catalog)
+        XCTAssertEqual(r.airs, true)
+        XCTAssertEqual(r.confidence, .confirmed)
+    }
+
     func testPublishedMapOutranksAnAffinityGuess() {
         let k = Date(timeIntervalSince1970: 1_789_000_000)
         var week2 = foxWeek2()
