@@ -1,7 +1,7 @@
 {
   "version": 1,
   "season": 2026,
-  "generatedAt": "2026-11-05T03:48:00.781Z",
+  "generatedAt": "2026-11-05T03:49:26.574Z",
   "weeks": {
     "1": {
       "source": "observed off-air, Hartford-New Haven DMA, 2026-09-13",
@@ -6304,7 +6304,7 @@
     },
     "9": {
       "source": "506sports week 9, sampled automatically",
-      "publishedAt": "2026-11-05T03:48:00.781Z",
+      "publishedAt": "2026-11-05T03:49:26.574Z",
       "maps": [
         "2026/09-CBS-V2.png",
         "2026/09-FOX-E.png",
@@ -7081,11 +7081,9 @@
         },
         "westpalm": {
           "CBS": {
-            "SUN_EARLY": "2026-W09-NYJ-KC",
             "SUN_LATE": "none"
           },
           "FOX": {
-            "SUN_EARLY": "2026-W09-DAL-IND",
             "SUN_LATE": "2026-W09-GB-NE"
           }
         },
