@@ -402,7 +402,11 @@ async function ingest() {
     }
   }
   const { notes } = read;
-  const slots = dropMovedGames(read.slots, sections);
+  const alwaysAirs = {};
+  for (const [key, m] of Object.entries(JSON.parse(fs.readFileSync(flag('markets', 'ios/NFLGameReminder/Resources/markets.json'), 'utf8')).markets)) {
+    for (const team of m.teams || []) (alwaysAirs[team] ||= []).push(key);
+  }
+  const slots = dropMovedGames(read.slots, sections, alwaysAirs);
 
   for (const n of notes) console.error(n);
   console.error(`${slots.length} entr(ies) from ${sections.length} map(s).`);

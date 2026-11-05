@@ -184,3 +184,16 @@ test('a moved game publishes nothing for itself, or for the network the schedule
     'miami FOX SUN_LATE', 'boston FOX SUN_EARLY', 'boston CBS SUN_EARLY',
   ]);
 });
+
+test("a moved game's teams' markets are left open too, whatever the map read there", () => {
+  // Week 9 read West Palm Beach, which always gets the Dolphins, as another CBS game.
+  const sections = [{ network: 'CBS', entries: [{ gameId: '2026-W09-DET-MIA', window: 'SUN_EARLY', elsewhere: true, scheduledOn: ['FOX'] }] }];
+  const slots = [
+    { market: 'westpalm', network: 'CBS', window: 'SUN_EARLY', choose: '2026-W09-NYJ-KC' },
+    { market: 'westpalm', network: 'FOX', window: 'SUN_EARLY', choose: '2026-W09-DAL-IND' },
+    { market: 'westpalm', network: 'FOX', window: 'SUN_LATE', choose: '2026-W09-GB-NE' },
+    { market: 'tampa', network: 'CBS', window: 'SUN_EARLY', choose: '2026-W09-NYJ-KC' },
+  ];
+  const kept = dropMovedGames(slots, sections, { MIA: ['miami', 'westpalm'], DET: ['detroit'] });
+  assert.deepEqual(kept.map((s) => `${s.market} ${s.network} ${s.window}`), ['westpalm FOX SUN_LATE', 'tampa CBS SUN_EARLY']);
+});

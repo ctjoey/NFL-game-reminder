@@ -153,15 +153,33 @@ export function parseMapPage(html, games) {
 ///     has another game" there would tell those viewers their own game is not on - for week 9 that
 ///     was Miami being told the Dolphins were not on. Left open, the app falls back to its rules,
 ///     and a team's own market still gets the team.
-export function dropMovedGames(slots, sections) {
+///
+/// The markets that always get one of the moved game's teams are left open the same way, whatever
+/// the map read there: a team's game airs in its markets, so a reading that says otherwise on a game
+/// that has just changed network is the reading to doubt. Week 9 read West Palm Beach - which always
+/// gets the Dolphins - as another CBS game.
+///
+/// @param teamMarkets team -> every market that always airs its games
+export function dropMovedGames(slots, sections, teamMarkets = {}) {
   const moved = new Map();
   for (const s of sections) for (const e of s.entries || []) if (e.elsewhere) moved.set(e.gameId, e);
   if (!moved.size) return slots;
   const shadow = new Set();
+  const close = (market, window, e, mapNetwork) => {
+    for (const net of [...e.scheduledOn, mapNetwork]) shadow.add(`${market}|${net}|${window}`);
+  };
   for (const s of slots) {
     const e = moved.get(s.choose);
-    if (!e) continue;
-    for (const net of e.scheduledOn) shadow.add(`${s.market}|${net}|${s.window}`);
+    if (e) close(s.market, s.window, e, s.network);
+  }
+  for (const section of sections) {
+    for (const e of section.entries || []) {
+      if (!e.elsewhere) continue;
+      const [, , away, home] = e.gameId.split('-');
+      for (const team of [away, home]) {
+        for (const market of teamMarkets[team] || []) close(market, e.window, e, section.network);
+      }
+    }
   }
   return slots.filter((s) => !moved.has(s.choose) && !shadow.has(`${s.market}|${s.network}|${s.window}`));
 }
