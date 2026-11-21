@@ -1,7 +1,7 @@
 {
   "version": 1,
   "season": 2026,
-  "generatedAt": "2026-11-19T01:47:47.212Z",
+  "generatedAt": "2026-11-21T18:11:36.226Z",
   "weeks": {
     "1": {
       "source": "observed off-air, Hartford-New Haven DMA, 2026-09-13",
@@ -7178,11 +7178,11 @@
     },
     "11": {
       "source": "506sports week 11, sampled automatically",
-      "publishedAt": "2026-11-19T01:47:47.212Z",
+      "publishedAt": "2026-11-21T18:11:36.226Z",
       "maps": [
         "2026/11-CBS-E.png",
-        "2026/11-CBS-L.png",
-        "2026/11-FOX.png"
+        "2026/11-CBS-L-V2.png",
+        "2026/11-FOX-V2.png"
       ],
       "markets": {
         "albany": {
@@ -7591,6 +7591,10 @@
           "CBS": {
             "SUN_EARLY": "2026-W11-PIT-PHI",
             "SUN_LATE": "2026-W11-JAX-NYG"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W11-NO-CHI",
+            "SUN_LATE": "none"
           }
         },
         "littlerock": {
@@ -7606,7 +7610,7 @@
         "losangeles": {
           "CBS": {
             "SUN_EARLY": "2026-W11-ARI-KC",
-            "SUN_LATE": "2026-W11-JAX-NYG"
+            "SUN_LATE": "2026-W11-LV-DEN"
           },
           "FOX": {
             "SUN_LATE": "2026-W11-NYJ-LAC",
@@ -7765,7 +7769,7 @@
         "palmsprings": {
           "CBS": {
             "SUN_EARLY": "2026-W11-ARI-KC",
-            "SUN_LATE": "2026-W11-JAX-NYG"
+            "SUN_LATE": "2026-W11-LV-DEN"
           },
           "FOX": {
             "SUN_LATE": "2026-W11-NYJ-LAC",
@@ -7911,7 +7915,7 @@
         "sandiego": {
           "CBS": {
             "SUN_EARLY": "2026-W11-ARI-KC",
-            "SUN_LATE": "2026-W11-JAX-NYG"
+            "SUN_LATE": "2026-W11-LV-DEN"
           },
           "FOX": {
             "SUN_LATE": "2026-W11-NYJ-LAC",
@@ -7982,6 +7986,10 @@
           "CBS": {
             "SUN_EARLY": "2026-W11-ARI-KC",
             "SUN_LATE": "2026-W11-LV-DEN"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W11-TEN-DAL",
+            "SUN_LATE": "none"
           }
         },
         "stlouis": {
@@ -8034,18 +8042,30 @@
           "CBS": {
             "SUN_EARLY": "2026-W11-ARI-KC",
             "SUN_LATE": "2026-W11-JAX-NYG"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W11-TEN-DAL",
+            "SUN_LATE": "none"
           }
         },
         "washington": {
           "CBS": {
             "SUN_EARLY": "2026-W11-PIT-PHI",
             "SUN_LATE": "2026-W11-JAX-NYG"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W11-BAL-CAR",
+            "SUN_LATE": "none"
           }
         },
         "wichita": {
           "CBS": {
             "SUN_EARLY": "2026-W11-ARI-KC",
             "SUN_LATE": "2026-W11-LV-DEN"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W11-TEN-DAL",
+            "SUN_LATE": "none"
           }
         },
         "youngstown": {
@@ -8067,6 +8087,10 @@
         "westpalm": {
           "CBS": {
             "SUN_LATE": "2026-W11-JAX-NYG"
+          },
+          "FOX": {
+            "SUN_LATE": "2026-W11-NYJ-LAC",
+            "SUN_EARLY": "none"
           }
         }
       }
