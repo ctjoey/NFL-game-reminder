@@ -347,6 +347,9 @@ async function ingest() {
         asserted.push(market);
       }
       if (asserted.length) notes.push(`  ${section.src}: ${asserted.join(', ')} from the home-market rule, not the pixels`);
+      // Name every market left open and why, so a blank in the app can be traced to the map.
+      const left = Object.keys(results).filter((m) => !chosen[m] && !OFF_MAP.has(m));
+      for (const m of left) notes.push(`  ${section.src}: ${m} left open - ${results[m].reason}`);
 
       for (const [market, key] of Object.entries(chosen)) {
         const window = windowOf[key];
