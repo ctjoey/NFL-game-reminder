@@ -385,3 +385,40 @@ test('West Palm Beach is read inland, not on the beach where its city is', () =>
   assert.ok(r.point.x < city.x, 'the reading point is west of the city, inland');
   assert.deepEqual(r.point, project.latlon(READ_AT.westpalm));
 });
+
+// Paint a rectangle of one game's colour onto a copy of the test map.
+function paint(img, x0, y0, x1, y1, rgb) {
+  for (let y = y0; y <= y1; y += 1) for (let x = x0; x <= x1; x += 1) {
+    const o = (y * img.width + x) * 3;
+    img.rgb[o] = rgb[0]; img.rgb[o + 1] = rgb[1]; img.rgb[o + 2] = rgb[2];
+  }
+}
+const MID_RGB = GAMES.find((g) => g.key === 'G-MID').rgb;
+const SOUTH_RGB = GAMES.find((g) => g.key === 'G-SOUTH').rgb;
+
+test('a market on a line is settled by the spots around it when they clearly agree', () => {
+  // A line runs right through the market's own spot; everything around it is one game.
+  const project = conicProjection({ lonW: LON0, lonE: LON1, latN: LAT0, latS: LAT1 });
+  const img = decodePNG(MAP.png);
+  const at = project.latlon(READ_AT.westpalm);
+  const cx = Math.round(at.x * img.width), cy = Math.round(at.y * img.height);
+  paint(img, cx - 30, cy - 30, cx + 30, cy + 30, SOUTH_RGB);
+  paint(img, cx + 2, cy - 6, cx + 6, cy + 6, MID_RGB);       // a sliver of the other game
+  assert.equal(samplePoint(img, at, LEGEND, { radius: 0.004 }).key, null, 'the spot alone is split');
+  const r = sampleMap({ img, legend: LEGEND, projection: project, markets: ['westpalm'] }).westpalm;
+  assert.equal(r.key, 'G-SOUTH');
+  assert.ok(r.around.clean >= 4);
+});
+
+test('a market whose surroundings are split as well stays open', () => {
+  // A straight line between two games runs right through the spot and the ring around it.
+  const project = conicProjection({ lonW: LON0, lonE: LON1, latN: LAT0, latS: LAT1 });
+  const img = decodePNG(MAP.png);
+  const at = project.latlon(READ_AT.westpalm);
+  const cx = Math.round(at.x * img.width), cy = Math.round(at.y * img.height);
+  paint(img, cx - 30, cy - 30, cx - 1, cy + 30, SOUTH_RGB);
+  paint(img, cx, cy - 30, cx + 30, cy + 30, MID_RGB);
+  const r = sampleMap({ img, legend: LEGEND, projection: project, markets: ['westpalm'] }).westpalm;
+  assert.equal(r.key, null);
+  assert.match(r.reason, /did not settle/);
+});

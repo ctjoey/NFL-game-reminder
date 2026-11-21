@@ -138,9 +138,49 @@ export function sampleMap({ img, legend, projection, markets, offMapKey = null, 
       results[market] = { key: null, purity: 0, reason: 'projects outside the image' };
       continue;
     }
-    results[market] = { ...samplePoint(img, point, legend, options), point };
+    const centre = samplePoint(img, point, legend, options);
+    results[market] = centre.key
+      ? { ...centre, point }
+      : { ...centre, ...readAround(img, point, legend, options, centre), point };
   }
   return results;
+}
+
+/// Spots around a market's point, as fractions of the image width. About 10 pixels on a
+/// 1280-wide map: far enough to step off a line, close enough to stay inside the market.
+const AROUND = { distance: 0.008, spots: 8, minClean: 4, minShare: 0.75 };
+
+/**
+ * When a market's own spot sits on a line between two games, look at a ring of spots around it
+ * and go with the game most of them show. A line through one spot no longer blanks the market.
+ *
+ * Still careful: enough of the ring has to read cleanly, a clear majority of those have to
+ * agree, and if the centre leaned one way the ring has to agree with that lean. Otherwise the
+ * market stays open, exactly as before.
+ */
+function readAround(img, point, legend, options, centre) {
+  const aspect = img.width / img.height;
+  const votes = new Map();
+  let clean = 0;
+  for (let i = 0; i < AROUND.spots; i += 1) {
+    const a = (2 * Math.PI * i) / AROUND.spots;
+    const spot = { x: point.x + AROUND.distance * Math.cos(a), y: point.y + AROUND.distance * aspect * Math.sin(a) };
+    if (spot.x < 0 || spot.x > 1 || spot.y < 0 || spot.y > 1) continue;
+    const r = samplePoint(img, spot, legend, options);
+    if (!r.key) continue;
+    clean += 1;
+    votes.set(r.key, (votes.get(r.key) || 0) + 1);
+  }
+  let best = null, count = 0;
+  for (const [key, n] of votes) if (n > count) { best = key; count = n; }
+  const agrees = centre.winner == null || centre.winner === best;
+  if (best && clean >= AROUND.minClean && count / clean >= AROUND.minShare && agrees) {
+    return { key: best, reason: null, around: { clean, agreeing: count } };
+  }
+  return {
+    around: { clean, agreeing: count },
+    reason: `${centre.reason}; the spots around it did not settle it (${count}/${clean} agree)`,
+  };
 }
 
 /**
