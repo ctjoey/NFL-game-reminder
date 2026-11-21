@@ -1,7 +1,7 @@
 {
   "version": 1,
   "season": 2026,
-  "generatedAt": "2026-11-21T18:12:39.702Z",
+  "generatedAt": "2026-11-21T18:15:14.123Z",
   "weeks": {
     "1": {
       "source": "observed off-air, Hartford-New Haven DMA, 2026-09-13",
@@ -7178,7 +7178,7 @@
     },
     "11": {
       "source": "506sports week 11, sampled automatically",
-      "publishedAt": "2026-11-21T18:12:39.702Z",
+      "publishedAt": "2026-11-21T18:15:14.123Z",
       "maps": [
         "2026/11-CBS-E.png",
         "2026/11-CBS-L-V2.png",
@@ -7515,6 +7515,10 @@
           "CBS": {
             "SUN_EARLY": "2026-W11-PIT-PHI",
             "SUN_LATE": "2026-W11-JAX-NYG"
+          },
+          "FOX": {
+            "SUN_EARLY": "2026-W11-BAL-CAR",
+            "SUN_LATE": "none"
           }
         },
         "hartford": {
@@ -8058,6 +8062,16 @@
             "SUN_LATE": "none"
           }
         },
+        "westpalm": {
+          "CBS": {
+            "SUN_EARLY": "2026-W11-MIA-BUF",
+            "SUN_LATE": "2026-W11-JAX-NYG"
+          },
+          "FOX": {
+            "SUN_LATE": "2026-W11-NYJ-LAC",
+            "SUN_EARLY": "none"
+          }
+        },
         "wichita": {
           "CBS": {
             "SUN_EARLY": "2026-W11-ARI-KC",
@@ -8082,15 +8096,6 @@
           "CBS": {
             "SUN_EARLY": "2026-W11-MIA-BUF",
             "SUN_LATE": "2026-W11-JAX-NYG"
-          }
-        },
-        "westpalm": {
-          "CBS": {
-            "SUN_LATE": "2026-W11-JAX-NYG"
-          },
-          "FOX": {
-            "SUN_LATE": "2026-W11-NYJ-LAC",
-            "SUN_EARLY": "none"
           }
         }
       }
