@@ -1,7 +1,7 @@
 {
   "version": 1,
   "season": 2026,
-  "generatedAt": "2026-11-21T18:11:36.226Z",
+  "generatedAt": "2026-11-21T18:12:39.702Z",
   "weeks": {
     "1": {
       "source": "observed off-air, Hartford-New Haven DMA, 2026-09-13",
@@ -7178,7 +7178,7 @@
     },
     "11": {
       "source": "506sports week 11, sampled automatically",
-      "publishedAt": "2026-11-21T18:11:36.226Z",
+      "publishedAt": "2026-11-21T18:12:39.702Z",
       "maps": [
         "2026/11-CBS-E.png",
         "2026/11-CBS-L-V2.png",
