@@ -148,13 +148,13 @@ export function sampleMap({ img, legend, projection, markets, offMapKey = null, 
 
 /// Spots around a market's point, as fractions of the image width. About 10 pixels on a
 /// 1280-wide map: far enough to step off a line, close enough to stay inside the market.
-const AROUND = { distance: 0.008, spots: 8, minClean: 4, minShare: 0.75 };
+const AROUND = { distance: 0.008, spots: 8, minClean: 4, minShare: 2 / 3 };
 
 /**
  * When a market's own spot sits on a line between two games, look at a ring of spots around it
  * and go with the game most of them show. A line through one spot no longer blanks the market.
  *
- * Still careful: enough of the ring has to read cleanly, a clear majority of those have to
+ * Still careful: enough of the ring has to read cleanly, at least two in three of those have to
  * agree, and if the centre leaned one way the ring has to agree with that lean. Otherwise the
  * market stays open, exactly as before.
  */
@@ -175,11 +175,11 @@ function readAround(img, point, legend, options, centre) {
   for (const [key, n] of votes) if (n > count) { best = key; count = n; }
   const agrees = centre.winner == null || centre.winner === best;
   if (best && clean >= AROUND.minClean && count / clean >= AROUND.minShare && agrees) {
-    return { key: best, reason: null, around: { clean, agreeing: count } };
+    return { key: best, reason: null, around: { clean, agreeing: count, centrePurity: centre.purity } };
   }
   return {
     around: { clean, agreeing: count },
-    reason: `${centre.reason}; the spots around it did not settle it (${count}/${clean} agree)`,
+    reason: `${centre.reason} (leans ${centre.winner}); the spots around it did not settle it (${count}/${clean} say ${best})`,
   };
 }
 

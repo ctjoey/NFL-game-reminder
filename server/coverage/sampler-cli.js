@@ -350,6 +350,9 @@ async function ingest() {
       // Name every market left open and why, so a blank in the app can be traced to the map.
       const left = Object.keys(results).filter((m) => !chosen[m] && !OFF_MAP.has(m));
       for (const m of left) notes.push(`  ${section.src}: ${m} left open - ${results[m].reason}`);
+      for (const [m, r] of Object.entries(results)) {
+        if (r.around && r.key) notes.push(`  ${section.src}: ${m} read from the spots around it - ${r.key} (${r.around.agreeing}/${r.around.clean}, own spot ${(r.around.centrePurity * 100).toFixed(0)}%)`);
+      }
 
       for (const [market, key] of Object.entries(chosen)) {
         const window = windowOf[key];
